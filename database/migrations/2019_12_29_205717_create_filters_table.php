@@ -20,7 +20,6 @@ class CreateFiltersTable extends Migration
             $table->json('date_filter')->nullable();
             $table->json('rows_filter')->nullable();
             $table->string('agent_name', 100)->nullable();
-            $table->string('agence_name', 100)->nullable();
             $table->boolean('isGlobal')->nullable();
             $table->timestamps();
             $table->softDeletes();

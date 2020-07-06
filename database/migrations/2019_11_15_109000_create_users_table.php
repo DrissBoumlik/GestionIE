@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->boolean('status')->default(false);
             $table->string('picture')->default('/storage/users/male.png')->nullable();
             $table->enum('gender', ['male', 'female']);
+            $table->string('agent_name', 20)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

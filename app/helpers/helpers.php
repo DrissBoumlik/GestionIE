@@ -220,7 +220,7 @@ if (!function_exists('makeFilterSubQuery')) {
         $user = getAuthUser();
         $agenceCode = $request->get('agence_code');
         $agentName = $request->get('agent_name');
-        $filters = ['route' => $route, 'user_id' => $user->id, 'agence_name' => $agenceCode, 'agent_name' => $agentName, 'isGlobal' => null];
+        $filters = ['route' => $route, 'user_id' => $user->id, 'agent_name' => $agentName, 'isGlobal' => null];
 
 
         $dates = $request->get('dates');

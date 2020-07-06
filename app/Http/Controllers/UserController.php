@@ -68,7 +68,6 @@ class UserController extends Controller
             'gender' => ['nullable', 'in:male,female'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role' => ['required', 'exists:roles,id'],
-            'agence_name' => ['required_if:role,==,2', 'max:20'],
             'agent_name' => ['required_if:role,==,3', 'max:20']
         ]);
         $user = User::create([
@@ -80,7 +79,6 @@ class UserController extends Controller
             'status' => $request->status ? true : false,
             'password' => Hash::make($request->password),
             'role_id' => $request->role,
-            'agence_name' => $request->agence_name,
             'agent_name' => $request->agent_name,
         ]);
 
@@ -190,7 +188,6 @@ class UserController extends Controller
         $user->status = $request->status ? true : false;
         $user->password = $request->password ? Hash::make($request->password) : $user->password;
         $user->role_id = $request->role ?? $user->role_id;
-        $user->agence_name = $request->agence_name ?? $user->agence_name;
         $user->agent_name = $request->agent_name ?? $user->agent_name;
         $user->save();
 

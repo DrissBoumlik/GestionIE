@@ -44,11 +44,10 @@
 @endsection
 
 @section('content-header')
-    <!-- Hero -->
-    @if (request()->has('agence_code'))
+    {{--  @if (request()->has('agence_code'))
         <?php $agence = isset($data['agence']) ? $data['agence'] : request()->get('agence_code') ?>
         <input type="hidden" name="agence_name" id="agence_name" value="{{$agence ?? ''}}">
-    @endif
+    @endif  --}}
     <div class="bg-image overflow-hidden"
          style="background-image: url('{{ asset('/media/backgrounds/photo3@2x.jpg') }}');">
         <div class="bg-primary-dark-op">
