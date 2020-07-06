@@ -6,25 +6,25 @@
 
 @section('css_before')
     <!-- Page JS Plugins CSS -->
-    <link rel="stylesheet" href="{{ asset('js/plugins/datatables/dataTables.bootstrap4.css') }}">
-    <link rel="stylesheet" href="{{ asset('js/plugins/datatables/buttons-bs4/buttons.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/plugins/datatables/css/dataTables.bootstrap4.css') }}">
+    <link rel="stylesheet" href="{{ asset('/plugins/datatables/buttons-bs4/buttons.bootstrap4.min.css') }}">
 @endsection
 
 @section('js_after')
     <!-- Page JS Plugins -->
-    <script src="{{ asset('js/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('js/plugins/datatables/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('js/plugins/datatables/buttons/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('js/plugins/datatables/buttons/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('js/plugins/datatables/buttons/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('js/plugins/datatables/buttons/buttons.flash.min.js') }}"></script>
-    <script src="{{ asset('js/plugins/datatables/buttons/buttons.colVis.min.js') }}"></script>
+    <script src="{{ asset('/plugins/datatables/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('/plugins/datatables/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('/plugins/datatables/buttons/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('/plugins/datatables/buttons/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('/plugins/datatables/buttons/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('/plugins/datatables/buttons/buttons.flash.min.js') }}"></script>
+    <script src="{{ asset('/plugins/datatables/buttons/buttons.colVis.min.js') }}"></script>
 
-    <script src="{{ asset("/add_ons/tree-view/tree.js") }}"></script>
-    <script src="{{ asset('js/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset("/plugins/tree-view/tree.js") }}"></script>
+    <script src="{{ asset('/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
     <!-- Page JS Code -->
-    <script src="{{ asset('add_ons/stats/import-stats.js') }}"></script>
+    <script src="{{ asset('js/custom/tasks/import-tasks.js') }}"></script>
 @endsection
 
 @section('content')

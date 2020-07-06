@@ -33,38 +33,6 @@
                 'success'
             );
             @endif
-
-            {{--$("#permissions-data").DataTable({--}}
-            {{--    responsive: true,--}}
-            {{--    info: false,--}}
-            {{--    processing: true,--}}
-            {{--    serverSide: true,--}}
-            {{--    searching: false,--}}
-            {{--    ajax: 'getRolePermissions/{{ $role->id }}',--}}
-            {{--    columns: [--}}
-            {{--        {--}}
-            {{--            data: 'id', name: 'id',--}}
-            {{--            render: function (data, type, full, meta) {--}}
-            {{--                return "<a href='/permissions/" + data + "' class='align-center blue d-block'><i class='far fa-eye big-icon-fz'></i></a>";--}}
-            {{--            }--}}
-            {{--        },--}}
-            {{--        {data: 'name', name: 'name', class: 'capitalize'},--}}
-            {{--        {data: 'method', name: 'method', class: 'capitalize'},--}}
-            {{--        {data: 'controller', name: 'controller', class: 'capitalize'},--}}
-            {{--        {--}}
-            {{--            data: 'assigned', name: 'assigned',--}}
-            {{--            render: function (data, type, full, meta) {--}}
-            {{--                return "<label for='status-" + full.id + "' class='m-0'>" +--}}
-            {{--                    "<input class='data-status d-none change-status' data-role='" + {{ $role->id }} +"' data-status='" + full.id + "'" +--}}
-            {{--                    " id='status-" + full.id + "' type='checkbox'" +--}}
-            {{--                    (data ? 'checked' : '') +--}}
-            {{--                    " name='status'>" +--}}
-            {{--                    "<span class='status pointer'></span>" +--}}
-            {{--                    "</label>";--}}
-            {{--            }--}}
-            {{--        }--}}
-            {{--    ]--}}
-            {{--});--}}
         });
     </script>
 @endsection
@@ -149,14 +117,14 @@
                                 <div class="row update-btn mt-lg-5 mt-sm-0">
                                     <div class="col-md-6 mt-3">
                                         <button type="submit" class="btn btn-primary full-w">
-                                            <span class="btn-field font-weight-normal fa-edit pr-4 position-relative">Modifié</span>
+                                            <span class="btn-field font-weight-normal pr-4 position-relative">Modifié</span>
                                         </button>
                                     </div>
                                     <div class="col-md-6 mt-3">
                                         <button class="btn btn-danger full-w delete-role"
                                                 data-role="{{ $role->id }}">
                                             <span
-                                                class="btn-field font-weight-bold fa-trash-alt pr-3 position-relative">Supprimer</span>
+                                                class="btn-field font-weight-bold pr-3 position-relative">Supprimer</span>
                                         </button>
                                     </div>
                                 </div>
@@ -164,36 +132,6 @@
                         </div>
                     </div>
                 </div>
-{{--                <div class="row mt-5">--}}
-{{--                    <div class="col-12">--}}
-{{--                        <div class="card">--}}
-{{--                            <div class="card-header">--}}
-{{--                                <h3 class="card-title float-left">Assign Permissions</h3>--}}
-{{--                                <button type="button" class="btn btn-primary mgl-10 round" title="Add Permission">--}}
-{{--                                    <a href="/permissions/create" class="link btn btn-primary mgl-10 round d-none" title="Add Permission"><i class="fas fa-plus"></i></a>--}}
-{{--                                </button>--}}
-{{--                            </div>--}}
-{{--                            <!-- /.card-header -->--}}
-{{--                            <div class="card-body table-responsive">--}}
-{{--                                <table id="permissions-data"--}}
-{{--                                       class="table table-bordered table-striped table-valign-middle capitalize">--}}
-{{--                                    <thead>--}}
-{{--                                    <tr>--}}
-{{--                                        <th></th>--}}
-{{--                                        <th>Name</th>--}}
-{{--                                        <th>Method</th>--}}
-{{--                                        <th>Controller</th>--}}
-{{--                                        <th>Assined</th>--}}
-{{--                                    </tr>--}}
-{{--                                    </thead>--}}
-{{--                                </table>--}}
-{{--                            </div>--}}
-{{--                            <!-- /.card-body -->--}}
-{{--                        </div>--}}
-{{--                        <!-- /.card -->--}}
-{{--                    </div>--}}
-{{--                    <!-- /.col -->--}}
-{{--                </div>--}}
                 <!-- /.row -->
             </div>
         </form>

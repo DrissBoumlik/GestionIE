@@ -7,7 +7,7 @@
 @section('css_after')
     <!-- DataTables -->
     <link rel="stylesheet"
-          href={{ asset("/add_ons/datatables-bs4/css/dataTables.bootstrap4.css") }}>
+          href={{ asset("/plugins/datatables/css/dataTables.bootstrap4.css") }}>
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
 @endsection
@@ -56,8 +56,8 @@
 
 @section('js_after')
     <!-- DataTables -->
-    <script src={{ asset("/add_ons/datatables/jquery.dataTables.js") }}></script>
-    <script src={{ asset("/add_ons/datatables-bs4/js/dataTables.bootstrap4.js") }}></script>
+    <script src={{ asset("/plugins/datatables/js/jquery.dataTables.js") }}></script>
+    <script src={{ asset("/plugins/datatables/js/dataTables.bootstrap4.js") }}></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
-    <script src="{{ asset("/add_ons/roles/datatable.js") }}"></script>
+    <script src="{{ asset("/js/custom/roles/datatable.js") }}"></script>
 @endsection

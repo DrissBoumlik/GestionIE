@@ -514,14 +514,6 @@ if (!function_exists('getPicture')) {
     }
 }
 
-if (!function_exists('agencesList')) {
-    function agencesList()
-    {
-        $agenceRepository = new \App\Repositories\StatsRepository();
-        return $agenceRepository->getAgenciesAll();
-    }
-}
-
 if (!function_exists('agentsList')) {
     function agentsList()
     {

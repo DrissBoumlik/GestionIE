@@ -108,45 +108,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group" id="agence_name" style="display: none">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <label for="role">Agence</label>
-                                        </div>
-                                        <div class="col-8">
-                                            <select name="agence_name" id="agence_name"
-                                                    class="form-control capitalize form-field @error('agence_name') is-invalid @enderror">
-                                                <option value=""></option>
-                                                @foreach(agencesList() as $agence)
-                                                    <option class="capitalize"
-                                                            value="{{ $agence['name'] }}">
-                                                        {{ $agence['name'] }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group" id="agent_name" style="display: none">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <label for="role">Agent</label>
-                                        </div>
-                                        <div class="col-8">
-                                            <select name="agent_name" id="agent_name"
-                                                    class="form-control capitalize form-field @error('agent_name') is-invalid @enderror">
-                                                <option value=""></option>
-                                                @foreach(agentsList() as $agent)
-                                                    <option class="capitalize"
-                                                            value="{{ $agent['name'] }}">
-                                                        {{ $agent['name'] }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-4">

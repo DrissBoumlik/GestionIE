@@ -31,7 +31,7 @@ class RoleController extends Controller
 
     public function getRoles(Request $request, YDT $dataTables)
     {
-        $roles = Role::withCount('users');
+        $roles = Role::withCount('users')->orderBy('roles.id');
         return DataTables::of($roles)
             ->setRowId(function ($role) {
                 return 'role-' . $role->id;
@@ -85,8 +85,7 @@ class RoleController extends Controller
         // Authorization
         $this->authorize('view', auth()->user());
 
-        $permissions = $role->permissions;
-        return view('roles.show')->with(['role' => $role, 'permissions' => $permissions]);
+        return view('roles.show')->with(['role' => $role]);
     }
 
     public function update(Request $request, Role $role)

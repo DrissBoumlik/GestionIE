@@ -26,10 +26,8 @@
         <!-- You can include a specific file from public/css/themes/ folder to alter the default color theme of the template. eg: -->
         <!-- <link rel="stylesheet" id="css-theme" href="{{ asset('css/themes/amethyst.css') }}"> -->
         <!-- Select2 -->
-        <link href="{{ asset("/add_ons/select2/css/select2.min.css") }}" rel="stylesheet"/>
-
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
-        <link rel="stylesheet" href="{{ asset('js/plugins/sweetalert2/sweetalert2.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('/plugins/sweetalert2/sweetalert2.min.css') }}">
         @yield('css_after')
 
         <!-- Scripts -->
@@ -75,13 +73,13 @@
         <!-- OneUI Core JS -->
         <script src="{{ asset('js/oneui.app.js') }}"></script>
         <!-- Select2 -->
-        <script src="{{ asset("/add_ons/select2/js/select2.min.js") }}"></script>
-        <script src={{ asset("/add_ons/select2/js/i18n/fr.js") }}></script>
+        <script src="{{ asset("/plugins/select2/js/select2.min.js") }}"></script>
+        <script src={{ asset("/plugins/select2/js/i18n/fr.js") }}></script>
         <!-- Laravel Scaffolding JS -->
         <script src="{{ asset('js/laravel.app.js') }}"></script>
 
         <script src="//cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
-        <script src="{{ asset('js/plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
+        <script src="{{ asset('/plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
         @yield('js_after')
     </body>
 </html>

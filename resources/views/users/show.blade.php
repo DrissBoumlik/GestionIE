@@ -176,44 +176,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group" id="agence_name">
-                                        <div class="row">
-                                            <div class="col-4">
-                                                <label for="role">Agence</label>
-                                            </div>
-                                            <div class="col-8">
-                                                <select name="agence_name" id="agence_name"
-                                                        class="form-control capitalize form-field @error('agence_name') is-invalid @enderror">
-                                                    <option value=""></option>
-                                                    @foreach(agencesList() as $agence)
-                                                        <option class="capitalize"
-                                                                value="{{ $agence['name'] }}" {{ $user->agence_name == $agence['name'] ? 'selected' : '' }}>
-                                                            {{ $agence['name'] }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group" id="agent_name">
-                                        <div class="row">
-                                            <div class="col-4">
-                                                <label for="role">Agent</label>
-                                            </div>
-                                            <div class="col-8">
-                                                <select name="agent_name" id="agent_name"
-                                                        class="form-control capitalize form-field @error('agent_name') is-invalid @enderror">
-                                                    <option value=""></option>
-                                                    @foreach(agentsList() as $agent)
-                                                        <option class="capitalize"
-                                                                value="{{ $agent['name'] }}" {{ $user->agent_name == $agent['name'] ? 'selected' : '' }}>
-                                                            {{ $agent['name'] }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-4">
@@ -235,7 +197,7 @@
                                     <div class="{{ $isInAdminGroup ? 'col-md-3' : 'col-md-6' }} mt-3">
                                         <button type="submit" class="btn btn-primary full-w">
                                                 <span
-                                                    class="btn-field font-weight-normal fa-edit pr-4 position-relative">Editer</span>
+                                                    class="btn-field font-weight-normal pr-4 position-relative">Editer</span>
                                         </button>
                                     </div>
                                     @if($isInAdminGroup)
@@ -243,7 +205,7 @@
                                             <button class="btn btn-danger full-w delete-user"
                                                     data-user="{{ $user->id }}">
                                             <span
-                                                class="btn-field font-weight-bold fa-trash-alt pr-3 position-relative">Supprimer</span>
+                                                class="btn-field font-weight-bold pr-3 position-relative">Supprimer</span>
                                             </button>
                                         </div>
                                     @endif
@@ -251,7 +213,7 @@
                                         <button class="btn btn-warning full-w" data-toggle="modal" type="button"
                                                 data-target="#resetPassModal">
                                             <span
-                                                class="btn-field font-weight-bold fa-exclamation-triangle pr-3 position-relative">Changer le mot de passe</span>
+                                                class="btn-field font-weight-bold pr-3 position-relative">Changer le mot de passe</span>
                                         </button>
                                         <!-- RESET PASSWORD Modal -->
                                         <!-- Modal -->
