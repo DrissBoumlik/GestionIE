@@ -12,8 +12,8 @@
 @section('js_after')
     <script src="//cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.min.js"></script>
-    <script src="{{ asset("/add_ons/crop.js") }}"></script>
-    <script src="{{ asset("/add_ons/users/profile.js") }}"></script>
+    <script src="{{ asset("/js/custom/crop.js") }}"></script>
+    <script src="{{ asset("/js/custom/users/profile.js") }}"></script>
     <script>
         $(function () {
             @if($errors->any())
