@@ -32,7 +32,7 @@
             </li>
             @if(isInAdminGroup())
                 <li class="nav-main-item">
-                    <a class="nav-main-link{{ (request()->is('all-stats') || request()->is('all-stats/*')) ? ' active' : '' }}" href="{{ route('dashboard') }}">
+                    <a class="nav-main-link{{ (request()->is('all-stats') || request()->is('all-stats/*')) ? ' active' : '' }}" href="{{ route('tasks.dataView') }}">
                         <i class="nav-main-link-icon far fa-chart-bar"></i>
                         <span class="nav-main-link-name">Statistiques</span>
                     </a>
