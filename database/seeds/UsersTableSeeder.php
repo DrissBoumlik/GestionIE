@@ -38,18 +38,6 @@ class UsersTableSeeder extends Seeder
         ]);
         User::create([
             'firstname' => 'John',
-            'lastname' => 'Agence',
-            'email' => 'agc@a.a',
-            'status' => true,
-            'picture' => '/media/avatars/user.png',
-            'gender' => 'male',
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-            'remember_token' => Str::random(10),
-            'role_id' => 3
-        ]);
-        User::create([
-            'firstname' => 'John',
             'lastname' => 'Agent',
             'email' => 'agt@a.a',
             'status' => true,
@@ -58,7 +46,7 @@ class UsersTableSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             'remember_token' => Str::random(10),
-            'role_id' => 4
+            'role_id' => 3
         ]);
     }
 }

@@ -768,12 +768,6 @@ if (!function_exists('isAdmin')) {
         return ($user ?? auth()->user())->role->name == 'admin';
     }
 }
-if (!function_exists('isAgency')) {
-    function isAgency()
-    {
-        return ($user ?? auth()->user())->role->name == 'Agence';
-    }
-}
 if (!function_exists('isAgent')) {
     function isAgent()
     {
