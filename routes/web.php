@@ -33,11 +33,17 @@ Route::group([
     Route::get('/getRoles', 'RoleController@getRoles');
     //endregion
 
-    Route::get('/', 'ToolController@home');
-    Route::get('/dashboard', 'ToolController@home')->name('dashboard');
 
-    Route::get('/import/tasks', 'ToolController@importView')->name('tasks.importView');
-    Route::post('/import/tasks', 'ToolController@import')->name('tasks.import');
+    //region Import / Export
+    Route::get('/', 'HomeController@home');
+    Route::get('/dashboard', 'HomeController@home')->name('dashboard');
 
-    Route::get('/unauthorized', 'ToolController@unauthorized');
+    Route::get('/import/tasks', 'ImportController@importView')->name('tasks.importView');
+    Route::post('/import/tasks', 'ImportController@import')->name('tasks.import');
+
+    Route::get('/import/data/count', 'ImportController@getInsertedData');
+    Route::get('/import/status/edit/{flag}', 'ImportController@editImportingStatus');
+    //endregion
+
+    Route::get('/unauthorized', 'ExceptionController@unauthorized');
 });
