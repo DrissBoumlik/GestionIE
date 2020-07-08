@@ -82,8 +82,8 @@ $(document).ready(function () {
             columns: [
                 {data: 'agent_traitant', title: 'Agent traitant'},
                 {data: 'region', title: 'Région'},
-                {data: 'Prestataire', title: 'Prestataire'},
-                {data: 'nome_tech', title: 'Nom Tech'},
+                {data: 'prestataire', title: 'Prestataire'},
+                {data: 'nom_tech', title: 'Nom Tech'},
                 {data: 'prenom_tech', title: 'Prénom Tech'},
                 {data: 'date', title: 'Date'},
                 {data: 'creneaux', title: 'Creneaux'},
@@ -97,8 +97,8 @@ $(document).ready(function () {
                 {data: 'numero_abo', title: 'Numéro Abo'},
                 {data: 'nom_abo', title: 'Nom Abo'},
                 {data: 'report_multiple', title: 'Report multiple'},
-                {data: 'cause_report', title: 'Cause du report'},
-                {data: 'statut_report', title: 'Statut du report'},
+                {data: 'cause_du_report', title: 'Cause du report'},
+                {data: 'statut_du_report', title: 'Statut du report'},
                 {data: 'accord_region', title: 'Accord région'},
 
             ],
