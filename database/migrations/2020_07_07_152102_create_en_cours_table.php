@@ -17,8 +17,8 @@ class CreateEnCoursTable extends Migration
             $table->bigIncrements('id');
             $table->string('agent_traitant', 100)->nullable();
             $table->string('region', 100)->nullable();
-            $table->string('Prestataire', 100)->nullable();
-            $table->string('nome_tech', 100)->nullable();
+            $table->string('prestataire', 100)->nullable();
+            $table->string('nom_tech', 100)->nullable();
             $table->string('prenom_tech', 100)->nullable();
             $table->date('date')->nullable();
             $table->string('creneaux', 100)->nullable();
@@ -32,8 +32,8 @@ class CreateEnCoursTable extends Migration
             $table->string('numero_abo', 100)->nullable();
             $table->string('nom_abo', 100)->nullable();
             $table->string('report_multiple', 100)->nullable();
-            $table->string('cause_report', 100)->nullable();
-            $table->string('statut_report', 100)->nullable();
+            $table->string('cause_du_report', 100)->nullable();
+            $table->string('statut_du_report', 100)->nullable();
             $table->string('accord_region', 100)->nullable();
             $table->boolean('isNotReady')->nullable();
             $table->timestamps();
