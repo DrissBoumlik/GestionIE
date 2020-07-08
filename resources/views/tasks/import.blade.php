@@ -51,8 +51,25 @@
     <!-- Page Content -->
     <div class="content">
         <div class="row mb-4">
-            <div class="col-12" id="months">
+            <div class="col-6" id="months">
                 <div id="tree-view-months" class="tree-view d-inline-block"></div>
+            </div>
+            <div class="col-6" id="importTypeChoice">
+                <div class="importChoices">
+                    <div class="mb-2">Choisisser le type</div>
+                    <div class="instance importChoice">
+                        <label for="instance">
+                            <input type="radio" id="instance" class="importChoiceInout" data-value="0" value="instance" name="importTypeChoice">
+                            <span class="capitalize">instance</span>
+                        </label>
+                    </div>
+                    <div class="encours importChoice">
+                        <label for="encours">
+                            <input type="radio" id="encours" class="importChoiceInout" data-value="1" value="encours" name="importTypeChoice" checked>
+                            <span class="capitalize">en cours</span>
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row mb-4">
@@ -134,7 +151,7 @@
                         </div>
                     </div>
                     <div class="block-content font-size-sm">
-                        <p>Vous dever choisir au moin une date.</p>
+                        <p>Vous dever choisir au moin une date et un type.</p>
                     </div>
                     <div class="block-content block-content-full text-right border-top">
                         <button type="button" class="btn btn-sm btn-light" data-dismiss="modal">Close</button>

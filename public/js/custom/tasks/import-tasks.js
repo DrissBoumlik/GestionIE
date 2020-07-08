@@ -110,18 +110,6 @@ $(document).ready(function () {
         {id: new Date().getFullYear() - 1, text: new Date().getFullYear() - 1},
         {id: new Date().getFullYear(), text: new Date().getFullYear()},
     ];
-    // let dayOfWeek = new Date(lastYear, 0, 1).getDay();
-    // let indexOfWeek = 1;
-    // let _weeks = [{id: 'S'+indexOfWeek, text: 'S'+indexOfWeek, children: []}];
-    // let numberOfDays = 31;
-    // dayOfWeek = dayOfWeek === 0 ? 7: dayOfWeek;
-    // for (let i=dayOfWeek; i>1; i--) {
-    //     _weeks[0].children.unshift({
-    //         id: (lastYear - 1) + '-' + 12 + '-' + numberOfDays,
-    //         text: (lastYear - 1) + '-' + 12 + '-' + numberOfDays
-    //     });
-    //     numberOfDays--;
-    // }
     let _tree = _years.map(function (year, index_1) {
         let weeksNumber = 1;
         let months = _months.map(function (month, index_2) {
@@ -132,16 +120,6 @@ $(document).ready(function () {
         });
         return {...year, children: months};
     });
-
-    // let monthElt = $('#months');
-    // months.forEach((item, index) => {
-    //     console.log(item);
-    //     let element = ' <div class="custom-control custom-switch mb-1" style="display: inline-block;">' +
-    //         '<input type="checkbox" class="custom-control-input d-none" id="month-' + index + '" name="months[]">' +
-    //         '<label class="custom-control-label" for="month-' + index + '">' + item + '</label>' +
-    //         '</div>'
-    //     monthElt.append(element);
-    // });
 
     let days = null;
     new Tree('#tree-view-months', {
@@ -161,7 +139,9 @@ $(document).ready(function () {
     $('.treejs-switcher').click();
 
     $(document).on('click', '#showModalImport', function (event) {
-        if (days === null || days === undefined || !days.length) {
+        let typeNotChosen = !$('.importChoiceInout:checked').length;
+        let daysNotChosen = days === null || days === undefined || !days.length;
+        if (daysNotChosen || typeNotChosen) {
             // alert('Vous dever choisir au moin une date');
             $('#modal-import').modal('hide');
             $('#modal-block-popin').modal('show');
@@ -217,6 +197,10 @@ $(document).ready(function () {
         if (days !== null && days !== undefined) {
             formData.append('days', days);
         }
+        let importType = $('.importChoiceInout:checked');
+        if (importType.length) {
+            formData.append('type', importType.data('value'));
+        }
         event.preventDefault();
 
         let importedDataElement = $('.imported-data');
@@ -237,8 +221,7 @@ $(document).ready(function () {
     }
 
     function ImportDataRequest(formData) {
-        let request_resolved = false;
-        window.localStorage.setItem('request_resolved', request_resolved);
+        window.localStorage.setItem('request_resolved', false);
         $.ajax({
             method: 'post',
             url: APP_URL + '/import/tasks',
@@ -247,12 +230,27 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (data) {
-                request_resolved = true;
-                window.localStorage.setItem('request_resolved', request_resolved);
+                window.localStorage.setItem('request_resolved', true);
+                let html = '<p>Ces tâches existent déja :</p>';
+                html += '<table class="table table-bordered table-striped table-center"><thead><tr><th>Prestataire</th><th>Client</th><th>AS</th></tr></thead><tbody>';
+                $.each(data.rejected, function (index, item) {
+                    html += `<tr><td>${item.prestataire}</td><td>${item.client}</td><td>${item.as}</td></tr>`;
+                });
+                html += '</tbody></table>';
+                Swal.fire({
+                    // position: 'top-end',
+                    type: 'success',
+                    // title: 'Total inserés : ' + totalImportedData + ' enregistrements',
+                    html: html,
+                    showConfirmButton: true,
+                    customClass: {
+                        confirmButton: 'btn btn-success m-1',
+                    },
+                    confirmButtonText: 'Ok',
+                });
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                request_resolved = true;
-                window.localStorage.setItem('request_resolved', request_resolved);
+                window.localStorage.setItem('request_resolved', true);
                 Swal.fire({
                     // position: 'top-end',
                     type: 'error',

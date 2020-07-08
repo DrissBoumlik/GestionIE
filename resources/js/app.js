@@ -738,16 +738,16 @@ frLang = {
                         window.localStorage.removeItem('totalImportedData');
                         window.localStorage.removeItem('request_resolved');
                         $('.import_status-wrapper').addClass('d-none');
-                        Swal.fire({
-                            // position: 'top-end',
-                            type: 'error',
-                            title: 'Une erreur est survenue',
-                            showConfirmButton: true,
-                            customClass: {
-                                confirmButton: 'btn btn-success m-1',
-                            },
-                            confirmButtonText: 'Ok',
-                        });
+                        // Swal.fire({
+                        //     // position: 'top-end',
+                        //     type: 'error',
+                        //     title: 'Une erreur est survenue',
+                        //     showConfirmButton: true,
+                        //     customClass: {
+                        //         confirmButton: 'btn btn-success m-1',
+                        //     },
+                        //     confirmButtonText: 'Ok',
+                        // });
                         $('.modal').modal('hide');
                     } else {
                         setTimeout(function () {
