@@ -38,10 +38,11 @@ Route::group([
     Route::get('/dashboard', 'HomeController@home')->name('dashboard');
 
     Route::get('/tasks/data', 'TaskController@allData')->name('tasks.dataView');
-    Route::get('/api/tasks/{type}/data', 'TaskController@getTasks')->name('tasks.data');
+    Route::post('/api/tasks/{type}/data', 'TaskController@getTasks')->name('tasks.data');
 
     //region Import / Export
-    Route::get('/import/tasks', 'ImportController@importView')->name('tasks.importView');
+//    Route::get('/import/tasks', 'ImportController@importView')->name('tasks.importView');
+    Route::view('/import/tasks', 'tasks.import')->name('tasks.importView');
     Route::post('/import/tasks', 'ImportController@import')->name('tasks.import');
 
     Route::get('/import/data/count', 'ImportController@getInsertedData');
