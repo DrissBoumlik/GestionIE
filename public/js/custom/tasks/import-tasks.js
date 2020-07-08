@@ -184,6 +184,15 @@ $(document).ready(function () {
         PrepareImportDataRequest();
     });
 
+    $('.importChoicesHeader').on('click', function () {
+        if ($(this).hasClass('treejs-node__close')) {
+            $('.importChoicesItems').slideDown(500);
+        } else {
+            $('.importChoicesItems').slideUp(500);
+        }
+        $(this).toggleClass('treejs-node__close');
+    });
+
 
     //<editor-fold desc="FUNCTIONS IMPORT">
 

@@ -54,20 +54,28 @@
             <div class="col-6" id="months">
                 <div id="tree-view-months" class="tree-view d-inline-block"></div>
             </div>
-            <div class="col-6" id="importTypeChoice">
-                <div class="importChoices">
-                    <div class="mb-2">Choisisser le type</div>
-                    <div class="instance importChoice">
-                        <label for="instance">
-                            <input type="radio" id="instance" class="importChoiceInout" data-value="0" value="instance" name="importTypeChoice">
-                            <span class="capitalize">instance</span>
-                        </label>
+            <div class="col-6 treejs" id="importTypeChoice">
+                <div class="importChoices treejs-nodes">
+                    <div class="importChoicesHeader treejs-node__close">
+                        <span class="treejs-switcher"></span>
+                        <span class="treejs-label pointer">Choisisser le type</span>
+                        {{--                    <div class="mb-2">Choisisser le type</div>--}}
                     </div>
-                    <div class="encours importChoice">
-                        <label for="encours">
-                            <input type="radio" id="encours" class="importChoiceInout" data-value="1" value="encours" name="importTypeChoice" checked>
-                            <span class="capitalize">en cours</span>
-                        </label>
+                    <div class="importChoicesItems pl-3 mt-2 treejs-nodes" style="display: none">
+                        <div class="instance importChoice treejs-node treejs-placeholder">
+                            <label for="instance" class="pointer">
+                                <input type="radio" id="instance" class="importChoiceInout d-none" data-value="0" value="instance" name="importTypeChoice">
+                                <span class="treejs-checkbox"></span>
+                                <span class="capitalize treejs-label">instance</span>
+                            </label>
+                        </div>
+                        <div class="encours importChoice treejs-node treejs-placeholder">
+                            <label for="encours" class="pointer">
+                                <input type="radio" id="encours" class="importChoiceInout d-none" data-value="1" value="encours" name="importTypeChoice" checked>
+                                <span class="treejs-checkbox"></span>
+                                <span class="capitalize treejs-label">en cours</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
