@@ -74,9 +74,8 @@ $(document).ready(function () {
             pageLength: 10,
             processing: true,
             serverSide: true,
-            type: 'GET',
             ajax: {
-                type: 'GET',
+                type: 'POST',
                 url: APP_URL + `/api/tasks/EnCours/data`,
                 data: data
             },
