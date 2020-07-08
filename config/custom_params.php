@@ -22,6 +22,26 @@ return [
         ],
         1 => [
             // columns for the "EN COURS" table
+            'agent_traitant',
+            'region',
+            'prestataire',
+            'nom_tech',
+            'prenom_tech',
+            'date',
+            'creneaux',
+            'type',
+            'client',
+            'as',
+            'code_postal',
+            'ville',
+            'voie',
+            'rue',
+            'numero_abo',
+            'nom_abo',
+            'report_multiple',
+            'cause_du_report',
+            'statut_du_report',
+            'accord_region',
         ]
     ],
 ];
