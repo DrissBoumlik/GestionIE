@@ -23,7 +23,8 @@ td.details-control
             &:nth-of-type(odd)
                 background-color: #DDEBF7
             &.odd
-                background-color: #DDEBF7!important
+                color: $white
+                background-color: $orange !important
             &.even
                 background-color: #FFF!important
 
@@ -63,12 +64,12 @@ tr + tr .table-details
 //    cursor: default!important
 //    text-decoration: none!important
 
-.table td
-    &:not(.details-control)
-        pointer-events: none
-    &:hover:not([colspan]):not(.details-control), &:hover:not([colspan]):not(.details-control) *
-        color: #fff
-        background-color: #5c80d1
+//.table td
+//    &:not(.details-control)
+//        pointer-events: none
+//    &:hover:not([colspan]):not(.details-control), &:hover:not([colspan]):not(.details-control) *
+//        color: #fff
+//        background-color: $orange
 span.clickable
     cursor: pointer
     text-decoration: underline
@@ -79,3 +80,11 @@ span.clickable
     justify-content: space-evenly
 .table.not-stats-table td
     pointer-events: auto
+
+.page-item
+    &.active .page-link
+        border-color: $orange !important
+        color: $orange !important
+    .page-link:hover
+        border-color: $orange !important
+        color: $orange !important
