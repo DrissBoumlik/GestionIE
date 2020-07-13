@@ -35,7 +35,7 @@
     </head>
     <body>
 
-        <div id="page-container" class="sidebar-o enable-page-overlay sidebar-dark side-scroll page-header-fixed">
+        <div id="page-container" class="sidebar-o enable-page-overlay side-scroll page-header-fixed">
             <!-- Side Overlay-->
 {{--            @include('layouts.layouts-files.right-sidebar')--}}
             <!-- END Side Overlay -->

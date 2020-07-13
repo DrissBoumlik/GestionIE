@@ -42,7 +42,7 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-right p-0 border-0 font-size-sm"
                      aria-labelledby="page-header-user-dropdown">
-                    <div class="p-3 text-center bg-primary">
+                    <div class="p-3 text-center bg-primary btn-orange">
                         <img class="img-avatar img-avatar48 img-avatar-thumb" src="{{ getPicture() }}" alt="">
                     </div>
                     <div class="p-2">

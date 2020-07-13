@@ -63,7 +63,7 @@
 {{--        <input type="hidden" name="agent_name" id="agent_name" value="{{$agent}}">--}}
 {{--    @endif--}}
     <div class="bg-image overflow-hidden"
-         style="background-image: url('{{ asset('/media/backgrounds/photo3@2x.jpg') }}');">
+         style="background-image: url('{{ asset('/media/backgrounds/photo24@2x.jpg') }}');">
         <div class="bg-primary-dark-op">
             <div class="content content-narrow content-full">
                 <div

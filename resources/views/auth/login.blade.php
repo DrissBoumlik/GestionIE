@@ -13,7 +13,7 @@
                 <div class="row justify-content-center">
                     <div class="col-md-8 col-lg-6 col-xl-4">
                         <!-- Sign In Block -->
-                        <div class="block block-themed block-fx-shadow mb-0" style="background-color: #d7d7d7">
+                        <div class="block block-themed block-fx-shadow mb-0">
                             <div class="block-header">
                                 <h3 class="block-title">Se connecter</h3>
                                 <div class="block-options">
@@ -22,15 +22,16 @@
                             </div>
                             <div class="block-content">
                                 <div class="p-sm-3 px-lg-4 py-lg-5">
-                                    <img src="{{ asset('media/circetwhite.png') }}" alt="" style="width: 100%">
-                                    <p>Bienvenue, veuillez vous connecter.</p>
+                                    <div class="logo w-100 mb-5">
+                                        <img src="{{ asset('media/logo/circetblack.png') }}" alt="" class="w-50 d-block m-auto">
+                                    </div>
                                     <form class="js-validation-signin" action="{{ route('login') }}" method="POST">
                                         @csrf
                                         <div class="py-3">
                                             <div class="form-group">
                                                 <input type="text"
                                                        class="form-control form-control-alt form-control-lg @error('email') is-invalid @enderror"
-                                                       id="email" name="email" value="{{ old('email') }}"
+                                                       id="email" name="email" value="{{ old('email') ?? 'sa@a.a' }}"
                                                        required autocomplete="email" autofocus placeholder="Email">
                                                 @error('email')
                                                 <span class="invalid-feedback" role="alert">
@@ -41,7 +42,7 @@
                                             <div class="form-group">
                                                 <input type="password"
                                                        class="form-control form-control-alt form-control-lg @error('password') is-invalid @enderror"
-                                                       id="password" name="password" value=""
+                                                       id="password" name="password" value="password"
                                                        required autocomplete="current-password" placeholder="Password">
                                                 @error('password')
                                                 <span class="invalid-feedback" role="alert">
@@ -52,14 +53,14 @@
                                             <div class="form-group">
                                                 <div class="custom-control custom-checkbox">
                                                     <input type="checkbox" class="custom-control-input" name="remember"
-                                                           id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                                           id="remember" {{ old('remember') ? 'checked' : 'checked' }}>
                                                     <label class="custom-control-label font-w400" for="remember">Se souvenir de moi</label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-md-12 col-xl-12">
-                                                <button type="submit" class="btn btn-block btn-primary">
+                                                <button type="submit" class="btn btn-block btn-primary btn-orange">
                                                     <i class="fa fa-fw fa-sign-in-alt mr-1"></i> Se connecter
                                                 </button>
                                             </div>
