@@ -37,10 +37,10 @@
                 </h1>
                 <nav class="flex-sm-00-auto ml-sm-3" aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-alt">
-                        <li class="breadcrumb-item">Circet</li>
                         <li class="breadcrumb-item" aria-current="page">
-                            <a class="link-fx" href="{{ route('dashboard') }}">Importation</a>
+                            <a class="link-fx" href="{{ route('dashboard') }}">Tableau de board</a>
                         </li>
+                        <li class="breadcrumb-item">Importation</li>
                     </ol>
                 </nav>
             </div>
