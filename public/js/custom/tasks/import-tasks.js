@@ -240,23 +240,43 @@ $(document).ready(function () {
             contentType: false,
             success: function (data) {
                 window.localStorage.setItem('request_resolved', true);
-                let html = '<p>Ces tâches existent déja :</p>';
-                html += '<table class="table table-bordered table-striped table-center"><thead><tr><th>Prestataire</th><th>Client</th><th>AS</th></tr></thead><tbody>';
-                $.each(data.rejected, function (index, item) {
-                    html += `<tr><td>${item.prestataire}</td><td>${item.client}</td><td>${item.as}</td></tr>`;
-                });
-                html += '</tbody></table>';
-                Swal.fire({
-                    // position: 'top-end',
-                    type: 'success',
-                    // title: 'Total inserés : ' + totalImportedData + ' enregistrements',
-                    html: html,
-                    showConfirmButton: true,
-                    customClass: {
-                        confirmButton: 'btn btn-success m-1',
-                    },
-                    confirmButtonText: 'Ok',
-                });
+                if (data.rejected && data.rejected.length) {
+                    let html = '';
+                    // html += '<p>Ces tâches existent déja :</p>';
+                    html += '<table class="table table-bordered table-striped table-center">';
+                    let keys = Object.keys(data.columns);
+                    let values = Object.values(data.columns);
+                    html += '<thead><tr>';
+                    html += values.map(function (value, index) {
+                        return '<th>' + value + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+
+                    html += data.rejected.map(function (rejectedItem, index) {
+                        let row = keys.map(function (key, index) {
+                            return '<td>' + rejectedItem[key] + '</td>';
+                        });
+                        return '<tr>' + row + '</tr>'
+                    });
+
+
+                    // $.each(data.rejected, function (index, item) {
+                    //     html += `<tr><td>${item.prestataire}</td><td>${item.client}</td><td>${item.as}</td></tr>`;
+                    // });
+                    html += '</tbody></table>';
+                    window.localStorage.setItem('html', html);
+                    // Swal.fire({
+                    //     // position: 'top-end',
+                    //     type: 'success',
+                    //     // title: 'Total inserés : ' + totalImportedData + ' enregistrements',
+                    //     html: html,
+                    //     showConfirmButton: true,
+                    //     customClass: {
+                    //         confirmButton: 'btn btn-success m-1',
+                    //     },
+                    //     confirmButtonText: 'Ok',
+                    // });
+                }
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 window.localStorage.setItem('request_resolved', true);

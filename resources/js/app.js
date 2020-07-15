@@ -706,10 +706,12 @@ frLang = {
                             // window.localStorage.removeItem('totalImportedData');
                             window.localStorage.removeItem('request_resolved');
                             $('.import_status-wrapper').addClass('d-none');
+                            let html = window.localStorage.getItem('html');
                             Swal.fire({
                                 // position: 'top-end',
                                 type: 'success',
                                 title: 'Total inserés : ' + totalImportedData + ' enregistrements',
+                                html: html,
                                 showConfirmButton: true,
                                 customClass: {
                                     confirmButton: 'btn btn-success m-1',

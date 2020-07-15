@@ -3,14 +3,14 @@
 namespace App\Imports;
 
 
-use App\Models\EnCours;
-use Illuminate\Support\LazyCollection;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Illuminate\Support\Collection;
+use phpDocumentor\Reflection\Types\This;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class TaskImport implements WithHeadingRow, WithChunkReading, WithBatchInserts, ToCollection
 {
@@ -21,14 +21,19 @@ class TaskImport implements WithHeadingRow, WithChunkReading, WithBatchInserts, 
     private $user_flag;
     private $allData;
     public $rejectedData;
+//    public $table;
+//    private $class;
+    public $tables_data;
 
     public function __construct($days, $importType)
     {
         $this->importType = $importType;
-//        if ($days) {
-//            $this->days = explode(',', $days);
-//            \DB::table('encours')->whereIn('date_note', $this->days)->delete();
-//        }
+        $this->tables_data = config('custom_params.tables_data')[$this->importType];
+        if ($days) {
+            $this->days = explode(',', $days);
+            $date_filter = $this->tables_data['date_filter'];
+            \DB::table($this->tables_data['table'])->whereIn($date_filter, $this->days)->delete();
+        }
         $this->user_flag = getImportedData(false);
         $this->user_flag->flags = [
             'imported_data' => 0,
@@ -41,20 +46,30 @@ class TaskImport implements WithHeadingRow, WithChunkReading, WithBatchInserts, 
 
     public function collection(Collection $rows)
     {
-        $columns = config('custom_params.db_table_columns')[$this->importType];
-        $items = [];
-        $data = $rows->reduce(function ($items, $row) use ($columns) {
+        $data = $rows->reduce(function ($items, $row) {
 //            $formatted_date = $this->transformDate($row['date]);
-            if (!$this->days || in_array($row['date'], $this->days)) {
-                $exists = count($this->allData->where('as', $row['as']));
+            $date_filter = $this->tables_data['date_filter'];
+            $columns = $this->tables_data['columns'];
+            $rowDate = $row[$date_filter];
+            if (is_integer($row[$date_filter])) {
+                $rowDate = Date::excelToDateTimeObject($row[$date_filter]);
+                $rowDate = $rowDate->format('Y-m-d');
+            }
+            if (!$this->days || in_array($rowDate, $this->days)) {
+                $id = $this->tables_data['id'];
+                $exists = count($this->allData->where($id, $row[$id]));
                 if ($exists) {
                     $this->rejectedData->push($row);
                     return $items;
                 } else {
                     $item = [];
-                    array_map(function ($column) use (&$item, $row) {
-                        $item [$column] = $row[$column];
-                    }, $columns);
+                    array_walk($columns, function ($column, $key) use (&$item, $row, $columns, $date_filter, $rowDate) {
+                        if ($key == $date_filter) {
+                            $item[$column] = $rowDate;
+                            return;
+                        }
+                        $item[$column] = $row[$key];
+                    });
                     /*
                     $item = [
                         'agent_traitant' => $row["agent_traitant"],
@@ -90,7 +105,7 @@ class TaskImport implements WithHeadingRow, WithChunkReading, WithBatchInserts, 
         }, []);
 //        dd($data);
         if ($data && count($data)) {
-            EnCours::insert($data);
+            app('App\\Models\\' . $this->tables_data['class'])::insert($data);
             if ($this->user_flag) {
                 $imported_data = $this->user_flag->flags['imported_data'];
                 $this->user_flag->flags = [

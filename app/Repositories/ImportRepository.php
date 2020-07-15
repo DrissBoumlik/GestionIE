@@ -26,13 +26,14 @@ class ImportRepository
             'is_importing' => 2
         ];
         $user_flag->update();
-        \DB::table('en_cours')
+        \DB::table($taskImport->tables_data['table'])
             ->whereNotNull('isNotReady')
             ->update(['isNotReady' => null]);
         return [
             'success' => true,
             'message' => 'Le fichier a été importé avec succès',
-            'rejected' => $taskImport->rejectedData
+            'rejected' => $taskImport->rejectedData,
+            'columns' => $taskImport->tables_data['data_columns']
         ];
     }
 
