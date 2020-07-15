@@ -96,15 +96,42 @@
                             <hr>
                             <div class="refresh-form">
                                 <div id="tree-view-all-stats" class="tree-view d-inline-flex"></div>
-                                <button type="button" id="refreshAllTasks"
-                                        class="btn btn-primary float-right d-none">
+                                <button type="button" id="refreshTasksEnCours"
+                                        class="btn btn-primary float-right">
                                     <span class="btn-field font-weight-normal position-relative">Rafraîchir</span>
                                 </button>
                             </div>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body table-responsive">
-                            <table id="tasks"
+                            <table id="tasksEncours"
+                                   class="not-stats-table table table-bordered table-striped table-valign-middle capitalize">
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <hr class="my-5"/>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title d-inline-block">Tâches Instance</h3>
+                            <hr>
+                            <div class="refresh-form">
+                                <div id="tree-view-all-stats" class="tree-view d-inline-flex"></div>
+                                <button type="button" id="refreshTasksInstance"
+                                        class="btn btn-primary float-right">
+                                    <span class="btn-field font-weight-normal position-relative">Rafraîchir</span>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive">
+                            <table id="tasksInstance"
                                    class="not-stats-table table table-bordered table-striped table-valign-middle capitalize">
                             </table>
                         </div>

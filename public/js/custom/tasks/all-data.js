@@ -46,22 +46,80 @@ $(document).ready(function () {
 */
     let data = $('#data-request').data('request');
 
-    let tasks = {
-        element: 'tasks',
-        elementDT: undefined
+    let tasksEncours = {
+        element: 'tasksEncours',
+        elementDT: undefined,
+        route: '/api/tasks/EnCours/data',
+        refreshBtn: '#refreshTasksEnCours',
+        columns: [
+            {data: 'agent_traitant', title: 'Agent traitant'},
+            {data: 'region', title: 'Région'},
+            {data: 'prestataire', title: 'Prestataire'},
+            {data: 'nom_tech', title: 'Nom Tech'},
+            {data: 'prenom_tech', title: 'Prénom Tech'},
+            {data: 'date', title: 'Date'},
+            {data: 'creneaux', title: 'Creneaux'},
+            {data: 'type', title: 'Type'},
+            {data: 'client', title: 'Client'},
+            {data: 'as', title: 'AS'},
+            {data: 'code_postal', title: 'Code Postal'},
+            {data: 'ville', title: 'Ville'},
+            {data: 'voie', title: 'Voie'},
+            {data: 'rue', title: 'Rue'},
+            {data: 'numero_abo', title: 'Numéro Abo'},
+            {data: 'nom_abo', title: 'Nom Abo'},
+            {data: 'report_multiple', title: 'Report multiple'},
+            {data: 'cause_du_report', title: 'Cause du report'},
+            {data: 'statut_du_report', title: 'Statut du report'},
+            {data: 'accord_region', title: 'Accord région'},
+
+        ]
     };
-    tasks.elementDT = InitDataTable(tasks, data);
-    let refreshBtn = $('#refreshAllTasks');
-    refreshBtn.on('click', function () {
+    let tasksInstance = {
+        element: 'tasksInstance',
+        elementDT: undefined,
+        route: '/api/tasks/Instance/data',
+        refreshBtn: '#refreshTasksInstance',
+        columns: [
+            {data: 'numero_de_labonne_reference_client', title: 'Numero de l\'abonne / Référence client    '},
+            {data: 'station_de_modulation_Ville', title: 'Station de Modulation / Ville'},
+            {data: 'zone_region', title: 'ZONE / Région'},
+            {data: 'stit', title: 'STIT'},
+            {data: 'commune', title: 'COMMUNE'},
+            {data: 'code_postal', title: 'Code postal'},
+            {data: 'numero_de_lappel_reference_sfr', title: 'Numero de l\'appel / Référence SFR    '},
+            {data: 'libcap_typologie_inter', title: 'LIB_CAP / Typologie Inter'},
+            {data: 'date_de_rendez_vous', title: 'Date de rendez-vous'},
+            {data: 'code_md_code_echec', title: 'CODE_MD / Code échec'},
+            {data: 'agent_traitant', title: 'Agent traitant'},
+            {data: 'statut_du_report', title: 'Statut du report'},
+            {data: 'statut_final', title: 'statut final'},
+
+        ]
+    };
+
+
+    tasksEncours.elementDT = InitDataTable(tasksEncours, data);
+    tasksInstance.elementDT = InitDataTable(tasksInstance, data);
+
+
+    $('#refreshTasksEnCours').on('click', function () {
+        refreshDt(tasksEncours, data);
+    });
+    $('#refreshTasksInstance').on('click', function () {
+        refreshDt(tasksInstance, data)
+    });
+
+    function refreshDt(object, data) {
         if (dates) {
             data.dates = dates.join(',');
         }
         data.refreshMode = true;
-        tasks.elementDT = InitDataTable(tasks, data);
-    });
+        object.elementDT = InitDataTable(object, data);
+    }
 
     function InitDataTable(object, data) {
-        toggleLoader($('#refreshAllTasks').parents('.col-12'));
+        toggleLoader($(object.refreshBtn).parents('.col-12'));
         let table = $('#' + object.element);
         // table.DataTable().destroy();
         return table.DataTable({
@@ -76,34 +134,12 @@ $(document).ready(function () {
             serverSide: true,
             ajax: {
                 type: 'POST',
-                url: APP_URL + `/api/tasks/EnCours/data`,
+                url: APP_URL + object.route,
                 data: data
             },
-            columns: [
-                {data: 'agent_traitant', title: 'Agent traitant'},
-                {data: 'region', title: 'Région'},
-                {data: 'prestataire', title: 'Prestataire'},
-                {data: 'nom_tech', title: 'Nom Tech'},
-                {data: 'prenom_tech', title: 'Prénom Tech'},
-                {data: 'date', title: 'Date'},
-                {data: 'creneaux', title: 'Creneaux'},
-                {data: 'type', title: 'Type'},
-                {data: 'client', title: 'Client'},
-                {data: 'as', title: 'AS'},
-                {data: 'code_postal', title: 'Code Postal'},
-                {data: 'ville', title: 'Ville'},
-                {data: 'voie', title: 'Voie'},
-                {data: 'rue', title: 'Rue'},
-                {data: 'numero_abo', title: 'Numéro Abo'},
-                {data: 'nom_abo', title: 'Nom Abo'},
-                {data: 'report_multiple', title: 'Report multiple'},
-                {data: 'cause_du_report', title: 'Cause du report'},
-                {data: 'statut_du_report', title: 'Statut du report'},
-                {data: 'accord_region', title: 'Accord région'},
-
-            ],
+            columns: object.columns,
             initComplete: function (settings, response) {
-                toggleLoader(refreshBtn.parents('.col-12'), true);
+                toggleLoader($(object.refreshBtn).parents('.col-12'), true);
             }
 
         });
