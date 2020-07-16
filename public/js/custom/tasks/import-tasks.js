@@ -242,7 +242,7 @@ $(document).ready(function () {
                 window.localStorage.setItem('request_resolved', true);
                 if (data.rejected && data.rejected.length) {
                     let html = '';
-                    // html += '<p>Ces tâches existent déja :</p>';
+                    html += '<p>Ces tâches existent déja :</p>';
                     html += '<table class="table table-bordered table-striped table-center">';
                     let keys = Object.keys(data.columns);
                     let values = Object.values(data.columns);
