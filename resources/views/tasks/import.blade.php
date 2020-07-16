@@ -71,7 +71,7 @@
                         </div>
                         <div class="encours importChoice treejs-node treejs-placeholder">
                             <label for="encours" class="pointer">
-                                <input type="radio" id="encours" class="importChoiceInout d-none" data-value="1" value="encours" name="importTypeChoice" checked>
+                                <input type="radio" id="encours" class="importChoiceInout d-none" data-value="1" value="encours" name="importTypeChoice">
                                 <span class="treejs-checkbox"></span>
                                 <span class="capitalize treejs-label">en cours</span>
                             </label>
