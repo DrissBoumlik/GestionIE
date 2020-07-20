@@ -83,7 +83,7 @@
     <!-- Stats -->
     <div class="container-fluid">
       <div id="data-request" data-request="{{ json_encode($data) }}" class="d-none"></div>
-      <div id="filter" class="filter d-none" data-filter=""></div>
+      <div id="filter" class="filter d-none" data-filter="a_traiter"></div>
       {{--            <a href="{{ URL::route('ExportXls', array('row' => request('row'), 'rowValue' => request('rowValue'),'col' => request('col') , 'colValue' => request('colValue'),'agent' => request('agent') ,--}}
       {{--                                    'agence' => request('agence') , 'dates' => request('dates'), 'Resultat_Appel' => request('Resultat_Appel') , 'queryJoin' => request('queryJoin'),--}}
       {{--                                    'subGroupBy'=> request('subGroupBy') , 'queryGroupBy' => request('queryGroupBy'),'appCltquery' => request('appCltquery')  )) }}"--}}

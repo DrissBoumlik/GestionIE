@@ -13,9 +13,6 @@
 
 
 // Auth Routes
-Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('login', 'Auth\LoginController@login');
-Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 Auth::routes();
 
 Route::group([
@@ -38,10 +35,10 @@ Route::group([
     Route::get('/dashboard', 'HomeController@home')->name('dashboard');
 
     Route::get('/tasks/data/{type?}', 'TaskController@allData')->name('tasks.dataView');
-    Route::post('/api/tasks/{type}/data', 'TaskController@getTasks')->name('tasks.data');
+    Route::post('/api/tasks/data/{type}', 'TaskController@getTasks')->name('tasks.data');
 
-    Route::get('/tasks/data/urgent/{type?}', 'TaskController@allPriorityTasks')->name('tasks.dataView.urgent');
-    Route::post('/api/tasks/urgent/{type}/data', 'TaskController@getallPriorityTasks')->name('tasks.data.urgent');
+    Route::get('/tasks/filter/{status}/{type}', 'TaskController@viewTasksByStatus')->name('tasks.dataView.filter');
+    Route::post('/api/tasks/filter/{status}/{type}', 'TaskController@getTasksbyStatus')->name('tasks.data.filter');
 
     //region Import / Export
 //    Route::get('/import/tasks', 'ImportController@importView')->name('tasks.importView');

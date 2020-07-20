@@ -27,4 +27,12 @@ class TaskRepository
         $data = $class::where($colDate, '>=',  Carbon::now()->subDays(2)->toDateTimeString())->get();
         return $data;
     }
+
+    public function getTasksToHandle(Request $request, $type)
+    {
+        $class = 'App\\Models\\' . $type;
+        // TODO: fetch tasks "a traiter"
+        return null;
+
+    }
 }
