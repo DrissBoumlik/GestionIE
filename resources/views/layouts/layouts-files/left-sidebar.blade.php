@@ -37,7 +37,7 @@
 {{--                        <span class="nav-main-link-name">Statistiques</span>--}}
 {{--                    </a>--}}
 {{--                </li>--}}
-                <li class="nav-main-item{{ (request()->is('tasks/data') || request()->is('tasks/data/*')) ? ' open' : '' }}">
+                <li class="nav-main-item{{ (request()->is('tasks/data') || request()->is('tasks/data/*')) && !request()->is('tasks/data/urgent/*') ? ' open' : '' }}">
                     <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                         <i class="nav-main-link-icon far fa-chart-bar"></i>
                         <span class="nav-main-link-name">Visualisation des données</span>
