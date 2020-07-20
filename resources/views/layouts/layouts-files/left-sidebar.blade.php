@@ -80,7 +80,7 @@
                     </a>
                     <ul class="nav-main-submenu">
                         <li class="nav-main-item">
-                            <a class="nav-main-link {{ request()->is('import/tasts') ? ' active' : '' }}" href="{{ route('tasks.importView') }}">
+                            <a class="nav-main-link {{ request()->is('import/tasks') ? ' active' : '' }}" href="{{ route('tasks.importView') }}">
                                 <span class="nav-main-link-name">Importation des données</span>
                             </a>
                         </li>
