@@ -122,6 +122,7 @@ $(document).ready(function () {
     });
 
     let days = null;
+    /*
     new Tree('#tree-view-months', {
         data: [{id: '-1', text: 'Choisisser un/des Mois', children: _tree}],
         closeDepth: 2,
@@ -137,11 +138,12 @@ $(document).ready(function () {
         }
     });
     $('.treejs-switcher').click();
+    */
 
     $(document).on('click', '#showModalImport', function (event) {
         let typeNotChosen = !$('.importChoiceInout:checked').length;
-        let daysNotChosen = days === null || days === undefined || !days.length;
-        if (daysNotChosen || typeNotChosen) {
+        // let daysNotChosen = days === null || days === undefined || !days.length;
+        if (typeNotChosen) {
             // alert('Vous dever choisir au moin une date');
             $('#modal-import').modal('hide');
             $('#modal-block-popin').modal('show');

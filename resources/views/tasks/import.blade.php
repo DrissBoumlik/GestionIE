@@ -51,9 +51,9 @@
     <!-- Page Content -->
     <div class="content">
         <div class="row mb-4">
-            <div class="col-6" id="months">
-                <div id="tree-view-months" class="tree-view d-inline-block"></div>
-            </div>
+{{--            <div class="col-6" id="months">--}}
+{{--                <div id="tree-view-months" class="tree-view d-inline-block"></div>--}}
+{{--            </div>--}}
             <div class="col-6 treejs" id="importTypeChoice">
                 <div class="importChoices treejs-nodes">
                     <div class="importChoicesHeader treejs-node__close">
@@ -159,7 +159,7 @@
                         </div>
                     </div>
                     <div class="block-content font-size-sm">
-                        <p>Vous dever choisir au moin une date et un type.</p>
+                        <p>Vous dever choisir un type.</p>
                     </div>
                     <div class="block-content block-content-full text-right border-top">
                         <button type="button" class="btn btn-sm btn-light" data-dismiss="modal">Close</button>
