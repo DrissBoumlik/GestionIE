@@ -22,6 +22,7 @@ class Instance extends Model
         'code_md_code_echec',
         'agent_traitant',
         'statut_du_report',
-        'statut_final'
+        'statut_final',
+        'task_type'
     ];
 }

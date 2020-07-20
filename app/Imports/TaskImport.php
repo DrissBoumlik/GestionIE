@@ -50,6 +50,8 @@ class TaskImport implements WithHeadingRow, WithChunkReading, WithBatchInserts, 
 //            $formatted_date = $this->transformDate($row['date]);
             $date_filter = $this->tables_data['date_filter'];
             $columns = $this->tables_data['columns'];
+            $tableId =$this->tables_data['id'];
+
             $rowDate = $row[$date_filter];
             if (is_integer($row[$date_filter])) {
                 $rowDate = Date::excelToDateTimeObject($row[$date_filter]);
@@ -63,6 +65,11 @@ class TaskImport implements WithHeadingRow, WithChunkReading, WithBatchInserts, 
                     return $items;
                 } else {
                     $item = [];
+                    if (is_integer($row[$tableId])) {
+                        $item['task_type'] = 'FTTH';
+                    } else {
+                        $item['task_type'] = 'FTTB';
+                    }
                     array_walk($columns, function ($column, $key) use (&$item, $row, $columns, $date_filter, $rowDate) {
                         if ($key == $date_filter) {
                             $item[$column] = $rowDate;

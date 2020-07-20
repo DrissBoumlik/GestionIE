@@ -29,5 +29,6 @@ class EnCours extends Model
         'cause_report',
         'statut_report',
         'accord_region',
+        'task_type'
     ];
 }

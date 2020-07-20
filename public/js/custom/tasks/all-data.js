@@ -72,6 +72,7 @@ $(document).ready(function () {
             {data: 'cause_du_report', title: 'Cause du report'},
             {data: 'statut_du_report', title: 'Statut du report'},
             {data: 'accord_region', title: 'Accord région'},
+            {data: 'task_type', title: 'Type'},
 
         ]
     };
@@ -94,21 +95,23 @@ $(document).ready(function () {
             {data: 'agent_traitant', title: 'Agent traitant'},
             {data: 'statut_du_report', title: 'Statut du report'},
             {data: 'statut_final', title: 'statut final'},
+            {data: 'task_type', title: 'Type'},
 
         ]
     };
 
-
-    tasksEncours.elementDT = InitDataTable(tasksEncours, data);
-    tasksInstance.elementDT = InitDataTable(tasksInstance, data);
-
-
-    $('#refreshTasksEnCours').on('click', function () {
-        refreshDt(tasksEncours, data);
-    });
-    $('#refreshTasksInstance').on('click', function () {
-        refreshDt(tasksInstance, data)
-    });
+    if (elementExists(tasksEncours)) {
+        tasksEncours.elementDT = InitDataTable(tasksEncours, data);
+        $('#refreshTasksEnCours').on('click', function () {
+            refreshDt(tasksEncours, data);
+        });
+    }
+    if (elementExists(tasksInstance)) {
+        tasksInstance.elementDT = InitDataTable(tasksInstance, data);
+        $('#refreshTasksInstance').on('click', function () {
+            refreshDt(tasksInstance, data)
+        });
+    }
 
     function refreshDt(object, data) {
         if (dates) {

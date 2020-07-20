@@ -28,6 +28,7 @@ class CreateInstanceTable extends Migration
             $table->string('agent_traitant', 50)->nullable();
             $table->string('statut_du_report', 50)->nullable();
             $table->string('statut_final', 50)->nullable();
+            $table->string('task_type', 50)->nullable();
             $table->boolean('isNotReady')->nullable();
 
             $table->timestamps();
