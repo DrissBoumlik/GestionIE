@@ -28,4 +28,18 @@ class TaskController extends Controller
         $tasks = $this->taskRepository->getTasks($request, $type);
         return DataTables::of($tasks)->toJson();
     }
+
+    public function allPriorityTasks(Request $request, $type = null)
+    {
+        if ($type) {
+            return view('tasks.filter.' . $type)->with(['data' => $request->all()]);
+        }
+//        return view('tasks.filter')->with(['data' => $request->all()]);
+    }
+
+    public function getallPriorityTasks(Request $request, $type)
+    {
+        $tasks = $this->taskRepository->getPriorityTasks($request, $type);
+        return DataTables::of($tasks)->toJson();
+    }
 }

@@ -46,10 +46,12 @@ $(document).ready(function () {
 */
     let data = $('#data-request').data('request');
 
+    let priorityTasks = $('#filter').length;
+
     let tasksEncours = {
         element: 'tasksEncours',
         elementDT: undefined,
-        route: '/api/tasks/EnCours/data',
+        route: priorityTasks ? '/api/tasks/urgent/EnCours/data' : '/api/tasks/EnCours/data',
         refreshBtn: '#refreshTasksEnCours',
         columns: [
             {data: 'agent_traitant', title: 'Agent traitant'},
@@ -79,7 +81,7 @@ $(document).ready(function () {
     let tasksInstance = {
         element: 'tasksInstance',
         elementDT: undefined,
-        route: '/api/tasks/Instance/data',
+        route: priorityTasks ? '/api/tasks/urgent/Instance/data' : '/api/tasks/Instance/data',
         refreshBtn: '#refreshTasksInstance',
         columns: [
             {data: 'numero_de_labonne_reference_client', title: 'Numero de l\'abonne / Référence client    '},

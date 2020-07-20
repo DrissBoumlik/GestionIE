@@ -55,6 +55,24 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-main-item{{ (request()->is('tasks/data/urgent') || request()->is('tasks/data/urgent/*')) ? ' open' : '' }}">
+                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
+                        <i class="nav-main-link-icon far fa-chart-bar"></i>
+                        <span class="nav-main-link-name">Tâche prioritaires</span>
+                    </a>
+                    <ul class="nav-main-submenu">
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{ (request()->is('tasks/data/urgent/encours') || request()->is('tasks/data/urgent/encours/*')) ? ' active' : '' }}" href="{{ route('tasks.dataView.urgent', 'encours') }}">
+                                <span class="nav-main-link-name">En Cours</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{ (request()->is('tasks/data/urgent/instance') || request()->is('tasks/data/urgent/instance/*')) ? ' active' : '' }}" href="{{ route('tasks.dataView.urgent', 'instance') }}">
+                                <span class="nav-main-link-name">Instance</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-main-item">
                     <a class="nav-main-link{{ (request()->is('users') || request()->is('users/*')) ? ' active' : '' }}"
                        href="{{ route('users.index') }}">

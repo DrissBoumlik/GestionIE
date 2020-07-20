@@ -40,6 +40,9 @@ Route::group([
     Route::get('/tasks/data/{type?}', 'TaskController@allData')->name('tasks.dataView');
     Route::post('/api/tasks/{type}/data', 'TaskController@getTasks')->name('tasks.data');
 
+    Route::get('/tasks/data/urgent/{type?}', 'TaskController@allPriorityTasks')->name('tasks.dataView.urgent');
+    Route::post('/api/tasks/urgent/{type}/data', 'TaskController@getallPriorityTasks')->name('tasks.data.urgent');
+
     //region Import / Export
 //    Route::get('/import/tasks', 'ImportController@importView')->name('tasks.importView');
     Route::view('/import/tasks', 'tasks.import')->name('tasks.importView');
