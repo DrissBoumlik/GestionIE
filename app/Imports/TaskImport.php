@@ -28,7 +28,7 @@ class TaskImport implements WithHeadingRow, WithChunkReading, WithBatchInserts, 
     public function __construct($days, $importType)
     {
         $this->importType = $importType;
-        $this->tables_data = config('custom_params.tables_data')[$this->importType];
+        $this->tables_data = getTableData($this->importType);
         if ($days) {
             $this->days = explode(',', $days);
             $date_filter = $this->tables_data['date_filter'];

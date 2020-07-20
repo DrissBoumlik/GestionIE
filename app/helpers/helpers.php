@@ -1,12 +1,18 @@
 <?php
 
 use App\Models\Filter;
-use App\Models\Stats;
-use App\Models\User;
 use App\Models\UserFlag;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
+if (!function_exists('getTableData')) {
+    function getTableData($index = null)
+    {
+        if ($index) {
+            return config('custom_params.tables_data')[$index];
+        }
+        return config('custom_params.tables_data');
+    }
+}
 
 if (!function_exists('sortGroupementColumnsPreserveKeys')) {
     function sortGroupementColumnsPreserveKeys($columns)
@@ -36,151 +42,6 @@ if (!function_exists('getImportedData')) {
         $result = $user_flag ? ($wantValue ? $user_flag->flags : $user_flag) : -1;
         return $result;
 //        return $wantValue ? ($user_flag ? $user_flag->flags['imported_data'] : 0) : $user_flag;
-    }
-}
-
-if (!function_exists('checkColumnsExistence')) {
-    function checkColumnsExistence($column)
-    {
-        $columns = [
-            'Type_Note',
-            'Utilisateur',
-            'Resultat_Appel',
-            'Date_Nveau_RDV',
-            'Heure_Nveau_RDV',
-            'Marge_Nveau_RDV',
-            'Id_Externe',
-            'Date_Creation',
-            'Code_Postal_Site',
-//                    'Departement' ,
-            'Drapeaux',
-            'Code_Type_Intervention',
-            'Date_Rdv',
-            'Nom_Societe',
-            'Nom_Region',
-            'Nom_Domaine',
-            'Nom_Agence',
-            'Nom_Activite',
-            'Date_Heure_Note',
-            'Date_Heure_Note_Annee',
-            'Date_Heure_Note_Mois',
-            'Date_Heure_Note_Semaine',
-            'Date_Note',
-            'Groupement',
-            'key_Groupement',
-
-            'Gpmt_Appel_Pre',
-            'Code_Intervention',
-            'EXPORT_ALL_Nom_SITE',
-            'EXPORT_ALL_Nom_TECHNICIEN',
-            'EXPORT_ALL_PRENom_TECHNICIEN',
-//                    'EXPORT_ALL_Nom_CLIENT' ,
-            'EXPORT_ALL_Nom_EQUIPEMENT',
-            'EXPORT_ALL_EXTRACT_CUI',
-            'EXPORT_ALL_Date_CHARGEMENT_PDA',
-            'EXPORT_ALL_Date_SOLDE',
-            'EXPORT_ALL_Date_VALIDATION',
-        ];
-        return in_array($column, $columns);
-    }
-}
-
-if (!function_exists('getStats')) {
-    function getStats(Request $request)
-    {
-        $callType = $request->callType;
-        $row = $request->row;
-        $rowValue = $request->rowValue;
-        $col = $request->col;
-        $colValue = $request->colValue;
-        $agentName = $request->agent;
-        $agenceCode = $request->agence ?? $request->agence_code;
-        $queryJoin = $request->queryJoin;
-
-        $allStatsFilter = Filter::firstOrCreate(['user_id' => getAuthUser()->id, 'isGlobal' => 1]);
-        if ($request->dates) {
-            $dates = $request->dates;
-//            $allStatsFilter = Filter::updateOrCreate([
-//                'user_id' => getAuthUser()->id,
-//                'date_filter' => explode(',', $dates),
-//                'isGlobal' => 2
-//            ]);
-            $allStatsFilter->date_filter =  explode(',', $dates);
-            $allStatsFilter->update();
-        } else {
-            if ($request->refreshMode && filter_var($request->refreshMode, FILTER_VALIDATE_BOOLEAN)) {
-                $allStatsFilter->forceDelete();
-                $dates = null;
-            } else {
-                if ($allStatsFilter && $allStatsFilter->date_filter) {
-                    $dates = join(",", $allStatsFilter->date_filter);
-                } else {
-                    $dates = null;
-                }
-            }
-        }
-
-        $resultat_appel = $request->Resultat_Appel;
-        $subGroupBy = $request->subGroupBy;
-        $queryGroupBy = $request->queryGroupBy;
-        $appCltquery = $request->appCltquery;
-        $parentValue = $request->parentValue;
-        $agentMode = (!$col && !$row) ? true : false;
-
-        $key_groupement = $request->get('key_groupement');
-        $key_groupement = $key_groupement ? clean($key_groupement) : null;
-        $allStats = null;
-
-        if ($appCltquery) {
-            $allStats = DB::select('SELECT * FROM stats AS st WHERE Nom_Region is not null ' . ($queryJoin ?? '') . ' ' . ($parentValue ?? '') . ' ' .
-                ($agentName ? 'and Utilisateur like "' . $agentName . '" ' : ' ') .
-                ($agenceCode ? 'and Nom_Region like "%' . $agenceCode . '" ' : ' ') .
-                (($row && $rowValue && $row !== 'produit' && $row !== 'utilisateur') ? ' and ' . $row . ' like "%' . $rowValue . '%"' :
-                    ($row && $rowValue ? ' and ' . $row . ' like "' . $rowValue . '"' : '')) .
-                (!$row && $rowValue ? $rowValue : '') .
-                ($col && !$colValue ? ' and ' . $col . ' is null ' : '') .
-                ($col && $colValue && $col !== 'produit' && $col !== 'Gpmt_Appel_Pre' ? ' and ' . $col . ' like "%' . $colValue . '%"' :
-                    ($col && $colValue ? ' and ' . $col . ' like "' . $colValue . '"' : '')) .
-                ($dates ? ' and Date_Note in ("' . str_replace(',', '","', $dates) . '")' : ' and Date_Heure_Note_Mois = MONTH(NOW()) and Date_Heure_Note_Annee = YEAR(NOW())') .
-                ($key_groupement ? ' and key_groupement like "' . $key_groupement . '"' : '') .
-                ' and Resultat_Appel not like "=%"' .
-                ' group by Id_Externe'
-            );
-        } else {
-            if($agentMode){
-                $allStats = DB::select('SELECT * FROM stats AS st where Nom_Region is not null ' .
-                    ($agentName ? 'and Utilisateur like "' . $agentName . '" ' : ' ') .
-                    ($agenceCode ? 'and Nom_Region like "%' . $agenceCode . '" ' : ' ') .
-                    ($row && $rowValue ? ' and ' . $row . ' like "' . $rowValue . '%"' : ' ') .
-                    ($col && $colValue ? ' and ' . $col . ' like "' . $colValue . '%"' : ($col ? ' and ' . $col . ' is null ' : ' ')) .
-                    ($dates ? ' and Date_Note in ("' . str_replace(',', '","', $dates) . '")' : ' and Date_Heure_Note_Mois = MONTH(NOW()) and Date_Heure_Note_Annee = YEAR(NOW())') .
-                    ($key_groupement ? ' and key_groupement like "' . $key_groupement . '"' : '') .
-                    ' and Resultat_Appel not like "=%" ' .
-                    ($queryJoin ?? '') . ' ' . ($queryGroupBy ?? ' ')
-                );
-            }else{
-                $allStats = DB::select('SELECT * FROM stats AS st INNER JOIN (SELECT Id_Externe, MAX(Date_Heure_Note) AS MaxDateTime FROM stats  where Nom_Region is not null ' .
-                    ($agentName ? 'and Utilisateur like "' . $agentName . '" ' : ' ') .
-                    ($agenceCode ? 'and Nom_Region like "%' . $agenceCode . '" ' : ' ') .
-                    (($row && $rowValue && $row !== 'Gpmt_Appel_Pre') ? ' and ' . $row . ' like "' . $rowValue . '%"' : ' ') .
-                    ($col && $colValue && $col !== 'Gpmt_Appel_Pre' ? ' and ' . $col . ' like "' . $colValue . '%"' : ($col && $col !== 'Gpmt_Appel_Pre' ? ' and ' . $col . ' is null ' : ' ')) .
-                    ($dates ? ' and Date_Note in ("' . str_replace(',', '","', $dates) . '")' : ' and Date_Heure_Note_Mois = MONTH(NOW()) and Date_Heure_Note_Annee = YEAR(NOW())') .
-                    ($key_groupement ? ' and key_groupement like "' . $key_groupement . '"' : '') .
-                    ' and Resultat_Appel not like "=%" ' .
-                    ($queryJoin ?? '') . ' ' . ($subGroupBy ?? ' GROUP BY Id_Externe ) groupedst')
-                    . ' on st.Id_Externe = groupedst.Id_Externe and st.Date_Heure_Note = groupedst.MaxDateTime where Nom_Region is not null ' .
-                    ($agentName ? 'and Utilisateur like "' . $agentName . '" ' : ' ') .
-                    ($agenceCode ? 'and Nom_Region like "%' . $agenceCode . '" ' : ' ') .
-                    ($row && $rowValue ? ' and ' . $row . ' like "' . $rowValue . '%"' : ' ') .
-                    ($col && $colValue ? ' and ' . $col . ' like "' . $colValue . '%"' : ($col ? ' and ' . $col . ' is null ' : ' ')) .
-                    ($dates ? ' and Date_Note in ("' . str_replace(',', '","', $dates) . '")' : ' and Date_Heure_Note_Mois = MONTH(NOW()) and Date_Heure_Note_Annee = YEAR(NOW())') .
-                    ($key_groupement ? ' and key_groupement like "' . $key_groupement . '"' : '') .
-                    ' and Resultat_Appel not like "=%" ' .
-                    ($queryJoin ?? '') . ' ' . ($queryGroupBy ?? ' ')
-                );
-            }
-        }
-        return $allStats;
     }
 }
 
@@ -276,168 +137,6 @@ if (!function_exists('applyFilter')) {
     }
 }
 
-if (!function_exists('addRegionWithZero')) {
-    function addRegionWithZero(Request $request, $regions, $columns, $column = null)
-    {
-        $agenceCode = $request->get('agence_code');
-        $agentName = $request->get('agent_name');
-        //$resultatAppel = $request->get('resultatAppel');
-        $groupement = $request->get('groupement');
-        $nomRegion = $request->get('nomRegion');
-        $codeRdvInterventionConfirm = $request->get('codeRdvInterventionConfirm');
-        $codeRdvIntervention = $request->get('codeRdvIntervention');
-        $codeTypeIntervention = $request->get('codeTypeIntervention');
-        $codeIntervention = $request->get('codeIntervention');
-        $gpmtAppelPre = $request->get('gpmtAppelPre');
-
-        if ($nomRegion) {
-            $groupmentColumns = Stats::select('Groupement')->distinct('Groupement')
-                ->where('Groupement', 'not like', 'Non Renseigné')
-                ->when($agenceCode, function ($query, $agenceCode) {
-                    return $query->where('Nom_Region', 'like', "%$agenceCode");
-                })->when($agentName, function ($query, $agentName) {
-                    return $query->where('Utilisateur', $agentName);
-                })->get();
-            if ($nomRegion) {
-                foreach ($nomRegion as $gr) {
-                    foreach ($groupmentColumns as $col) {
-                        if (!in_array($col->Groupement, $regions->filter(function ($r) use ($gr) {
-                            return $r->Nom_Region === $gr;
-                        })->map(function ($r) {
-                            return $r->Groupement;
-                        })->toArray())) {
-                            if ($col->Groupement) {
-                                $rObj = new \stdClass();
-                                $rObj->Groupement = $col->Groupement;
-                                $rObj->Key_Groupement = $col->Key_Groupement;
-                                $rObj->Nom_Region = $gr;
-                                $rObj->total = 0;
-                                $columns[] = $rObj;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if ($groupement || $codeIntervention || $codeTypeIntervention || $gpmtAppelPre) {
-            $regionsColumns = Stats::select('Nom_Region')->distinct('Nom_Region')
-                ->where('Groupement', 'not like', 'Non Renseigné')
-                ->when($agenceCode, function ($query, $agenceCode) {
-                    return $query->where('Nom_Region', 'like', "%$agenceCode");
-                })
-                ->when($agentName, function ($query, $agentName) {
-                    return $query->where('Utilisateur', $agentName);
-                })->get();
-
-            if ($groupement) {
-                foreach ($groupement as $gr) {
-                    foreach ($regionsColumns as $col) {
-                        if (!in_array($col->Nom_Region, $regions->filter(function ($r) use ($gr) {
-                            return $r->Groupement === $gr;
-                        })->map(function ($r) {
-                            return $r->Nom_Region;
-                        })->toArray())) {
-                            $rObj = new \stdClass();
-                            $rObj->Nom_Region = $col->Nom_Region;
-                            $rObj->Key_Groupement = $col->Key_Groupement;
-                            $rObj->Groupement = $gr;
-                            $rObj->total = 0;
-                            $columns[] = $rObj;
-                        }
-                    }
-                }
-            }
-            if ($codeTypeIntervention) {
-                foreach ($codeTypeIntervention as $type) {
-                    foreach ($regionsColumns as $col) {
-                        if (!in_array($col->Nom_Region, $regions->filter(function ($r) use ($type) {
-                            return $r->Code_Type_Intervention === $type;
-                        })->map(function ($r) {
-                            return $r->Nom_Region;
-                        })->toArray())) {
-                            $rObj = new \stdClass();
-                            $rObj->Nom_Region = $col->Nom_Region;
-                            $rObj->Code_Type_Intervention = $type;
-                            $rObj->total = 0;
-                            $columns[] = $rObj;
-                        }
-                    }
-                }
-            }
-            if ($codeIntervention) {
-                foreach ($codeIntervention as $type) {
-                    foreach ($regionsColumns as $col) {
-                        if (!in_array($col->Nom_Region, $regions->filter(function ($r) use ($type) {
-                            return $r->Code_Intervention === $type;
-                        })->map(function ($r) {
-                            return $r->Nom_Region;
-                        })->toArray())) {
-                            $rObj = new \stdClass();
-                            $rObj->Nom_Region = $col->Nom_Region;
-                            $rObj->Code_Intervention = $type;
-                            $rObj->total = 0;
-                            $columns[] = $rObj;
-                        }
-                    }
-                }
-            }
-            if ($column !== 'Date_Heure_Note_Semaine') {
-                if ($gpmtAppelPre) {
-                    $column = $column ?? 'Nom_Region';
-                    foreach ($gpmtAppelPre as $gpm) {
-                        foreach ($regionsColumns as $col) {
-                            if (!in_array($col->$column, $regions->filter(function ($r) use ($gpm, $column) {
-                                return $r->Gpmt_Appel_Pre === $gpm;
-                            })->map(function ($r) use ($column) {
-                                return $r->$column;
-                            })->toArray())) {
-                                $rObj = new \stdClass();
-                                $rObj->$column = $col->$column;
-                                $rObj->Gpmt_Appel_Pre = $gpm;
-                                $rObj->total = 0;
-                                $columns[] = $rObj;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if ($codeRdvInterventionConfirm || $codeRdvIntervention) {
-            $codeColumns = Stats::select('Code_Intervention')->distinct('Code_Intervention')
-                ->whereNotNull('Code_Intervention')
-                ->when($agenceCode, function ($query, $agenceCode) {
-                    return $query->where('Nom_Region', 'like', "%$agenceCode");
-                })
-                ->when($agentName, function ($query, $agentName) {
-                    return $query->where('Utilisateur', $agentName);
-                })->get();
-
-            $code = $codeRdvInterventionConfirm ? $codeRdvInterventionConfirm : $codeRdvIntervention;
-            if ($code) {
-                foreach ($code as $gr) {
-                    foreach ($codeColumns as $col) {
-                        if (!in_array($col->Code_Intervention, $regions->filter(function ($r) use ($gr) {
-                            return $r->Nom_Region === $gr;
-                        })->map(function ($r) {
-                            return $r->Code_Intervention;
-                        })->toArray())) {
-                            if ($col->Nom_Region !== '') {
-                                $rObj = new \stdClass();
-                                $rObj->Nom_Region = $col->Nom_Region;
-                                $rObj->Code_Intervention = $col->Code_Intervention;
-                                $rObj->total = 0;
-                                $columns[] = $rObj;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return $columns;
-    }
-}
-
 if (!function_exists('sortWeeksDates')) {
     function sortWeeksDates($dates, $desc = false)
     {
@@ -505,41 +204,10 @@ if (!function_exists('getPicture')) {
     }
 }
 
-if (!function_exists('agentsList')) {
-    function agentsList()
-    {
-        $agentRepository = new \App\Repositories\StatsRepository();
-        return $agentRepository->getAgentsAll();
-    }
-}
-
 if (!function_exists('fullName')) {
     function fullName($user, $char_slicer)
     {
         return ucfirst($user->firstname) . $char_slicer . ucfirst($user->lastname);
-    }
-}
-
-if (!function_exists('assignedSkills')) {
-    function assignedSkills($skills, $skill)
-    {
-        foreach ($skills as $skillItem) {
-            if ($skillItem->id == $skill->id) {
-                return true;
-            }
-        }
-        return false;
-    }
-}
-
-if (!function_exists('assignedPermissions')) {
-    function assignedPermission($permissions, $permission)
-    {
-        foreach ($permissions as $permissionItem) {
-            if ($permissionItem->id == $permission->id)
-                return true;
-        }
-        return false;
     }
 }
 
@@ -769,6 +437,7 @@ if (!function_exists('isAdmin')) {
         return ($user ?? auth()->user())->role->name == 'admin';
     }
 }
+
 if (!function_exists('isAgent')) {
     function isAgent()
     {
