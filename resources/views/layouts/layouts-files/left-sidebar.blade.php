@@ -31,11 +31,29 @@
                 </a>
             </li>
             @if(isInAdminGroup())
-                <li class="nav-main-item">
-                    <a class="nav-main-link{{ (request()->is('all-stats') || request()->is('all-stats/*')) ? ' active' : '' }}" href="{{ route('tasks.dataView') }}">
+{{--                <li class="nav-main-item">--}}
+{{--                    <a class="nav-main-link{{ (request()->is('all-stats') || request()->is('all-stats/*')) ? ' active' : '' }}" href="{{ route('tasks.dataView') }}">--}}
+{{--                        <i class="nav-main-link-icon far fa-chart-bar"></i>--}}
+{{--                        <span class="nav-main-link-name">Statistiques</span>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
+                <li class="nav-main-item{{ (request()->is('tasks/data') || request()->is('tasks/data/*')) ? ' open' : '' }}">
+                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                         <i class="nav-main-link-icon far fa-chart-bar"></i>
-                        <span class="nav-main-link-name">Statistiques</span>
+                        <span class="nav-main-link-name">Visualisation des données</span>
                     </a>
+                    <ul class="nav-main-submenu">
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{ (request()->is('tasks/data/encours') || request()->is('tasks/data/encours/*')) ? ' active' : '' }}" href="{{ route('tasks.dataView', 'encours') }}">
+                                <span class="nav-main-link-name">En Cours</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{ (request()->is('tasks/data/instance') || request()->is('tasks/data/instance/*')) ? ' active' : '' }}" href="{{ route('tasks.dataView', 'instance') }}">
+                                <span class="nav-main-link-name">Instance</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-main-item">
                     <a class="nav-main-link{{ (request()->is('users') || request()->is('users/*')) ? ' active' : '' }}"

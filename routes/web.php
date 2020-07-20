@@ -37,7 +37,7 @@ Route::group([
     Route::get('/', 'HomeController@home');
     Route::get('/dashboard', 'HomeController@home')->name('dashboard');
 
-    Route::get('/tasks/data', 'TaskController@allData')->name('tasks.dataView');
+    Route::get('/tasks/data/{type?}', 'TaskController@allData')->name('tasks.dataView');
     Route::post('/api/tasks/{type}/data', 'TaskController@getTasks')->name('tasks.data');
 
     //region Import / Export

@@ -15,8 +15,11 @@ class TaskController extends Controller
         $this->taskRepository = $taskRepository;
     }
 
-    public function allData(Request $request)
+    public function allData(Request $request, $type = null)
     {
+        if ($type) {
+            return view('tasks.all-data.' . $type)->with(['data' => $request->all()]);
+        }
         return view('tasks.all-data')->with(['data' => $request->all()]);
     }
 
