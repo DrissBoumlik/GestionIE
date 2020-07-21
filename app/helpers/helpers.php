@@ -20,7 +20,11 @@ if (!function_exists('EnCoursCollection')) {
                 $className = 'badge badge-primary';
             }
             $statut_final['className'] = $className;
-            $user = \App\Models\EnCoursLog::where('en_cours_id', $item->id)->orderBy('updated_at', 'desc')->first();
+            $taskLog = \App\Models\EnCoursLog::where('en_cours_id', $item->id)->orderBy('updated_at', 'desc')->first();
+            $user = null;
+            if ($taskLog) {
+                $user = \App\Models\User::find($taskLog->user_id);
+            }
             return [
                 'id' => $item->id,
                 'agent_traitant' => $item->agent_traitant,
@@ -45,7 +49,8 @@ if (!function_exists('EnCoursCollection')) {
                 'statut_final' => $statut_final,
                 'accord_region' => $item->accord_region,
                 'task_type' => $item->task_type,
-                'user_id' => $user ? $user->id : null
+                'taskLog_id' => $taskLog ? $taskLog->id : null,
+                'user' => $user
             ];
         });
 
@@ -69,7 +74,11 @@ if (!function_exists('InstanceCollection')) {
             }
             $statut_final['className'] = $className;
 
-            $user = \App\Models\InstanceLog::where('instance_id', $item->id)->orderBy('updated_at', 'desc')->first();
+            $taskLog = \App\Models\InstanceLog::where('instance_id', $item->id)->orderBy('updated_at', 'desc')->first();
+            $user = null;
+            if ($taskLog) {
+                $user = \App\Models\User::find($taskLog->user_id);
+            }
 
             return [
                 'id' => $item->id,
@@ -87,7 +96,8 @@ if (!function_exists('InstanceCollection')) {
                 'statut_du_report' => $item->statut_du_report,
                 'statut_final' => $statut_final,
                 'task_type' => $item->task_type,
-                'user_id' => $user ? $user->id : null
+                'taskLog_id' => $taskLog ? $taskLog->id : null,
+                'user' => $user
             ];
         });
 

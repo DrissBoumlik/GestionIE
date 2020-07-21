@@ -64,7 +64,7 @@ $(document).ready(function () {
             $(`#modal-choose-collaborater`).modal('show');
         } else {
             $(this).prop('checked', true);
-            let btnUnaffect =  $('#btn-unaffect');
+            let btnUnaffect = $('#btn-unaffect');
             let task_id = $(this).val();
             let data_row = $(this).data('row');
             let data_type = $(this).data('type');
@@ -155,21 +155,24 @@ $(document).ready(function () {
         refreshBtn: '#refreshTasksEnCours',
         columns: [
             {
-                data: null,
-                className: 'align-middle text-center',
-                orderable: false,
-                searchable: false,
+                data: null, className: 'align-middle text-center', orderable: false, searchable: false,
                 render: function (data, type, row, meta) {
                     // if (!meta.settings.json.admin && data.acteur && meta.settings.json.acteur !== data.acteur) {
                     //     return '-----';
                     // }
                     let checked = row.statut_final.text != "A effectuer" ? 'checked' : '';
-                    let userId = row.user_id ? "data-user_id='" + row.user_id + "'" : '';
+                    let userId = row.taskLog_id ? "data-user_id='" + row.taskLog_id + "'" : '';
                     return "<div class='custom-control custom-switch text-center'>" +
                         "<input data-type='encours' " + userId + " data-row='" + JSON.stringify(row) + "' type='checkbox' class='custom-control-input' " +
                         "value='" + data.id + "' id='input-choose-" + data.id + "' name='input-choose' " + checked + ">" +
                         "<label class='custom-control-label' for='input-choose-" + data.id + "'></label>" +
                         "</div>";
+                }
+            },
+            {
+                data: 'user', name: 'user', title: 'Utilisateur',
+                render: function (data, type, row, meta) {
+                    return data && row.statut_final.text != "A effectuer" ? data.firstname : '';
                 }
             },
             {data: 'agent_traitant', title: 'Agent traitant'},
@@ -249,21 +252,24 @@ $(document).ready(function () {
         refreshBtn: '#refreshTasksInstance',
         columns: [
             {
-                data: null,
-                className: 'align-middle text-center',
-                orderable: false,
-                searchable: false,
+                data: null, className: 'align-middle text-center', orderable: false, searchable: false,
                 render: function (data, type, row, meta) {
                     // if (!meta.settings.json.admin && data.acteur && meta.settings.json.acteur !== data.acteur) {
                     //     return '-----';
                     // }
                     let checked = row.statut_final.text != "A effectuer" ? 'checked' : '';
-                    let userId = row.user_id ? "data-user_id='" + row.user_id + "'" : '';
+                    let userId = row.taskLog_id ? "data-user_id='" + row.taskLog_id + "'" : '';
                     return "<div class='custom-control custom-switch text-center'>" +
                         "<input data-type='instance' " + userId + " data-row='" + JSON.stringify(row) + "' type='checkbox' class='custom-control-input' " +
                         "value='" + data.id + "' id='input-choose-" + data.id + "' name='input-choose' " + checked + ">" +
                         "<label class='custom-control-label' for='input-choose-" + data.id + "'></label>" +
                         "</div>";
+                }
+            },
+            {
+                data: 'user', name: 'user', title: 'Utilisateur',
+                render: function (data, type, row, meta) {
+                    return data && row.statut_final.text != "A effectuer" ? data.firstname : '';
                 }
             },
             {data: 'numero_de_labonne_reference_client', title: 'Numero de l\'abonne / Référence client'},
