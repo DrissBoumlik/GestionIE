@@ -45,6 +45,7 @@ class TaskController extends Controller
             return $query->where('name', 'agent');
         })->get();
         $params = config('custom_params.tasks_options')[$type]['columns'];
+        $params['agent_traitant']['values'] = $agents->pluck('firstname')->all();
         return view('tasks.filter.' . $status . '.' . $type)->with(['data' => $request->all(), 'agents' => $agents, 'params' => $params]);
     }
 
@@ -101,10 +102,16 @@ class TaskController extends Controller
         if ($type === 'encours') {
             $task = EnCours::find($request->task_id);
             $task->statut_final = $request->statut_final;
+
+            $task->cause_du_report = $request->cause_du_report;
+            $task->statut_du_report = $request->statut_du_report;
+            $task->accord_region = $request->accord_region;
+
             $task->update();
             EnCoursLog::create([
                 'user_id' => $request->user_id,
                 'en_cours_id' => $request->task_id,
+                'agent_traitant' => $request->agent_traitant,
                 'cause_du_report' => $request->cause_du_report,
                 'statut_du_report' => $request->statut_du_report,
                 'accord_region' => $request->accord_region,
@@ -113,11 +120,13 @@ class TaskController extends Controller
         } else {
             $task = Instance::find($request->task_id);
             $task->statut_final = $request->statut_final;
+            $task->statut_du_report = $request->statut_du_report;
             $task->update();
             InstanceLog::create([
                 'user_id' => $request->user_id,
                 'instance_id' => $request->task_id,
-                'statut_du_report' => $request->statut_final,
+                'agent_traitant' => $request->agent_traitant,
+                'statut_du_report' => $request->statut_du_report,
                 'statut_final' => $request->statut_final
             ]);
         }

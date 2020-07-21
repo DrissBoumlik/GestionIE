@@ -120,7 +120,7 @@ return [
         'encours' => [
             'columns' => [
                 'agent_traitant' => [
-                    'title' => 'Cause du report',
+                    'title' => 'Agent traitant',
                     'values' => []
                 ],
                 'cause_du_report' => [
@@ -153,7 +153,7 @@ return [
                     ]
                 ],
                 'accord_region' => [
-                    'title' => 'accord_region',
+                    'title' => 'Accord region',
                     'values' => [
                         'OUI',
                         'NON ',
@@ -162,7 +162,7 @@ return [
                     ]
                 ],
                 'statut_final' => [
-                    'title' => 'accord_region',
+                    'title' => 'Statut final',
                     'values' => [
                         'TRAITE',
                         'EN COURS',
@@ -173,7 +173,7 @@ return [
         'instance' => [
             'columns' => [
                 'agent_traitant' => [
-                    'title' => 'Cause du report',
+                    'title' => 'Agent traitant',
                     'values' => []
                 ],
                 'statut_du_report' => [
@@ -190,7 +190,7 @@ return [
                     ]
                 ],
                 'statut_final' => [
-                    'title' => 'accord_region',
+                    'title' => 'Statut final',
                     'values' => [
                         'TRAITE',
                         'EN COURS',
