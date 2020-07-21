@@ -84,15 +84,17 @@
               <div class="tab-pane fade show active" id="tab-update-statut" role="tabpanel">
                 <form id="form-update-statut">
                   <input type="hidden" name="_method" value="PUT">
-                  <div class="form-group">
-                    <label for="statut">Statut</label>
-                    <select type="text" class="form-control" id="statut_final" name="statut_final"
-                            style="width: 100%">
-                      @foreach ($params['statut_final'] as $param)
-                        <option value="{{ $param }}">{{ $param }}</option>
-                      @endforeach
-                    </select>
-                  </div>
+                  @foreach ($params as $key => $param)
+                    <div class="form-group">
+                      <label for="statut">{{ $param['title'] }}</label>
+                      <select type="text" class="form-control" id="{{ $key }}" name="{{ $key }}"
+                              style="width: 100%">
+                        @foreach ($param['values'] as $paramValue)
+                          <option value="{{ $paramValue }}">{{ $paramValue }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                  @endforeach
                   <div class="text-right">
                     <button type="button" class="btn btn-sm btn-light" data-dismiss="modal">
                       Fermer

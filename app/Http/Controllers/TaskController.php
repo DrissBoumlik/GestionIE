@@ -105,9 +105,9 @@ class TaskController extends Controller
             EnCoursLog::create([
                 'user_id' => $request->user_id,
                 'en_cours_id' => $request->task_id,
-                'cause_du_report' => $request->data_row['cause_du_report'],
-                'statut_du_report' => $request->data_row['statut_du_report'],
-                'accord_region' => $request->data_row['accord_region'],
+                'cause_du_report' => $request->cause_du_report,
+                'statut_du_report' => $request->statut_du_report,
+                'accord_region' => $request->accord_region,
                 'statut_final' => $request->statut_final
             ]);
         } else {
@@ -117,7 +117,7 @@ class TaskController extends Controller
             InstanceLog::create([
                 'user_id' => $request->user_id,
                 'instance_id' => $request->task_id,
-                'statut_du_report' => $request->data_row['statut_du_report'],
+                'statut_du_report' => $request->statut_final,
                 'statut_final' => $request->statut_final
             ]);
         }

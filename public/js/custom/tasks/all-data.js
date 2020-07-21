@@ -163,36 +163,34 @@ $(document).ready(function () {
         btnUpdateStatut.attr('data-user_id', data_user_id);
 
         $('#modal-update').modal('show');
-        // $('#form-update-statut')[0].reset();
-        // $('#form-update-response')[0].reset();
-        // $.ajax({
-        //     method: 'get',
-        //     url: `${process.env.MIX_PUBLIC_URL}/tasks/${task_id}`,
-        //     dateType: 'json',
-        //     success: function (data) {
-        //         $('#form-update-statut #type_eb_tiers').val(data.type_eb_tiers);
-        //         $('#form-update-statut #statut').val(data.statut_eb).trigger('change');
-        //         $('#form-update-response #etape_process_accueil_chez_tiers').val(data.etape_process_accueil_chez_tiers);
-        //         $('#form-update-response #comment').val(data.commentaire);
-        //         $('#btn-update-statut, #btn-update-response').attr('data-id', task_id);
-        //         $('#modal-update').modal('show');
-        //     }
-        // });
     });
 
     $(document).on('click', '#btn-update-statut', function () {
         let task_id = $(this).attr('data-id');
-        let statut_final = $('#statut_final').val();
+        // let statut_final = $('#statut_final').val();
         let data_type = $(this).data('type');
-        let data_row = $(this).data('row');
+        // let data_row = $(this).data('row');
+        let data = {};
+        if (data_type == 'encours') {
+            let agent_traitant = $('#agent_traitant').val();
+            let cause_du_report = $('#cause_du_report').val();
+            let statut_du_report = $('#statut_du_report').val();
+            let accord_region = $('#accord_region').val();
+            let statut_final = $('#statut_final').val();
+            data = {...data, agent_traitant, cause_du_report, statut_du_report, accord_region, statut_final};
+        } else {
+            let agent_traitant = $('#agent_traitant').val();
+            let statut_du_report = $('#statut_du_report').val();
+            let statut_final = $('#statut_final').val();
+            data = {...data, agent_traitant, statut_du_report, statut_final};
+        }
         let data_user_id = $(this).data('user_id');
         $.ajax({
             method: 'put',
             url: APP_URL + '/api/tasks/' + data_type,
             data: {
+                ...data,
                 task_id: task_id,
-                data_row: data_row,
-                statut_final: statut_final,
                 user_id: data_user_id
             },
             dateType: 'json',
