@@ -34,6 +34,7 @@ class CreateEnCoursTable extends Migration
             $table->string('report_multiple', 50)->nullable();
             $table->string('cause_du_report', 50)->nullable();
             $table->string('statut_du_report', 50)->nullable();
+            $table->string('statut_final', 50)->nullable();
             $table->string('accord_region', 50)->nullable();
             $table->string('task_type', 50)->nullable();
             $table->boolean('isNotReady')->nullable();

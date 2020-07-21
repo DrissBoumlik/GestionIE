@@ -20,6 +20,13 @@ class CreateInstanceLogsTable extends Migration
             $table->string('statut_du_report', 50)->nullable();
             $table->string('statut_final', 50)->nullable();
 
+
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('instance_id')->nullable();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('instance_id')->references('id')->on('instance');
+
             $table->timestamps();
         });
     }

@@ -109,6 +109,7 @@ return [
                 'report_multiple' => 'report_multiple',
                 'cause_du_report' => 'cause_du_report',
                 'statut_du_report' => 'statut_du_report',
+                'statut_final' => 'statut_final',
                 'accord_region' => 'accord_region',
             ]
         ]

@@ -12,7 +12,7 @@ class EnCours extends Model
         'agent_traitant',
         'region',
         'Prestataire',
-        'nome_tech',
+        'nom_tech',
         'prenom_tech',
         'date',
         'creneaux',
@@ -26,8 +26,9 @@ class EnCours extends Model
         'numero_abo',
         'nom_abo',
         'report_multiple',
-        'cause_report',
-        'statut_report',
+        'cause_du_report',
+        'statut_du_report',
+        'statut_final',
         'accord_region',
         'task_type'
     ];

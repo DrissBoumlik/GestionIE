@@ -4,6 +4,96 @@ use App\Models\Filter;
 use App\Models\UserFlag;
 use Illuminate\Http\Request;
 
+if (!function_exists('EnCoursCollection')) {
+    function EnCoursCollection(\Illuminate\Support\Collection $collection)
+    {
+        return $collection->map(function ($item) {
+            $statut_final = [];
+            $statut_final['id'] = $item->id;
+            $statut_final['text'] = $item->statut_final ? $item->statut_final : 'A effectuer';
+
+            if ($item->statut_final == 'EN COURS') {
+                $className = 'badge badge-info';
+            } elseif ($item->statut_final == 'TRAITE') {
+                $className = 'badge badge-success';
+            } else {
+                $className = 'badge badge-primary';
+            }
+            $statut_final['className'] = $className;
+            $user = \App\Models\EnCoursLog::where('en_cours_id', $item->id)->orderBy('updated_at', 'desc')->first();
+            return [
+                'id' => $item->id,
+                'agent_traitant' => $item->agent_traitant,
+                'region' => $item->region,
+                'prestataire' => $item->prestataire,
+                'nom_tech' => $item->nom_tech,
+                'prenom_tech' => $item->prenom_tech,
+                'date' => $item->date,
+                'creneaux' => $item->creneaux,
+                'type' => $item->type,
+                'client' => $item->client,
+                'as' => $item->as,
+                'code_postal' => $item->code_postal,
+                'ville' => $item->ville,
+                'voie' => $item->voie,
+                'rue' => $item->rue,
+                'numero_abo' => $item->numero_abo,
+                'nom_abo' => $item->nom_abo,
+                'report_multiple' => $item->report_multiple,
+                'cause_du_report' => $item->cause_du_report,
+                'statut_du_report' => $item->statut_du_report,
+                'statut_final' => $statut_final,
+                'accord_region' => $item->accord_region,
+                'task_type' => $item->task_type,
+                'user_id' => $user ? $user->id : null
+            ];
+        });
+
+    }
+}
+
+if (!function_exists('InstanceCollection')) {
+    function InstanceCollection(\Illuminate\Support\Collection $collection)
+    {
+        return $collection->map(function ($item) {
+            $statut_final = [];
+            $statut_final['id'] = $item->id;
+            $statut_final['text'] = $item->statut_final ? $item->statut_final : 'A effectuer';
+
+            if ($item->statut_final == 'EN COURS') {
+                $className = 'badge badge-info';
+            } elseif ($item->statut_final == 'TRAITE') {
+                $className = 'badge badge-success';
+            } else {
+                $className = 'badge badge-primary';
+            }
+            $statut_final['className'] = $className;
+
+            $user = \App\Models\InstanceLog::where('instance_id', $item->id)->orderBy('updated_at', 'desc')->first();
+
+            return [
+                'id' => $item->id,
+                'numero_de_labonne_reference_client' => $item->numero_de_labonne_reference_client,
+                'station_de_modulation_Ville' => $item->station_de_modulation_Ville,
+                'zone_region' => $item->zone_region,
+                'stit' => $item->stit,
+                'commune' => $item->commune,
+                'code_postal' => $item->code_postal,
+                'numero_de_lappel_reference_sfr' => $item->numero_de_lappel_reference_sfr,
+                'libcap_typologie_inter' => $item->libcap_typologie_inter,
+                'date_de_rendez_vous' => $item->date_de_rendez_vous,
+                'code_md_code_echec' => $item->code_md_code_echec,
+                'agent_traitant' => $item->agent_traitant,
+                'statut_du_report' => $item->statut_du_report,
+                'statut_final' => $statut_final,
+                'task_type' => $item->task_type,
+                'user_id' => $user ? $user->id : null
+            ];
+        });
+
+    }
+}
+
 if (!function_exists('getTableData')) {
     function getTableData($index = null)
     {
@@ -82,8 +172,8 @@ if (!function_exists('makeFilterSubQuery')) {
         $queryFilters = null;
         $filterSaved = false;
         if ($request->exists('refreshMode')) {
-            if(!is_array($dates)){
-                $dates = explode(',',$dates);
+            if (!is_array($dates)) {
+                $dates = explode(',', $dates);
             }
             $dates = $dates ? array_values($dates) : null;
             $rowsFilter = $rowsFilter ? array_values($rowsFilter) : null;

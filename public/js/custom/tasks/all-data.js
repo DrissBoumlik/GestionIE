@@ -49,6 +49,105 @@ $(document).ready(function () {
 
     let filterTasks = $('#filter');
 
+
+    $(document).on('change', 'input[name=input-choose]', function () {
+        if ($(this).prop('checked')) {
+            $(this).prop('checked', false);
+            let btnChoose = $('#btn-choose');
+            btnChoose.removeAttr('data-id');
+            let task_id = $(this).val();
+            let data_row = $(this).data('row');
+            let data_type = $(this).data('type');
+            btnChoose.attr('data-id', task_id);
+            btnChoose.attr('data-type', data_type);
+            btnChoose.attr('data-row', JSON.stringify(data_row));
+            $(`#modal-choose-collaborater`).modal('show');
+        } else {
+            $(this).prop('checked', true);
+            let btnUnaffect =  $('#btn-unaffect');
+            let task_id = $(this).val();
+            let data_row = $(this).data('row');
+            let data_type = $(this).data('type');
+            let user_id = $(this).data('user_id');
+            btnUnaffect.attr('data-id', task_id);
+            btnUnaffect.attr('data-row', JSON.stringify(data_row));
+            btnUnaffect.attr('data-type', data_type);
+            btnUnaffect.attr('data-user_id', user_id);
+            $('#modal-unaffect').modal('show');
+        }
+    });
+
+    $(document).on('click', '#btn-choose', function () {
+
+        let task_id = $(this).attr('data-id');
+        let data_row = $(this).data('row');
+        let data_type = $(this).data('type');
+
+        $.ajax({
+            method: 'POST',
+            url: APP_URL + '/api/tasks/' + data_type,
+            data: {
+                task_id: task_id,
+                data_row: data_row,
+                user_id: $('#form-choose-collaborater select[name="collaborater"]').val(),
+            }, //$('#form-choose-collaborater').serialize(),
+            dateType: 'json',
+            success: function (data) {
+                $('#modal-choose-collaborater').modal('hide');
+                let icon = data.success ? 'success' : 'error';
+                // tableTasks.datatable.draw(false);
+                Swal.fire({
+                    // position: 'top-end',
+                    type: icon,
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    if (data_type == 'encours') {
+                        tasksEncours.elementDT.columns.adjust().draw();
+                    } else {
+                        tasksInstance.elementDT.columns.adjust().draw();
+                    }
+                });
+            }
+        });
+    });
+
+    $(document).on('click', '#btn-unaffect', function () {
+        let task_id = $(this).attr('data-id');
+        let data_row = $(this).data('row');
+        let data_type = $(this).data('type');
+        $.ajax({
+            method: 'delete',
+            url: APP_URL + '/api/tasks/' + data_type,
+            data: {
+                task_id: task_id,
+                data_row: data_row,
+                user_id: $('#form-choose-collaborater select[name="collaborater"]').val(),
+            },
+            dateType: 'json',
+            success: function (data) {
+                $('#modal-unaffect').modal('hide');
+                let icon = data.success ? 'success' : 'error';
+                // tableTasks.datatable.draw(false);
+                Swal.fire({
+                    // position: 'top-end',
+                    type: icon,
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    if (data_type == 'encours') {
+                        tasksEncours.elementDT.columns.adjust().draw();
+                    } else {
+                        tasksInstance.elementDT.columns.adjust().draw();
+                    }
+                });
+            }
+        });
+    });
+
+
     let tasksEncours = {
         element: 'tasksEncours',
         elementDT: undefined,
@@ -56,20 +155,21 @@ $(document).ready(function () {
         refreshBtn: '#refreshTasksEnCours',
         columns: [
             {
-                data: null, className: 'align-middle text-center', orderable: false, searchable: false, render: function (data, type, row, meta) {
-                    if(!meta.settings.json.admin && data.acteur && meta.settings.json.acteur !== data.acteur) {
-                        return '-----';
-                    }
-                    if (data.acteur) {
-                        return '<div class="custom-control custom-switch text-center">' +
-                            '<input type="checkbox" class="custom-control-input" value="' + data.id + '" id="input-choose-' + data.id + '" name="input-choose" checked>' +
-                            '<label class="custom-control-label" for="input-choose-' + data.id + '"></label>' +
-                            '</div>';
-                    }
-                    return '<div class="custom-control custom-switch text-center">' +
-                        '<input type="checkbox" class="custom-control-input" value="' + data.id + '" id="input-choose-' + data.id + '" name="input-choose">' +
-                        '<label class="custom-control-label" for="input-choose-' + data.id + '"></label>' +
-                        '</div>';
+                data: null,
+                className: 'align-middle text-center',
+                orderable: false,
+                searchable: false,
+                render: function (data, type, row, meta) {
+                    // if (!meta.settings.json.admin && data.acteur && meta.settings.json.acteur !== data.acteur) {
+                    //     return '-----';
+                    // }
+                    let checked = row.statut_final.text != "A effectuer" ? 'checked' : '';
+                    let userId = row.user_id ? "data-user_id='" + row.user_id + "'" : '';
+                    return "<div class='custom-control custom-switch text-center'>" +
+                        "<input data-type='encours' " + userId + " data-row='" + JSON.stringify(row) + "' type='checkbox' class='custom-control-input' " +
+                        "value='" + data.id + "' id='input-choose-" + data.id + "' name='input-choose' " + checked + ">" +
+                        "<label class='custom-control-label' for='input-choose-" + data.id + "'></label>" +
+                        "</div>";
                 }
             },
             {data: 'agent_traitant', title: 'Agent traitant'},
@@ -91,8 +191,54 @@ $(document).ready(function () {
             {data: 'report_multiple', title: 'Report multiple'},
             {data: 'cause_du_report', title: 'Cause du report'},
             {data: 'statut_du_report', title: 'Statut du report'},
+            // {data: 'statut_final', title: 'Statut final'},
+            {
+                data: 'statut_final',
+                title: 'Statut final',
+                name: 'statut_final',
+                className: 'align-middle text-center',
+                render: function (data) {
+                    return `<span class="${data.className}">${data.text}</span>`;
+                }
+            },
+
             {data: 'accord_region', title: 'Accord région'},
             {data: 'task_type', title: 'Type'},
+            {
+                data: null, title: 'Action', className: 'align-middle text-center', orderable: false, searchable: false,
+                render: function (data, type, row, meta) {
+                    if (row.statut_final.text == "A effectuer") {
+                        return '<span style="white-space: nowrap">-----</span>';
+                    }
+                    // if((!meta.settings.json.admin && data.acteur && meta.settings.json.acteur !== data.acteur) || data.statut_eb.id === 'aaffecter') {
+                    //     return '-----';
+                    // }
+
+                    let dropDown = `<div class="dropdown">
+                        <button type="button" class="btn btn-primary btn-xs dropdown-toggle" id="dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Action
+                        </button>`;
+                    dropDown += `<div class="dropdown-menu font-size-sm" aria-labelledby="dropdown-default-primary" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">`;
+                    dropDown += `<a class="dropdown-item" href="#"><i class="fa fa-fw fa-download"></i> Télécharger</a>
+                            <a class="dropdown-item btn-edit" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-pencil-alt"></i> Modifier</a>`;
+
+                    // if(data.statut_eb.id !== 'encours') {
+                    //     dropDown += `<a class="dropdown-item btn-send" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-paper-plane"></i> Envoyer</a>`;
+                    // }
+
+                    dropDown += `<a class="dropdown-item btn-delete" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-trash"></i> Supprimer</a></div>`;
+                    dropDown += `</div>`;
+                    return dropDown;
+
+                    // if (data.statut_eb === 'encours') {
+                    //     return `<button type="button" class="btn btn-sm btn-edit btn-outline-primary" data-id="${data.id}"><i class="fa fa-fw fa-pencil-alt"></i></button>`;
+                    // }
+                    // return `<div class="btn-group btn-group-sm">
+                    //     <button type="button" class="btn btn-edit btn-outline-primary" data-id="${data.id}"><i class="fa fa-fw fa-pencil-alt"></i></button>
+                    //     <button type="button" class="btn btn-send btn-outline-primary" data-id="${data.id}"><i class="fa fa-fw fa-paper-plane"></i></button>
+                    //     </div>`;
+                }
+            }
 
         ]
     };
@@ -103,48 +249,89 @@ $(document).ready(function () {
         refreshBtn: '#refreshTasksInstance',
         columns: [
             {
-                data: null, className: 'align-middle text-center', orderable: false, searchable: false, render: function (data, type, row, meta) {
-                    if(!meta.settings.json.admin && data.acteur && meta.settings.json.acteur !== data.acteur) {
-                        return '-----';
-                    }
-                    if (data.acteur) {
-                        return '<div class="custom-control custom-switch text-center">' +
-                            '<input type="checkbox" class="custom-control-input" value="' + data.id + '" id="input-choose-' + data.id + '" name="input-choose" checked>' +
-                            '<label class="custom-control-label" for="input-choose-' + data.id + '"></label>' +
-                            '</div>';
-                    }
-                    return '<div class="custom-control custom-switch text-center">' +
-                        '<input type="checkbox" class="custom-control-input" value="' + data.id + '" id="input-choose-' + data.id + '" name="input-choose">' +
-                        '<label class="custom-control-label" for="input-choose-' + data.id + '"></label>' +
-                        '</div>';
+                data: null,
+                className: 'align-middle text-center',
+                orderable: false,
+                searchable: false,
+                render: function (data, type, row, meta) {
+                    // if (!meta.settings.json.admin && data.acteur && meta.settings.json.acteur !== data.acteur) {
+                    //     return '-----';
+                    // }
+                    let checked = row.statut_final.text != "A effectuer" ? 'checked' : '';
+                    let userId = row.user_id ? "data-user_id='" + row.user_id + "'" : '';
+                    return "<div class='custom-control custom-switch text-center'>" +
+                        "<input data-type='instance' " + userId + " data-row='" + JSON.stringify(row) + "' type='checkbox' class='custom-control-input' " +
+                        "value='" + data.id + "' id='input-choose-" + data.id + "' name='input-choose' " + checked + ">" +
+                        "<label class='custom-control-label' for='input-choose-" + data.id + "'></label>" +
+                        "</div>";
                 }
             },
-            {data: 'numero_de_labonne_reference_client', title: 'Numero de l\'abonne / Référence client    '},
+            {data: 'numero_de_labonne_reference_client', title: 'Numero de l\'abonne / Référence client'},
             {data: 'station_de_modulation_Ville', title: 'Station de Modulation / Ville'},
             {data: 'zone_region', title: 'ZONE / Région'},
             {data: 'stit', title: 'STIT'},
             {data: 'commune', title: 'COMMUNE'},
             {data: 'code_postal', title: 'Code postal'},
-            {data: 'numero_de_lappel_reference_sfr', title: 'Numero de l\'appel / Référence SFR    '},
+            {data: 'numero_de_lappel_reference_sfr', title: 'Numero de l\'appel / Référence SFR'},
             {data: 'libcap_typologie_inter', title: 'LIB_CAP / Typologie Inter'},
             {data: 'date_de_rendez_vous', title: 'Date de rendez-vous'},
             {data: 'code_md_code_echec', title: 'CODE_MD / Code échec'},
             {data: 'agent_traitant', title: 'Agent traitant'},
             {data: 'statut_du_report', title: 'Statut du report'},
-            {data: 'statut_final', title: 'statut final'},
+            // {data: 'statut_final', title: 'statut final'},
+            {
+                data: 'statut_final',
+                title: 'Statut final',
+                name: 'statut_final',
+                className: 'align-middle text-center',
+                render: function (data) {
+                    return `<span class="${data.className}">${data.text}</span>`;
+                }
+            },
             {data: 'task_type', title: 'Type'},
+            {
+                data: null, className: 'align-middle text-center', orderable: false, searchable: false,
+                render: function (data, type, row, meta) {
+                    // if((!meta.settings.json.admin && data.acteur && meta.settings.json.acteur !== data.acteur) || data.statut_eb.id === 'aaffecter') {
+                    //     return '-----';
+                    // }
+
+                    let dropDown = `<div class="dropdown">
+                        <button type="button" class="btn btn-primary btn-xs dropdown-toggle" id="dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Action
+                        </button>
+                        <div class="dropdown-menu font-size-sm" aria-labelledby="dropdown-default-primary" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                            <a class="dropdown-item" href="` + APP_URL + `/tasks/${data.id}/generate-file"><i class="fa fa-fw fa-download"></i> Télécharger</a>
+                            <a class="dropdown-item btn-edit" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-pencil-alt"></i> Modifier</a>`;
+
+                    // if(data.statut_eb.id !== 'encours') {
+                    //     dropDown += `<a class="dropdown-item btn-send" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-paper-plane"></i> Envoyer</a>`;
+                    // }
+
+                    dropDown += `<a class="dropdown-item btn-delete" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-trash"></i> Supprimer</a></div></div>`;
+                    return dropDown;
+
+                    // if (data.statut_eb === 'encours') {
+                    //     return `<button type="button" class="btn btn-sm btn-edit btn-outline-primary" data-id="${data.id}"><i class="fa fa-fw fa-pencil-alt"></i></button>`;
+                    // }
+                    // return `<div class="btn-group btn-group-sm">
+                    //     <button type="button" class="btn btn-edit btn-outline-primary" data-id="${data.id}"><i class="fa fa-fw fa-pencil-alt"></i></button>
+                    //     <button type="button" class="btn btn-send btn-outline-primary" data-id="${data.id}"><i class="fa fa-fw fa-paper-plane"></i></button>
+                    //     </div>`;
+                }
+            }
 
         ]
     };
 
     if (elementExists(tasksEncours)) {
-        tasksEncours.elementDT = InitDataTable(tasksEncours, data);
+        InitDataTable(tasksEncours, data);
         $('#refreshTasksEnCours').on('click', function () {
             refreshDt(tasksEncours, data);
         });
     }
     if (elementExists(tasksInstance)) {
-        tasksInstance.elementDT = InitDataTable(tasksInstance, data);
+        InitDataTable(tasksInstance, data);
         $('#refreshTasksInstance').on('click', function () {
             refreshDt(tasksInstance, data)
         });
@@ -155,14 +342,17 @@ $(document).ready(function () {
             data.dates = dates.join(',');
         }
         data.refreshMode = true;
-        object.elementDT = InitDataTable(object, data);
+        InitDataTable(object, data);
     }
 
     function InitDataTable(object, data) {
+        if ($.fn.DataTable.isDataTable(object.datatable)) {
+            object.datatable.destroy();
+        }
         toggleLoader($(object.refreshBtn).parents('.col-12'));
         let table = $('#' + object.element);
         // table.DataTable().destroy();
-        return table.DataTable({
+        object.elementDT = table.DataTable({
 
             destroy: true,
             responsive: true,

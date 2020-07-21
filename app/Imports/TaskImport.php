@@ -75,14 +75,16 @@ class TaskImport implements WithHeadingRow, WithChunkReading, WithBatchInserts, 
                             $item[$column] = $rowDate;
                             return;
                         }
-                        $item[$column] = $row[$key];
+                        if (isset($row[$key])) {
+                            $item[$column] = $row[$key];
+                        }
                     });
                     /*
                     $item = [
                         'agent_traitant' => $row["agent_traitant"],
                         'region' => $row["region"],
                         'Prestataire' => $row["prestataire"],
-                        'nome_tech' => $row["nom_tech"],
+                        'nom_tech' => $row["nom_tech"],
                         'prenom_tech' => $row["prenom_tech"],
                         'date' => $row["date"],
                         'creneaux' => $row["creneaux"],
