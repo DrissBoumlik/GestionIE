@@ -222,8 +222,8 @@ $(document).ready(function () {
                             Action
                         </button>`;
                     dropDown += `<div class="dropdown-menu font-size-sm" aria-labelledby="dropdown-default-primary" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">`;
-                    dropDown += `<a class="dropdown-item" href="#"><i class="fa fa-fw fa-download"></i> Télécharger</a>
-                            <a class="dropdown-item btn-edit" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-pencil-alt"></i> Modifier</a>`;
+                    dropDown += `<a class="dropdown-item" href="#"><i class="fa fa-fw fa-download"></i> Télécharger</a>`;
+                    dropDown += `<a class="dropdown-item btn-edit" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-pencil-alt"></i> Modifier</a>`;
 
                     // if(data.statut_eb.id !== 'encours') {
                     //     dropDown += `<a class="dropdown-item btn-send" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-paper-plane"></i> Envoyer</a>`;
@@ -298,6 +298,9 @@ $(document).ready(function () {
             {
                 data: null, className: 'align-middle text-center', orderable: false, searchable: false,
                 render: function (data, type, row, meta) {
+                    if (row.statut_final.text == "A effectuer") {
+                        return '<span style="white-space: nowrap">-----</span>';
+                    }
                     // if((!meta.settings.json.admin && data.acteur && meta.settings.json.acteur !== data.acteur) || data.statut_eb.id === 'aaffecter') {
                     //     return '-----';
                     // }
@@ -305,16 +308,17 @@ $(document).ready(function () {
                     let dropDown = `<div class="dropdown">
                         <button type="button" class="btn btn-primary btn-xs dropdown-toggle" id="dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Action
-                        </button>
-                        <div class="dropdown-menu font-size-sm" aria-labelledby="dropdown-default-primary" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
-                            <a class="dropdown-item" href="` + APP_URL + `/tasks/${data.id}/generate-file"><i class="fa fa-fw fa-download"></i> Télécharger</a>
-                            <a class="dropdown-item btn-edit" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-pencil-alt"></i> Modifier</a>`;
+                        </button>`;
+                    dropDown += `<div class="dropdown-menu font-size-sm" aria-labelledby="dropdown-default-primary" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">`;
+                    dropDown += `<a class="dropdown-item" href="` + APP_URL + `/tasks/${data.id}/generate-file"><i class="fa fa-fw fa-download"></i> Télécharger</a>`;
+                    dropDown += `<a class="dropdown-item btn-edit" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-pencil-alt"></i> Modifier</a>`;
 
                     // if(data.statut_eb.id !== 'encours') {
                     //     dropDown += `<a class="dropdown-item btn-send" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-paper-plane"></i> Envoyer</a>`;
                     // }
 
-                    dropDown += `<a class="dropdown-item btn-delete" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-trash"></i> Supprimer</a></div></div>`;
+                    dropDown += `<a class="dropdown-item btn-delete" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-trash"></i> Supprimer</a></div>`;
+                    dropDown += `</div>`;
                     return dropDown;
 
                     // if (data.statut_eb === 'encours') {
