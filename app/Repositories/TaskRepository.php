@@ -32,7 +32,14 @@ class TaskRepository
     {
         $class = 'App\\Models\\' . $type;
         // TODO: fetch tasks "a traiter"
-        return null;
+        if ($type == 'EnCours') {
+            $colDate = 'date';
+        } else {
+            $colDate = 'date_de_rendez_vous';
+        }
+
+        $data = $class::where($colDate, '<=',  Carbon::now()->subDays(2)->toDateTimeString())->get();
+        return $data;
 
     }
 }
