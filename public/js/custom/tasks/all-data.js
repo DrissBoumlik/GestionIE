@@ -117,17 +117,87 @@ $(document).ready(function () {
         let task_id = $(this).attr('data-id');
         let data_row = $(this).data('row');
         let data_type = $(this).data('type');
+        let user_id = $(this).data('user_id');
         $.ajax({
             method: 'delete',
             url: APP_URL + '/api/tasks/' + data_type,
             data: {
                 task_id: task_id,
                 data_row: data_row,
-                user_id: $('#form-choose-collaborater select[name="collaborater"]').val(),
+                user_id: user_id,
             },
             dateType: 'json',
             success: function (data) {
                 $('#modal-unaffect').modal('hide');
+                let icon = data.success ? 'success' : 'error';
+                // tableTasks.datatable.draw(false);
+                Swal.fire({
+                    // position: 'top-end',
+                    type: icon,
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    if (data_type == 'encours') {
+                        tasksEncours.elementDT.columns.adjust().draw();
+                    } else {
+                        tasksInstance.elementDT.columns.adjust().draw();
+                    }
+                });
+            }
+        });
+    });
+
+    $(document).on('click', '.btn-edit', function () {
+        let btnUpdateStatut = $('#btn-update-statut');
+        let rowData = $(this).closest('tr').find('td:first [name=input-choose]');
+        btnUpdateStatut.removeAttr('data-id');
+        let task_id = $(this).attr('data-id');
+        let data_row = rowData.data('row');
+        let data_type = rowData.data('type');
+        let data_user_id = rowData.data('user_id');
+
+        btnUpdateStatut.attr('data-id', task_id);
+        btnUpdateStatut.attr('data-row', JSON.stringify(data_row));
+        btnUpdateStatut.attr('data-type', data_type);
+        btnUpdateStatut.attr('data-user_id', data_user_id);
+
+        $('#modal-update').modal('show');
+        // $('#form-update-statut')[0].reset();
+        // $('#form-update-response')[0].reset();
+        // $.ajax({
+        //     method: 'get',
+        //     url: `${process.env.MIX_PUBLIC_URL}/tasks/${task_id}`,
+        //     dateType: 'json',
+        //     success: function (data) {
+        //         $('#form-update-statut #type_eb_tiers').val(data.type_eb_tiers);
+        //         $('#form-update-statut #statut').val(data.statut_eb).trigger('change');
+        //         $('#form-update-response #etape_process_accueil_chez_tiers').val(data.etape_process_accueil_chez_tiers);
+        //         $('#form-update-response #comment').val(data.commentaire);
+        //         $('#btn-update-statut, #btn-update-response').attr('data-id', task_id);
+        //         $('#modal-update').modal('show');
+        //     }
+        // });
+    });
+
+    $(document).on('click', '#btn-update-statut', function () {
+        let task_id = $(this).attr('data-id');
+        let statut_final = $('#statut_final').val();
+        let data_type = $(this).data('type');
+        let data_row = $(this).data('row');
+        let data_user_id = $(this).data('user_id');
+        $.ajax({
+            method: 'put',
+            url: APP_URL + '/api/tasks/' + data_type,
+            data: {
+                task_id: task_id,
+                data_row: data_row,
+                statut_final: statut_final,
+                user_id: data_user_id
+            },
+            dateType: 'json',
+            success: function (data) {
+                $('#modal-update').modal('hide');
                 let icon = data.success ? 'success' : 'error';
                 // tableTasks.datatable.draw(false);
                 Swal.fire({
@@ -161,9 +231,10 @@ $(document).ready(function () {
                     //     return '-----';
                     // }
                     let checked = row.statut_final.text != "A effectuer" ? 'checked' : '';
-                    let userId = row.taskLog_id ? "data-user_id='" + row.taskLog_id + "'" : '';
+                    let taskLogId = row.taskLog_id ? "data-taskLog_id='" + row.taskLog_id + "'" : '';
+                    let userId = row.user ? "data-user_id='" + row.user.id + "'" : '';
                     return "<div class='custom-control custom-switch text-center'>" +
-                        "<input data-type='encours' " + userId + " data-row='" + JSON.stringify(row) + "' type='checkbox' class='custom-control-input' " +
+                        "<input data-type='encours' " + taskLogId + " " + userId + " data-row='" + JSON.stringify(row) + "' type='checkbox' class='custom-control-input' " +
                         "value='" + data.id + "' id='input-choose-" + data.id + "' name='input-choose' " + checked + ">" +
                         "<label class='custom-control-label' for='input-choose-" + data.id + "'></label>" +
                         "</div>";
@@ -258,9 +329,10 @@ $(document).ready(function () {
                     //     return '-----';
                     // }
                     let checked = row.statut_final.text != "A effectuer" ? 'checked' : '';
-                    let userId = row.taskLog_id ? "data-user_id='" + row.taskLog_id + "'" : '';
+                    let taskLogId = row.taskLog_id ? "data-taskLog_id='" + row.taskLog_id + "'" : '';
+                    let userId = row.user ? "data-user_id='" + row.user.id + "'" : '';
                     return "<div class='custom-control custom-switch text-center'>" +
-                        "<input data-type='instance' " + userId + " data-row='" + JSON.stringify(row) + "' type='checkbox' class='custom-control-input' " +
+                        "<input data-type='instance' " + taskLogId + " " + userId + " data-row='" + JSON.stringify(row) + "' type='checkbox' class='custom-control-input' " +
                         "value='" + data.id + "' id='input-choose-" + data.id + "' name='input-choose' " + checked + ">" +
                         "<label class='custom-control-label' for='input-choose-" + data.id + "'></label>" +
                         "</div>";
@@ -310,7 +382,7 @@ $(document).ready(function () {
                             Action
                         </button>`;
                     dropDown += `<div class="dropdown-menu font-size-sm" aria-labelledby="dropdown-default-primary" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">`;
-                    dropDown += `<a class="dropdown-item" href="` + APP_URL + `/tasks/${data.id}/generate-file"><i class="fa fa-fw fa-download"></i> Télécharger</a>`;
+                    dropDown += `<a class="dropdown-item" href="#"><i class="fa fa-fw fa-download"></i> Télécharger</a>`;
                     dropDown += `<a class="dropdown-item btn-edit" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-pencil-alt"></i> Modifier</a>`;
 
                     // if(data.statut_eb.id !== 'encours') {

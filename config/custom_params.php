@@ -116,9 +116,9 @@ return [
     ],
 
 
-    'tasks_enums' => [
-        'en_cours' => [
-            'enums' => [
+    'tasks_options' => [
+        'encours' => [
+            'columns' => [
                 'agent_traitant' => [],
                 'cause_du_report' => [
                     'Panne en cours',

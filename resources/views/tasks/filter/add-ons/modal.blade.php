@@ -64,3 +64,49 @@
     </div>
   </div>
 </div>
+
+<div class="modal" id="modal-update" tabindex="-1" role="dialog" aria-labelledby="modal-update" aria-hidden="true"
+     data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="block block-themed block-transparent mb-0">
+        <div class="block-header bg-primary-dark">
+          <h3 class="block-title">Modification de la tâche</h3>
+          <div class="block-options">
+            <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
+              <i class="fa fa-fw fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <div class="block-content font-size-sm">
+          <div class="block">
+            <div class="block-content tab-content overflow-hidden">
+              <div class="tab-pane fade show active" id="tab-update-statut" role="tabpanel">
+                <form id="form-update-statut">
+                  <input type="hidden" name="_method" value="PUT">
+                  <div class="form-group">
+                    <label for="statut">Statut</label>
+                    <select type="text" class="form-control" id="statut_final" name="statut_final"
+                            style="width: 100%">
+                      @foreach ($params['statut_final'] as $param)
+                        <option value="{{ $param }}">{{ $param }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="text-right">
+                    <button type="button" class="btn btn-sm btn-light" data-dismiss="modal">
+                      Fermer
+                    </button>
+                    <button type="button" class="btn btn-sm btn-primary" id="btn-update-statut">
+                      <i class="fa fa-check mr-1"></i>Modifier
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

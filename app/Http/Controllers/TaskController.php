@@ -44,7 +44,8 @@ class TaskController extends Controller
         $agents = User::whereHas('role', function ($query) {
             return $query->where('name', 'agent');
         })->get();
-        return view('tasks.filter.' . $status . '.' . $type)->with(['data' => $request->all(), 'agents' => $agents]);
+        $params = config('custom_params.tasks_options')[$type]['columns'];
+        return view('tasks.filter.' . $status . '.' . $type)->with(['data' => $request->all(), 'agents' => $agents, 'params' => $params]);
     }
 
     public function getTasksbyStatus(Request $request, $status, $type)
@@ -88,6 +89,41 @@ class TaskController extends Controller
 
         $response = [
             'message' => 'La tâche a été désaffectée avec succès',
+            'success' => true,
+            'code' => 200
+        ];
+        return response()->json($response);
+    }
+
+    public function editTask(Request $request, $type)
+    {
+//        dd($request->all(), $type);
+        if ($type === 'encours') {
+            $task = EnCours::find($request->task_id);
+            $task->statut_final = $request->statut_final;
+            $task->update();
+            EnCoursLog::create([
+                'user_id' => $request->user_id,
+                'en_cours_id' => $request->task_id,
+                'cause_du_report' => $request->data_row['cause_du_report'],
+                'statut_du_report' => $request->data_row['statut_du_report'],
+                'accord_region' => $request->data_row['accord_region'],
+                'statut_final' => $request->statut_final
+            ]);
+        } else {
+            $task = Instance::find($request->task_id);
+            $task->statut_final = $request->statut_final;
+            $task->update();
+            InstanceLog::create([
+                'user_id' => $request->user_id,
+                'instance_id' => $request->task_id,
+                'statut_du_report' => $request->data_row['statut_du_report'],
+                'statut_final' => $request->statut_final
+            ]);
+        }
+
+        $response = [
+            'message' => 'La tâche a été mise à jour avec succès',
             'success' => true,
             'code' => 200
         ];

@@ -41,6 +41,7 @@ Route::group([
     Route::post('/api/tasks/filter/{status}/{type}', 'TaskController@getTasksbyStatus')->name('tasks.data.filter');
 
     Route::post('/api/tasks/{type}', 'TaskController@assignTask');
+    Route::put('/api/tasks/{type}', 'TaskController@editTask');
     Route::delete('/api/tasks/{type}', 'TaskController@dropTask');
 
     //region Import / Export
