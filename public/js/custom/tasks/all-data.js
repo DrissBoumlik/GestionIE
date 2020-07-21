@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    $('#page-container').addClass('sidebar-mini');
 
     let dates = undefined;
     /*
@@ -54,6 +55,23 @@ $(document).ready(function () {
         route: filterTasks.length ? '/api/tasks/filter/' + filterTasks.data('filter') + '/EnCours' : '/api/tasks/data/EnCours',
         refreshBtn: '#refreshTasksEnCours',
         columns: [
+            {
+                data: null, className: 'align-middle text-center', orderable: false, searchable: false, render: function (data, type, row, meta) {
+                    if(!meta.settings.json.admin && data.acteur && meta.settings.json.acteur !== data.acteur) {
+                        return '-----';
+                    }
+                    if (data.acteur) {
+                        return '<div class="custom-control custom-switch text-center">' +
+                            '<input type="checkbox" class="custom-control-input" value="' + data.id + '" id="input-choose-' + data.id + '" name="input-choose" checked>' +
+                            '<label class="custom-control-label" for="input-choose-' + data.id + '"></label>' +
+                            '</div>';
+                    }
+                    return '<div class="custom-control custom-switch text-center">' +
+                        '<input type="checkbox" class="custom-control-input" value="' + data.id + '" id="input-choose-' + data.id + '" name="input-choose">' +
+                        '<label class="custom-control-label" for="input-choose-' + data.id + '"></label>' +
+                        '</div>';
+                }
+            },
             {data: 'agent_traitant', title: 'Agent traitant'},
             {data: 'region', title: 'Région'},
             {data: 'prestataire', title: 'Prestataire'},
@@ -84,6 +102,23 @@ $(document).ready(function () {
         route: filterTasks.length ? '/api/tasks/filter/' + filterTasks.data('filter') + '/Instance' : '/api/tasks/data/Instance',
         refreshBtn: '#refreshTasksInstance',
         columns: [
+            {
+                data: null, className: 'align-middle text-center', orderable: false, searchable: false, render: function (data, type, row, meta) {
+                    if(!meta.settings.json.admin && data.acteur && meta.settings.json.acteur !== data.acteur) {
+                        return '-----';
+                    }
+                    if (data.acteur) {
+                        return '<div class="custom-control custom-switch text-center">' +
+                            '<input type="checkbox" class="custom-control-input" value="' + data.id + '" id="input-choose-' + data.id + '" name="input-choose" checked>' +
+                            '<label class="custom-control-label" for="input-choose-' + data.id + '"></label>' +
+                            '</div>';
+                    }
+                    return '<div class="custom-control custom-switch text-center">' +
+                        '<input type="checkbox" class="custom-control-input" value="' + data.id + '" id="input-choose-' + data.id + '" name="input-choose">' +
+                        '<label class="custom-control-label" for="input-choose-' + data.id + '"></label>' +
+                        '</div>';
+                }
+            },
             {data: 'numero_de_labonne_reference_client', title: 'Numero de l\'abonne / Référence client    '},
             {data: 'station_de_modulation_Ville', title: 'Station de Modulation / Ville'},
             {data: 'zone_region', title: 'ZONE / Région'},
