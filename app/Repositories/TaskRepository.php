@@ -18,7 +18,7 @@ class TaskRepository
     public function getPriorityTasks(Request $request, $type)
     {
         $class = 'App\\Models\\' . $type;
-        $resourceClass = 'App\\Http\\Resources\\' . $type . 'Resource';
+        $collectionHelper = $type . 'Collection';
         if ($type == 'EnCours') {
             $colDate = 'date';
         } else {
@@ -26,7 +26,7 @@ class TaskRepository
         }
 
         $data = $class::where($colDate, '>=',  Carbon::now()->subDays(2)->toDateTimeString())->get();
-        $data = new $resourceClass($data);
+        $data = $collectionHelper($data);
         return $data;
     }
 
