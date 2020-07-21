@@ -41,7 +41,9 @@ class TaskController extends Controller
 //        } else {
 //            $agents = Instance::select('agent_traitant', 'id')->get();
 //        }
-        $agents = User::all();
+        $agents = User::whereHas('role', function ($query) {
+            return $query->where('name', 'agent');
+        })->get();
         return view('tasks.filter.' . $status . '.' . $type)->with(['data' => $request->all(), 'agents' => $agents]);
     }
 
