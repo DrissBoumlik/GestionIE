@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 if (!function_exists('getTableData')) {
     function getTableData($index = null)
     {
-        if ($index) {
+        if ($index !== null) {
             return config('custom_params.tables_data')[$index];
         }
         return config('custom_params.tables_data');
