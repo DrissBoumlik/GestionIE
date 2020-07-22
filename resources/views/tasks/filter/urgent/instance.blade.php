@@ -118,5 +118,6 @@
       <!-- /.row -->
     </div>
     <!-- END Stats -->
+    @include('tasks.filter.add-ons.modal', ['agents' => $agents, 'params' => $params])
   </div>
 @endsection

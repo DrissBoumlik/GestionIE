@@ -109,69 +109,92 @@ return [
                 'report_multiple' => 'report_multiple',
                 'cause_du_report' => 'cause_du_report',
                 'statut_du_report' => 'statut_du_report',
+                'statut_final' => 'statut_final',
                 'accord_region' => 'accord_region',
             ]
         ]
     ],
 
 
-    'tasks_enums' => [
-        'en_cours' => [
-            'enums' => [
-                'agent_traitant' => [],
+    'tasks_options' => [
+        'encours' => [
+            'columns' => [
+                'agent_traitant' => [
+                    'title' => 'Agent traitant',
+                    'values' => []
+                ],
                 'cause_du_report' => [
-                    'Panne en cours',
-                    'Prévoir binôme, heures, échelle,…',
-                    'Tech absent',
-                    'Tech en retard',
-                    'Zone à risque',
-                    'Report en Prestation complémentaire',
-                    'Abo non disponible',
-                    'Intemperie',
-                    'Manque matériel (modem, HD, B4,…)',
-                    'Manque temps',
-                    'Nacelle',
+                    'title' => 'Cause du report',
+                    'values' => [
+                        'Panne en cours',
+                        'Prévoir binôme, heures, échelle,…',
+                        'Tech absent',
+                        'Tech en retard',
+                        'Zone à risque',
+                        'Report en Prestation complémentaire',
+                        'Abo non disponible',
+                        'Intemperie',
+                        'Manque matériel (modem, HD, B4,…)',
+                        'Manque temps',
+                        'Nacelle',
+                    ]
                 ],
                 'statut_du_report' => [
-                    'Tel1',
-                    'Non',
-                    'Report ok',
-                    'Résilié',
-                    'Mail region',
-                    'S8/R2/R3',
-                    'Services ok',
-                    'Tel1',
-                    'Tel2',
+                    'title' => 'Statut du report',
+                    'values' => [
+                        'Tel1',
+                        'Non',
+                        'Report ok',
+                        'Résilié',
+                        'Mail region',
+                        'S8/R2/R3',
+                        'Services ok',
+                        'Tel2',
+                    ]
                 ],
-                'accord_region'=>[
-                    'OUI',
-                    'NON ',
-                    'MANQUE DE DECHARGE',
-                    'X',
+                'accord_region' => [
+                    'title' => 'Accord region',
+                    'values' => [
+                        'OUI',
+                        'NON ',
+                        'MANQUE DE DECHARGE',
+                        'X',
+                    ]
                 ],
                 'statut_final' => [
-                    'TRAITE',
-                    'EN COURS',
+                    'title' => 'Statut final',
+                    'values' => [
+                        'TRAITE',
+                        'EN COURS',
+                    ]
                 ],
             ]
         ],
         'instance' => [
             'columns' => [
-                'agent_traitant'=>  [],
-                'statut_du_report'=>[
-                    'Tel1',
-                    'Non',
-                    'Report ok',
-                    'Résilié',
-                    'Mail region',
-                    'S8/R2/R3',
-                    'Services ok',
-                    'Tel1',
-                    'Tel2',
+                'agent_traitant' => [
+                    'title' => 'Agent traitant',
+                    'values' => []
+                ],
+                'statut_du_report' => [
+                    'title' => 'Statut du report',
+                    'values' => [
+                        'Tel1',
+                        'Non',
+                        'Report ok',
+                        'Résilié',
+                        'Mail region',
+                        'S8/R2/R3',
+                        'Services ok',
+                        'Tel2',
+                    ]
                 ],
                 'statut_final' => [
-                    'TRAITE',
-                    'EN COURS',
+                    'title' => 'Statut final',
+                    'values' => [
+                        'TRAITE',
+                        'EN COURS',
+                    ]
                 ]
             ]
         ]

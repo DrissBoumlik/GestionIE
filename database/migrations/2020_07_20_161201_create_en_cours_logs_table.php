@@ -22,6 +22,12 @@ class CreateEnCoursLogsTable extends Migration
             $table->string('accord_region', 50)->nullable();
             $table->string('statut_final', 50)->nullable();
 
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('en_cours_id')->nullable();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('en_cours_id')->references('id')->on('en_cours');
+
             $table->timestamps();
         });
     }

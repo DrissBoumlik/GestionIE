@@ -11,6 +11,9 @@ class InstanceLog extends Model
     protected $fillable = [
         'agent_traitant',
         'statut_du_report',
-        'statut_final'
+        'statut_final',
+
+        'user_id',
+        'instance_id'
     ];
 }

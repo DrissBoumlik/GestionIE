@@ -14,5 +14,8 @@ class EnCoursLog extends Model
         'statut_du_report',
         'accord_region',
         'statut_final',
+
+        'user_id',
+        'en_cours_id'
     ];
 }
