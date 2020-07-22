@@ -322,6 +322,7 @@ $(document).ready(function () {
                 {data: 'statut_du_report', title: 'Statut du report', name: 'statut_du_report'},
                 {data: 'accord_region', title: 'Accord région', name: 'accord_region'},
                 {data: 'statut_final', title: 'Statut final', name: 'statut_final'},
+                {data: 'updated_at', title: 'Quand', name: 'updated_at'},
             ]
         }
     };
@@ -420,6 +421,7 @@ $(document).ready(function () {
                 {data: 'agent_traitant', title: 'Agent traitant', name: 'agent_traitant'},
                 {data: 'statut_du_report', title: 'Statut du report', name: 'statut_du_report'},
                 {data: 'statut_final', title: 'Statut final', name: 'statut_final'},
+                {data: 'updated_at', title: 'Quand', name: 'updated_at'},
                 // {
                 //     data: 'user', name: 'user', title: 'Utilisateur',
                 //     render: function (data, type, row, meta) {

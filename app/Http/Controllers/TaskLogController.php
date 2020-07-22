@@ -45,6 +45,11 @@ class TaskLogController extends Controller
                 })
                 ->orderBy('updated_at', 'desc')->get();
         }
+        $data = $data->map(function ($item) {
+            $_item = (object)$item->getAttributes();
+            $_item->updated_at = \Carbon\Carbon::createFromTimeStamp(strtotime($item->updated_at))->diffForHumans();
+            return $_item;
+        });
 
         return DataTables::of($data)->toJson();
     }
