@@ -73,14 +73,15 @@
                 </div>
                     <div class="col-md-6">
                         <label for="region">Région</label>
-                        <select class="form-control" id="region" name="region" required>
-                            <option selected="true" disabled="disabled">choisissez une region</option>
-                            <option value="CE">CE</option>
-                            <option value="IDF">IDF</option>
-                            <option value="SE">SE</option>
-                            <option value="SO">SO</option>
-                            <option value="CORSE">CORSE</option>
-                        </select>
+
+                        {!! Form::select('region', ['CE'     => 'CE',
+                                                    'IDF'    => 'IDF',
+                                                     'SE'    => 'SE',
+                                                     'SO'    => 'SE',
+                                                     'CORSE' => 'CORSE'
+                                                     ],
+                                        $region ?? '', ["class" => "form-control", "id" => "region", "placeholder" => "choisissez une region"] ) !!}
+
                     </div>
                 </div>
 
@@ -102,13 +103,12 @@
                 <div class="row mb-2">
                     <div class="col-md-6">
                         <label for="type_intervention">Type d'intervention</label>
-                        <select class="form-control" name="type_intervention" id="type_intervention">
-                            <option selected disabled>choisissez une type d'intervention</option>
-                            <option value="S1">S1</option>
-                            <option value="S2">S2</option>
-                            <option value="IMES STIT">IMES STIT</option>
-                            <option value="IMES Extranet">IMES Extranet</option>
-                        </select>
+                        {!! Form::select('type_intervention', ['S1' => 'S1',
+                                                               'S2' => 'S2',
+                                                               'IMES STIT' => 'IMES STIT',
+                                                               'IMES Extranet' => 'IMES Extranet'
+                                                               ],
+                                        $type_intervention ?? '', ["class" => "form-control", "id" => "type_intervention", "placeholder" => "choisissez une type d'intervention"] ) !!}
                     </div>
                     <div class="col-md-6">
                         <label for="Sous_type_Inter">Sous-type intervention</label>
@@ -122,31 +122,30 @@
                     </div>
                     <div class="col-md-4">
                         <label for="cp">CP</label>
-                        <select class="form-control" name="cp" id="cp">
-                            <option selected disabled>choisissez un code postal</option>
-                            <option value="01">01</option>
-                            <option value="03">03</option>
-                            <option value="15">15</option>
-                            <option value="18">18</option>
-                            <option value="19">19</option>
-                            <option value="21">21</option>
-                            <option value="25">25</option>
-                            <option value="36">36</option>
-                            <option value="39">39</option>
-                            <option value="43">43</option>
-                            <option value="58">58</option>
-                            <option value="70">70</option>
-                            <option value="71">71</option>
-                            <option value="73">73</option>
-                            <option value="74">74</option>
-                            <option value="75">75</option>
-                            <option value="89">89</option>
-                            <option value="91">91</option>
-                            <option value="92">92</option>
-                            <option value="93">93</option>
-                            <option value="94">94</option>
-                            <option value="95">95</option>
-                        </select>
+                        {!! Form::select('cp', [ '01' => '01',
+                                                 '03' => '03',
+                                                 '15' => '15',
+                                                 '18' => '18',
+                                                 '19' => '19',
+                                                 '21' => '21',
+                                                 '25' => '25',
+                                                 '36' => '36',
+                                                 '39' => '39',
+                                                 '43' => '43',
+                                                 '58' => '58',
+                                                 '70' => '70',
+                                                 '71' => '71',
+                                                 '73' => '73',
+                                                 '74' => '74',
+                                                 '75' => '75',
+                                                 '89' => '89',
+                                                 '91' => '91',
+                                                 '92' => '92',
+                                                 '93' => '93',
+                                                 '94' => '94',
+                                                 '95' => '95',
+                                               ],
+                                        $cp ?? '', ["class" => "form-control", "id" => "cp", "placeholder" => "choisissez un code postal"] ) !!}
                     </div>
                     <div class="col-md-4">
                         <label for="ville">Ville</label>
@@ -157,15 +156,15 @@
                 <div class="row mb-2">
                     <div class="col-md-3">
                         <label for="date_reception">Date Réception Ticket</label>
-                        <input type="date" class="form-control" name="date_reception" id="date_reception">
+                        <input type="datetime-local" class="form-control" name="date_reception" id="date_reception" value="{{'date_reception'}}">
                     </div>
                     <div class="col-md-3">
                         <label for="date_planification">Date planification</label>
-                        <input type="date" class="form-control" name="date_planification" id="date_planification">
+                        <input type="datetime-local" class="form-control" name="date_planification" id="date_planification" value="{{'date_planification'}}">
                     </div>
                     <div class="col-md-3">
                         <label for="report">Report</label>
-                        <input type="date" class="form-control" name="report" id="report">
+                        <input type="datetime-local" class="form-control" name="report" id="report" value="{{'report'}}">
                     </div>
                     <div class="col-md-3">
                         <label for="motif_report">Motif Report</label>
@@ -181,21 +180,20 @@
                 <div class="row mb-2">
                     <div class="col-md-6">
                         <label for="statut_finale">Statut Final</label>
-                        <select class="form-control" name="statut_finale" id="statut_finale">
-                            <option selected disabled>choissisez un statut</option>
-                            <option value="ok">ok</option>
-                            <option value="ko">ko</option>
-                        </select>
+                        {!! Form::select('statut_finale', ['ok' => 'ok',
+                                                           'ko' => 'ko',
+                                                           ],
+                                        $statut_finale ?? '', ["class" => "form-control", "id" => "statut_finale", "placeholder" => "choissisez un statut"] ) !!}
                     </div>
                     <div class="col-md-6 motif_handler d-none">
                         <label for="motif_ko">Motif KO</label>
-                        <select class="form-control" name="motif_ko" id="motif_ko">
-                            <option selected disabled>choissisez un motif</option>
-                            <option value="Circet">Circet</option>
-                            <option value="Client">Client</option>
-                            <option value="SFR">SFR</option>
-                            <option value="Opérateurs TIERS">Opérateurs TIERS</option>
-                        </select>
+                        {!! Form::select('motif_ko', ['Circet' => 'Circet',
+                                                      'Client' => 'Client',
+                                                      'SFR'    => 'SFR',
+                                                      'Opérateurs TIERS' => 'Opérateurs TIERS'
+
+                                                           ],
+                                        $motif_ko ?? '', ["class" => "form-control", "id" => "motif_ko", "placeholder" => "choissisez un motif"] ) !!}
                     </div>
                 </div>
 
@@ -221,20 +219,18 @@
                 <div class="row mb-2">
                     <div class="col-md-6">
                         <label for="as_j_1">AS J-1</label>
-                        <select name="as_j_1" id="as_j_1" class="form-control">
-                            <option disabled selected></option>
-                            <option value="oui">oui</option>
-                            <option value="non">non</option>
-                        </select>
+                        {!! Form::select('as_j_1', ['oui' => 'oui',
+                                                    'non' => 'non',
+                                                    ],
+                                        $as_j_1 ?? '', ["class" => "form-control", "id" => "as_j_1", "placeholder" => ""] ) !!}
                     </div>
                     <div class="col-md-6">
                         <label for="statut_ticket">Statut Ticket</label>
-                        <select name="statut_ticket" id="statut_ticket" class="form-control">
-                            <option disabled selected>choissisez un statut</option>
-                            <option value="En cours">En cours</option>
-                            <option value="Validé">Validé</option>
-                            <option value="Clôturé">Clôturé</option>
-                        </select>
+                        {!! Form::select('statut_ticket', ['En cours' => 'En cours',
+                                                    'Validé' => 'Validé',
+                                                    'Clôturé' => 'Clôturé'
+                                                    ],
+                                        $statut_ticket ?? '', ["class" => "form-control", "id" => "statut_ticket", "placeholder" => "choissisez un statut"] ) !!}
 
                     </div>
                 </div>

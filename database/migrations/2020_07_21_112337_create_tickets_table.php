@@ -25,9 +25,9 @@ class CreateTicketsTable extends Migration
             $table->string('cp',5);
             $table->string('Ville',50);
             $table->string('Sous_type_Inter',30);
-            $table->date('date_reception');
-            $table->date('date_planification');
-            $table->date('report');
+            $table->dateTime('date_reception');
+            $table->dateTime('date_planification');
+            $table->dateTime('report');
             $table->string('motif_report',20);
             $table->text('commentaire_report');
             $table->string('statut_finale',20);
