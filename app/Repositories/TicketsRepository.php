@@ -14,7 +14,7 @@ class TicketsRepository
     public function store(CreateTicketRequest $request)
     {
         $ticket = new Tickets();
-        $ticket->agent_traitant      = $request->get('agent_traitant');
+        $ticket->agent_traitant      = auth()->user()->id;
         $ticket->region              = $request->get('region');
         $ticket->numero_intervention = $request->get('numero_intervention');
         $ticket->cdp                 = $request->get('cdp');
