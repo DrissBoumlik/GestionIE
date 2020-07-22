@@ -444,3 +444,10 @@ if (!function_exists('isAgent')) {
         return ($user ?? auth()->user())->role->name == 'Agent';
     }
 }
+
+if (!function_exists('isB2bSfr')) {
+    function isB2bSfr()
+    {
+        return ($user ?? auth()->user())->role->name == 'B2bSfr';
+    }
+}

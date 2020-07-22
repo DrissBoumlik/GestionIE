@@ -29,6 +29,12 @@ Route::group([
     Route::resource('/roles', 'RoleController');
     Route::get('/getRoles', 'RoleController@getRoles');
     //endregion
+    Route::get('/b2bSfr/create','TicketsController@create')->name('b2bSfr.create');
+    Route::post('/b2bSfr/store','TicketsController@store')->name('b2bSfr.store');
+    Route::get('/b2bSfr/ongoing','TicketsController@ongoing')->name('b2bSfr.ongoing');
+    Route::get('/b2bSfr/valid','TicketsController@valid')->name('b2bSfr.valid');
+    Route::get('/b2bSfr/closed','TicketsController@closed')->name('b2bSfr.closed');
+
 
 
     Route::get('/', 'HomeController@home');

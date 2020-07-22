@@ -142,6 +142,36 @@
           </ul>
         </li>
       @endif
+        @if(isB2bSfr())
+            <li class="nav-main-item">
+                <a class="nav-main-link {{ request()->is('b2bSfr.create')  ? ' active' : '' }}"
+                   href="{{ route('b2bSfr.create') }}">
+                    <i class="nav-main-link-icon si si-shield"></i>
+                    <span class="nav-main-link-name">New Ticket</span>
+                </a>
+            </li>
+            <li class="nav-main-item">
+                <a class="nav-main-link {{ request()->is('b2bSfr.ongoing')  ? ' active' : '' }}"
+                    href="{{ route('b2bSfr.ongoing') }}">
+                    <i class="nav-main-link-icon si si-shield"></i>
+                    <span class="nav-main-link-name">Status encours</span>
+                </a>
+            </li>
+            <li class="nav-main-item">
+                <a class="nav-main-link{{ request()->is('b2bSfr.valid') ? ' active' : '' }}"
+                   href="{{ route('b2bSfr.valid') }}">
+                    <i class="nav-main-link-icon si si-shield"></i>
+                    <span class="nav-main-link-name">Status validé</span>
+                </a>
+            </li>
+            <li class="nav-main-item">
+                <a class="nav-main-link{{ request()->is('b2bSfr.closed') ? ' active' : '' }}"
+                   href="{{ route('b2bSfr.closed') }}">
+                    <i class="nav-main-link-icon si si-shield"></i>
+                    <span class="nav-main-link-name">Status clôturé</span>
+                </a>
+            </li>
+        @endif
     </ul>
   </div>
   <!-- END Side Navigation -->
