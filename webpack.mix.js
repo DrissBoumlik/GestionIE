@@ -29,7 +29,7 @@ mix
     .js('resources/js/pages/tables_datatables.js', 'public/js/pages/tables_datatables.js')
 
     /* Tools */
-    .browserSync('localhost:8000')
+    .browserSync('http://gie.circet.local/')
     // .disableNotifications()
 
     /* Options */

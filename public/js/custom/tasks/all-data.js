@@ -312,7 +312,18 @@ $(document).ready(function () {
                 }
             }
 
-        ]
+        ],
+        history: {
+            elementDT: undefined,
+            route: filterTasks.length ? '/api/tasks/history/' + filterTasks.data('filter') + '/EnCours' : '/api/tasks/history/EnCours',
+            columns: [
+                {data: 'agent_traitant', title: 'Agent traitant', name: 'agent_traitant'},
+                {data: 'cause_du_report', title: 'Cause du report', name: 'cause_du_report'},
+                {data: 'statut_du_report', title: 'Statut du report', name: 'statut_du_report'},
+                {data: 'accord_region', title: 'Accord région', name: 'accord_region'},
+                {data: 'statut_final', title: 'Statut final', name: 'statut_final'},
+            ]
+        }
     };
     let tasksInstance = {
         element: 'tasksInstance',
@@ -401,7 +412,22 @@ $(document).ready(function () {
                 }
             }
 
-        ]
+        ],
+        history: {
+            elementDT: undefined,
+            route: filterTasks.length ? '/api/tasks/history/' + filterTasks.data('filter') + '/Instance' : '/api/tasks/history/Instance',
+            columns: [
+                {data: 'agent_traitant', title: 'Agent traitant', name: 'agent_traitant'},
+                {data: 'statut_du_report', title: 'Statut du report', name: 'statut_du_report'},
+                {data: 'statut_final', title: 'Statut final', name: 'statut_final'},
+                // {
+                //     data: 'user', name: 'user', title: 'Utilisateur',
+                //     render: function (data, type, row, meta) {
+                //         return data ? data.firstname : '';
+                //     }
+                // }
+            ]
+        }
     };
 
     if (elementExists(tasksEncours)) {
@@ -426,8 +452,8 @@ $(document).ready(function () {
     }
 
     function InitDataTable(object, data) {
-        if ($.fn.DataTable.isDataTable(object.datatable)) {
-            object.datatable.destroy();
+        if ($.fn.DataTable.isDataTable(object.elementDT)) {
+            object.elementDT.destroy();
         }
         toggleLoader($(object.refreshBtn).parents('.col-12'));
         let table = $('#' + object.element);
@@ -450,6 +476,42 @@ $(document).ready(function () {
             columns: object.columns,
             initComplete: function (settings, response) {
                 toggleLoader($(object.refreshBtn).parents('.col-12'), true);
+            }
+
+        });
+    }
+
+    let historyPreview = $('.historyPreview');
+
+    historyPreview.on('click', function () {
+        let type = $(this).data('type').toLowerCase();
+        getHistoryTasks(type === 'encours' ? tasksEncours : tasksInstance);
+    });
+
+    function getHistoryTasks(object) {
+        if ($.fn.DataTable.isDataTable(object.history.elementDT)) {
+            object.history.elementDT.destroy();
+        }
+        // toggleLoader($(object.refreshBtn).parents('.col-12'));
+        let table = $('#historyPreview');
+        // table.DataTable().destroy();
+        object.history.elementDT = table.DataTable({
+
+            destroy: true,
+            responsive: true,
+            searching: true,
+
+            language: frLang,
+            pageLength: 10,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                type: 'GET',
+                url: APP_URL + object.history.route,
+            },
+            columns: object.history.columns,
+            initComplete: function (settings, response) {
+                // toggleLoader($(object.refreshBtn).parents('.col-12'), true);
             }
 
         });

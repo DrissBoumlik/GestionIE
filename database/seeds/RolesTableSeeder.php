@@ -15,6 +15,7 @@ class RolesTableSeeder extends Seeder
             ['name' => 'superAdmin', 'description' => 'super admin'],
             ['name' => 'admin', 'description' => 'admin'],
             ['name' => 'agent', 'description' => 'Agent'],
+            ['name' => 'B2bSfr', 'description' => 'B2bSfr'],
         ]);
     }
 }

@@ -16,4 +16,14 @@ class InstanceLog extends Model
         'user_id',
         'instance_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function task()
+    {
+        return $this->belongsTo(Instance::class, 'instance_id');
+    }
 }

@@ -63,7 +63,7 @@ class TaskController extends Controller
 
     public function dropTask(Request $request, $type)
     {
-//        dd($request->all(), $type);
+        $user = User::find($request->user_id);
         if ($type === 'encours') {
             $task = EnCours::find($request->task_id);
             $task->statut_final = null;
@@ -71,6 +71,7 @@ class TaskController extends Controller
             EnCoursLog::create([
                 'user_id' => $request->user_id,
                 'en_cours_id' => $request->task_id,
+                'agent_traitant' => $user->firstname,
                 'cause_du_report' => $request->data_row['cause_du_report'],
                 'statut_du_report' => $request->data_row['statut_du_report'],
                 'accord_region' => $request->data_row['accord_region'],
@@ -83,6 +84,7 @@ class TaskController extends Controller
             InstanceLog::create([
                 'user_id' => $request->user_id,
                 'instance_id' => $request->task_id,
+                'agent_traitant' => $user->firstname,
                 'statut_du_report' => $request->data_row['statut_du_report'],
                 'statut_final' => 'A Effectuer'
             ]);
@@ -141,7 +143,7 @@ class TaskController extends Controller
 
     public function assignTask(Request $request, $type)
     {
-//        dd($request->all(), $type);
+        $user = User::find($request->user_id);
         if ($type === 'encours') {
             $task = EnCours::find($request->task_id);
             $task->statut_final = 'EN COURS';
@@ -149,6 +151,7 @@ class TaskController extends Controller
             EnCoursLog::create([
                 'user_id' => $request->user_id,
                 'en_cours_id' => $request->task_id,
+                'agent_traitant' => $user->firstname,
                 'cause_du_report' => $request->data_row['cause_du_report'],
                 'statut_du_report' => $request->data_row['statut_du_report'],
                 'accord_region' => $request->data_row['accord_region'],
@@ -161,6 +164,7 @@ class TaskController extends Controller
             InstanceLog::create([
                 'user_id' => $request->user_id,
                 'instance_id' => $request->task_id,
+                'agent_traitant' => $user->firstname,
                 'statut_du_report' => $request->data_row['statut_du_report'],
                 'statut_final' => 'EN COURS'
             ]);

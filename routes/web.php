@@ -46,6 +46,9 @@ Route::group([
     Route::get('/tasks/filter/{status}/{type}', 'TaskController@viewTasksByStatus')->name('tasks.dataView.filter');
     Route::post('/api/tasks/filter/{status}/{type}', 'TaskController@getTasksbyStatus')->name('tasks.data.filter');
 
+    Route::get('/api/tasks/history/data/{type}', 'TaskLogController@getTasksLog');
+    Route::get('/api/tasks/history/{status}/{type}', 'TaskLogController@getTasksLogByStatus');
+
     Route::post('/api/tasks/{type}', 'TaskController@assignTask');
     Route::put('/api/tasks/{type}', 'TaskController@editTask');
     Route::delete('/api/tasks/{type}', 'TaskController@dropTask');

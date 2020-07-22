@@ -97,7 +97,7 @@
               <div class="refresh-form">
                 <div id="tree-view-all-stats" class="tree-view d-inline-flex"></div>
                 <button type="button" id="refreshTasksEnCours"
-                        class="btn btn-primary float-right">
+                        class="btn btn-primary">
                   <span class="btn-field font-weight-normal position-relative">Rafraîchir</span>
                 </button>
               </div>

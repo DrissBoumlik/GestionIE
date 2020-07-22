@@ -63,11 +63,12 @@
           </div>
           @if (isInAdminGroup())
             <div class="flex-sm-00-auto mt-3 mt-sm-0 ml-sm-3">
-                        <span class="d-inline-block invisible" data-toggle="appear" data-timeout="350">
-                            <a class="btn btn-primary px-4 py-2" data-toggle="click-ripple" href="{{ route('tasks.importView') }}">
-                                <i class="fa fa-plus mr-1"></i> Nouvelle Importation
-                            </a>
-                        </span>
+              <span class="d-inline-block invisible" data-toggle="appear" data-timeout="350">
+                  <a class="btn btn-primary px-4 py-2" data-toggle="click-ripple"
+                     href="{{ route('tasks.importView') }}">
+                      <i class="fa fa-plus mr-1"></i> Nouvelle Importation
+                  </a>
+              </span>
             </div>
           @endif
         </div>
@@ -90,31 +91,33 @@
       {{--               class="btn btn-primary mb-3 capitalize-first-letter bg-green">--}}
       {{--                exporter des données au format Excel </a>--}}
       <div class="row">
-      <div class="col-12">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title d-inline-block">Tâches Instance</h3>
-            <hr>
-            <div class="refresh-form">
-              <div id="tree-view-all-stats" class="tree-view d-inline-flex"></div>
-              <button type="button" id="refreshTasksInstance"
-                      class="btn btn-primary float-right">
-                <span class="btn-field font-weight-normal position-relative">Rafraîchir</span>
-              </button>
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title d-inline-block">Tâches Instance</h3>
+              <hr>
+              <div class="refresh-form">
+                <button type="button" class="btn btn-primary historyPreview" data-type="Instance" data-toggle="modal" data-target="#modal-history">
+                  <span class="btn-field font-weight-normal position-relative">Visualiser l'historique</span>
+                </button>
+                <button type="button" id="refreshTasksInstance"
+                        class="btn btn-primary">
+                  <span class="btn-field font-weight-normal position-relative">Rafraîchir</span>
+                </button>
+              </div>
             </div>
+            <!-- /.card-header -->
+            <div class="card-body table-responsive">
+              <table id="tasksInstance"
+                     class="not-stats-table table table-bordered table-striped table-valign-middle capitalize">
+              </table>
+            </div>
+            <!-- /.card-body -->
           </div>
-          <!-- /.card-header -->
-          <div class="card-body table-responsive">
-            <table id="tasksInstance"
-                   class="not-stats-table table table-bordered table-striped table-valign-middle capitalize">
-            </table>
-          </div>
-          <!-- /.card-body -->
+          <!-- /.card -->
         </div>
-        <!-- /.card -->
+        <!-- /.col -->
       </div>
-      <!-- /.col -->
-    </div>
       <!-- /.row -->
     </div>
     <!-- END Stats -->
