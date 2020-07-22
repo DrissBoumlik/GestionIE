@@ -21,7 +21,9 @@
                     $('.motif_handler').addClass("d-none");
                 }
 
-            })
+            });
+
+            $('select option:first-child').attr("disabled", "true");
         })
     </script>
 
