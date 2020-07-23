@@ -5,52 +5,29 @@ namespace App\Http\Controllers;
 use App\Models\EnCours;
 use App\Models\EnCoursLog;
 use App\Models\InstanceLog;
+use App\Repositories\TaskLogRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class TaskLogController extends Controller
 {
+    private  $taskLogRepository;
+
+    public function __construct(TaskLogRepository $taskLogRepository)
+    {
+        $this->taskLogRepository = $taskLogRepository;
+    }
+
     public function getTasksLog(Request $request, $type)
     {
-        dd(1);
-        $classLog = 'App\\Models\\' . $type + 'Log';
-        $data = $classLog::with(['user', 'task'])->orderBy('updated_at', 'desc')->get();
-
-        return DataTables::of($data)->toJson();
+        $data = $this->taskLogRepository->getTasksLog($request, $type);
+        DataTables::of($data)->toJson();
     }
 
     public function getTasksLogByStatus(Request $request, $status, $type)
     {
-        $tasks = [];
-        $classLog = 'App\\Models\\' . $type . 'Log';
-        $class = 'App\\Models\\' . $type;
-        if (strtolower($type) == 'encours') {
-            $colDate = 'date';
-            $table = 'en_cours';
-        } else {
-            $colDate = 'date_de_rendez_vous';
-            $table = 'instance';
-        }
-        if ($status == 'urgent') {
-            $data = $classLog::with(['user', 'task'])
-                ->whereHas('task', function ($query) use ($colDate) {
-                    return $query->where($colDate, '>=', Carbon::now()->subDays(2)->toDateTimeString());
-                })
-                ->orderBy('updated_at', 'desc')->get();
-        } elseif ($status == 'a_traiter') {
-            $data = $classLog::with(['user', 'task'])
-                ->whereHas('task', function ($query) use ($colDate) {
-                    return $query->where($colDate, '<=', Carbon::now()->subDays(2)->toDateTimeString());
-                })
-                ->orderBy('updated_at', 'desc')->get();
-        }
-        $data = $data->map(function ($item) {
-            $_item = (object)$item->getAttributes();
-            $_item->updated_at = \Carbon\Carbon::createFromTimeStamp(strtotime($item->updated_at))->diffForHumans();
-            return $_item;
-        });
-
+        $data = $this->taskLogRepository->getTasksLogByStatus($request, $status, $type);
         return DataTables::of($data)->toJson();
     }
 }
