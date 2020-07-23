@@ -532,6 +532,10 @@ $(document).ready(function () {
 
     // let historyData = $('.historyPreview');
     // let historyPreview = $('.btn-view-history');
+    $(document).on('click', '.historyPreview', function () {
+        let type = $(this).data('type').toLowerCase();
+        getHistoryTasks(type === 'encours' ? tasksEncours : tasksInstance);
+    });
 
     $(document).on('click', '.btn-view-history', function () {
         let rowData = $(this).closest('tr').find('td:first [name=input-choose]');
@@ -542,7 +546,7 @@ $(document).ready(function () {
         getHistoryTasks(type === 'encours' ? tasksEncours : tasksInstance, {task_id: data_row.id});
     });
 
-    function getHistoryTasks(object, data) {
+    function getHistoryTasks(object, data = null) {
         if ($.fn.DataTable.isDataTable(object.history.elementDT)) {
             object.history.elementDT.destroy();
         }
@@ -561,7 +565,7 @@ $(document).ready(function () {
             serverSide: true,
             ajax: {
                 type: 'GET',
-                url: APP_URL + object.history.route + '/' + data.task_id,
+                url: APP_URL + object.history.route + '/' + (data ? data.task_id : ''),
             },
             columns: object.history.columns,
             initComplete: function (settings, response) {
