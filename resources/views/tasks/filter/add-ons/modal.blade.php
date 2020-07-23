@@ -115,7 +115,7 @@
 
 <!-- Pop In Block Modal -->
 <div class="modal fade modal-history" id="modal-history" tabindex="-1" role="dialog" aria-labelledby="modal-history" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-popin" role="document">
+  <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="block block-themed block-transparent mb-0">
         <div class="block-header bg-primary-dark">
