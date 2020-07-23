@@ -25,9 +25,9 @@ class TaskLogController extends Controller
         DataTables::of($data)->toJson();
     }
 
-    public function getTasksLogByStatus(Request $request, $status, $type)
+    public function getTasksLogByStatus(Request $request, $status, $type, $task = null)
     {
-        $data = $this->taskLogRepository->getTasksLogByStatus($request, $status, $type);
+        $data = $this->taskLogRepository->getTasksLogByStatus($request, $status, $type, $task);
         return DataTables::of($data)->toJson();
     }
 }

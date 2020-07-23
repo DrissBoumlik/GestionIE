@@ -18,7 +18,7 @@ class TaskLogRepository
         return $data;
     }
 
-    public function getTasksLogByStatus(Request $request, $status, $type)
+    public function getTasksLogByStatus(Request $request, $status, $type, $task = null)
     {
         $tasks = [];
         $classLog = 'App\\Models\\' . $type . 'Log';
@@ -30,13 +30,19 @@ class TaskLogRepository
         }
         if ($status == 'urgent') {
             $data = $classLog::with(['user', 'task'])
-                ->whereHas('task', function ($query) use ($colDate) {
+                ->whereHas('task', function ($query) use ($colDate, $task) {
+                    if ($task) {
+                        $query = $query->where('id', $task);
+                    }
                     return $query->where($colDate, '>=', Carbon::now()->subDays(2)->toDateTimeString());
                 })
                 ->orderBy('updated_at', 'desc')->get();
         } elseif ($status == 'a_traiter') {
             $data = $classLog::with(['user', 'task'])
-                ->whereHas('task', function ($query) use ($colDate) {
+                ->whereHas('task', function ($query) use ($colDate, $task) {
+                    if ($task) {
+                        $query = $query->where('id', $task);
+                    }
                     return $query->where($colDate, '<=', Carbon::now()->subDays(2)->toDateTimeString());
                 })
                 ->orderBy('updated_at', 'desc')->get();

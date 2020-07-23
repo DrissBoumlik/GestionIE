@@ -329,6 +329,7 @@ $(document).ready(function () {
                     dropDown += `<div class="dropdown-menu font-size-sm" aria-labelledby="dropdown-default-primary" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">`;
                     dropDown += `<a class="dropdown-item" href="#"><i class="fa fa-fw fa-download"></i> Télécharger</a>`;
                     dropDown += `<a class="dropdown-item btn-edit" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-pencil-alt"></i> Modifier</a>`;
+                    dropDown += `<a class="dropdown-item btn-view-history" data-type="EnCours" data-toggle="modal" data-target="#modal-history" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-history"></i> Visualiser l'Historique</a>`;
 
                     // if(data.statut_eb.id !== 'encours') {
                     //     dropDown += `<a class="dropdown-item btn-send" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-paper-plane"></i> Envoyer</a>`;
@@ -411,6 +412,7 @@ $(document).ready(function () {
                     dropDown += `<div class="dropdown-menu font-size-sm" aria-labelledby="dropdown-default-primary" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">`;
                     dropDown += `<a class="dropdown-item" href="#"><i class="fa fa-fw fa-download"></i> Télécharger</a>`;
                     dropDown += `<a class="dropdown-item btn-edit" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-pencil-alt"></i> Modifier</a>`;
+                    dropDown += `<a class="dropdown-item btn-view-history" data-type="Instance" data-toggle="modal" data-target="#modal-history" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-history"></i> Visualiser l'Historique</a>`;
 
                     // if(data.statut_eb.id !== 'encours') {
                     //     dropDown += `<a class="dropdown-item btn-send" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-paper-plane"></i> Envoyer</a>`;
@@ -528,14 +530,19 @@ $(document).ready(function () {
         });
     }
 
-    let historyPreview = $('.historyPreview');
+    // let historyData = $('.historyPreview');
+    // let historyPreview = $('.btn-view-history');
 
-    historyPreview.on('click', function () {
+    $(document).on('click', '.btn-view-history', function () {
+        let rowData = $(this).closest('tr').find('td:first [name=input-choose]');
         let type = $(this).data('type').toLowerCase();
-        getHistoryTasks(type === 'encours' ? tasksEncours : tasksInstance);
+        let data_row = rowData.data('row');
+        let data_type = rowData.data('type');
+        console.log(this, data_row, data_type, type);
+        getHistoryTasks(type === 'encours' ? tasksEncours : tasksInstance, {task_id: data_row.id});
     });
 
-    function getHistoryTasks(object) {
+    function getHistoryTasks(object, data) {
         if ($.fn.DataTable.isDataTable(object.history.elementDT)) {
             object.history.elementDT.destroy();
         }
@@ -554,7 +561,7 @@ $(document).ready(function () {
             serverSide: true,
             ajax: {
                 type: 'GET',
-                url: APP_URL + object.history.route,
+                url: APP_URL + object.history.route + '/' + data.task_id,
             },
             columns: object.history.columns,
             initComplete: function (settings, response) {
