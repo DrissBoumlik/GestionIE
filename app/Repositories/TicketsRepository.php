@@ -18,7 +18,7 @@ class TicketsRepository
                 'Sous_type_Inter','date_reception','date_planification','report','motif_report','statut_finale',
                 'nom_tech','prenom_tech','num_tel','adresse_mail','motif_ko','as_j_1','statut_ticket','commentaire'
             ])
-            ->where('statut_finale', '=', 'En Cours')
+            ->where('statut_ticket', '=', 'En cours')
             ->get();
 
         return DataTables::of($tickets)->toJson();

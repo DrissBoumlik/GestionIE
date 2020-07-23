@@ -22,7 +22,7 @@ class TicketsController extends Controller
     public function store(CreateTicketRequest $request)
     {
         $this->ticketsRepository->store($request);
-        return redirect()->route('b2bSfr.create');
+        return redirect()->back()->with('message', 'le ticket a été ajouté avec succès');
     }
 
     public function ongoing(){

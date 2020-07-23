@@ -62,6 +62,14 @@
                 </ul>
             </div>
         @endif
+            @if(session()->has('message'))
+                <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ session()->get('message') }}
+                </div>
+            @endif
     </div>
     <div class="content content-narrow">
         <div class="container-fluid">
@@ -211,7 +219,7 @@
                     <div class="col-md-3">
                         <label for="num_tel">Num Tél</label>
                         <input type="tel" class="form-control" id="num_tel" name="num_tel" value="{{old('num_tel')}}"
-                               placeholder="Num Tél " pattern="[0-9]{10}" required>
+                               placeholder="Num Tél" required>
                     </div>
                     <div class="col-md-3">
                         <label for="adresse_mail">Adresse Mail</label>
