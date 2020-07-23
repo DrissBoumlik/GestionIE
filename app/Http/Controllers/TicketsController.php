@@ -36,4 +36,8 @@ class TicketsController extends Controller
     public function closed(){
         return view('b2bsfr.closed');
     }
+
+    public function getOngoingTickets(Request $request){
+        return $this->ticketsRepository->all($request);
+    }
 }

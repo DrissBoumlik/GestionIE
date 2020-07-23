@@ -7,9 +7,21 @@ namespace App\Repositories;
 use App\Models\Tickets;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateTicketRequest;
+use Yajra\DataTables\DataTables;
 
 class TicketsRepository
 {
+    public function all(Request $request)
+    {
+        $tickets = Tickets::select(
+            ['id', 'agent_traitant','region','numero_intervention','cdp','num_cdp','type_intervention', 'client', 'cp','Ville',
+                'Sous_type_Inter','date_reception','date_planification','report','motif_report','statut_finale',
+                'nom_tech','prenom_tech','num_tel','adresse_mail','motif_ko','as_j_1','statut_ticket','commentaire'
+            ])->get();
+
+        return DataTables::of($tickets)->toJson();
+
+    }
 
     public function store(CreateTicketRequest $request)
     {
