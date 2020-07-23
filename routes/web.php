@@ -34,9 +34,9 @@ Route::group([
     Route::get('/b2bSfr/ongoing','TicketsController@ongoing')->name('b2bSfr.ongoing');
     Route::get('/b2bSfr/valid','TicketsController@valid')->name('b2bSfr.valid');
     Route::get('/b2bSfr/closed','TicketsController@closed')->name('b2bSfr.closed');
-    Route::post('/b2bSfr/tickets/getOngoingTickets','TicketsController@getOngoingTickets');
+    Route::post('/b2bSfr/tickets/getTickets/{status}','TicketsController@getTickets');
 
-
+//
 
     Route::get('/', 'HomeController@home');
     Route::get('/dashboard', 'HomeController@home')->name('dashboard');

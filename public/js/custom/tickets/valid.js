@@ -3,7 +3,7 @@
         $(".dataTables_filter input[type='search']").attr("maxlength", 190);
     });
     // Initialization
-    const table = $('#ticketsEncours').DataTable( {
+    const table = $('#ticketsValid').DataTable( {
         "language": {
             "url": `${APP_URL}/json/jquery.dataTables.fr.l10n.json`
         },
@@ -14,7 +14,7 @@
         "order": [[0, 'desc']],
         "ajax": {
             "type": "POST",
-            "url": `${APP_URL}/b2bSfr/tickets/getTickets/En cours`,
+            "url": `${APP_URL}/b2bSfr/tickets/getTickets/Validé`,
             "dataSrc": "data"
         },
         columns: [
