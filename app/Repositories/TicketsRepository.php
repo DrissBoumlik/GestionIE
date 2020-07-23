@@ -17,7 +17,9 @@ class TicketsRepository
             ['id', 'agent_traitant','region','numero_intervention','cdp','num_cdp','type_intervention', 'client', 'cp','Ville',
                 'Sous_type_Inter','date_reception','date_planification','report','motif_report','statut_finale',
                 'nom_tech','prenom_tech','num_tel','adresse_mail','motif_ko','as_j_1','statut_ticket','commentaire'
-            ])->get();
+            ])
+            ->where('statut_finale', '=', 'En Cours')
+            ->get();
 
         return DataTables::of($tickets)->toJson();
 
