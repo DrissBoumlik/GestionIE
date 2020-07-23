@@ -18,4 +18,14 @@ class EnCoursLog extends Model
         'user_id',
         'en_cours_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function task()
+    {
+        return $this->belongsTo(EnCours::class, 'en_cours_id');
+    }
 }

@@ -215,13 +215,49 @@ $(document).ready(function () {
         });
     });
 
+    let TasksEncoursColumns = [
+        {data: 'agent_traitant', title: 'Agent traitant'},
+        {data: 'region', title: 'Région'},
+        {data: 'prestataire', title: 'Prestataire'},
+        {data: 'nom_tech', title: 'Nom Tech'},
+        {data: 'prenom_tech', title: 'Prénom Tech'},
+        {data: 'date', title: 'Date'},
+        {data: 'creneaux', title: 'Creneaux'},
+        {data: 'type', title: 'Type'},
+        {data: 'client', title: 'Client'},
+        {data: 'as', title: 'AS'},
+        {data: 'code_postal', title: 'Code Postal'},
+        {data: 'ville', title: 'Ville'},
+        {data: 'voie', title: 'Voie'},
+        {data: 'rue', title: 'Rue'},
+        {data: 'numero_abo', title: 'Numéro Abo'},
+        {data: 'nom_abo', title: 'Nom Abo'},
+        {data: 'report_multiple', title: 'Report multiple'},
+        {data: 'cause_du_report', title: 'Cause du report'},
+        {data: 'statut_du_report', title: 'Statut du report'},
+        // {data: 'statut_final', title: 'Statut final'},
 
-    let tasksEncours = {
-        element: 'tasksEncours',
-        elementDT: undefined,
-        route: filterTasks.length ? '/api/tasks/filter/' + filterTasks.data('filter') + '/EnCours' : '/api/tasks/data/EnCours',
-        refreshBtn: '#refreshTasksEnCours',
-        columns: [
+        {data: 'accord_region', title: 'Accord région'},
+        {data: 'task_type', title: 'Type'},
+    ];
+    let tasksInstanceColumns = [
+        {data: 'numero_de_labonne_reference_client', title: 'Numero de l\'abonne / Référence client'},
+        {data: 'station_de_modulation_Ville', title: 'Station de Modulation / Ville'},
+        {data: 'zone_region', title: 'ZONE / Région'},
+        {data: 'stit', title: 'STIT'},
+        {data: 'commune', title: 'COMMUNE'},
+        {data: 'code_postal', title: 'Code postal'},
+        {data: 'numero_de_lappel_reference_sfr', title: 'Numero de l\'appel / Référence SFR'},
+        {data: 'libcap_typologie_inter', title: 'LIB_CAP / Typologie Inter'},
+        {data: 'date_de_rendez_vous', title: 'Date de rendez-vous'},
+        {data: 'code_md_code_echec', title: 'CODE_MD / Code échec'},
+        {data: 'agent_traitant', title: 'Agent traitant'},
+        {data: 'statut_du_report', title: 'Statut du report'},
+        // {data: 'statut_final', title: 'statut final'},
+        {data: 'task_type', title: 'Type'},
+    ];
+    if (filterTasks.length) {
+        TasksEncoursColumns = [
             {
                 data: null, className: 'align-middle text-center', orderable: false, searchable: false,
                 render: function (data, type, row, meta) {
@@ -293,6 +329,7 @@ $(document).ready(function () {
                     dropDown += `<div class="dropdown-menu font-size-sm" aria-labelledby="dropdown-default-primary" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">`;
                     dropDown += `<a class="dropdown-item" href="#"><i class="fa fa-fw fa-download"></i> Télécharger</a>`;
                     dropDown += `<a class="dropdown-item btn-edit" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-pencil-alt"></i> Modifier</a>`;
+                    dropDown += `<a class="dropdown-item btn-view-history" data-type="EnCours" data-toggle="modal" data-target="#modal-history" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-history"></i> Visualiser l'Historique</a>`;
 
                     // if(data.statut_eb.id !== 'encours') {
                     //     dropDown += `<a class="dropdown-item btn-send" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-paper-plane"></i> Envoyer</a>`;
@@ -311,15 +348,8 @@ $(document).ready(function () {
                     //     </div>`;
                 }
             }
-
-        ]
-    };
-    let tasksInstance = {
-        element: 'tasksInstance',
-        elementDT: undefined,
-        route: filterTasks.length ? '/api/tasks/filter/' + filterTasks.data('filter') + '/Instance' : '/api/tasks/data/Instance',
-        refreshBtn: '#refreshTasksInstance',
-        columns: [
+        ];
+        tasksInstanceColumns = [
             {
                 data: null, className: 'align-middle text-center', orderable: false, searchable: false,
                 render: function (data, type, row, meta) {
@@ -382,6 +412,7 @@ $(document).ready(function () {
                     dropDown += `<div class="dropdown-menu font-size-sm" aria-labelledby="dropdown-default-primary" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">`;
                     dropDown += `<a class="dropdown-item" href="#"><i class="fa fa-fw fa-download"></i> Télécharger</a>`;
                     dropDown += `<a class="dropdown-item btn-edit" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-pencil-alt"></i> Modifier</a>`;
+                    dropDown += `<a class="dropdown-item btn-view-history" data-type="Instance" data-toggle="modal" data-target="#modal-history" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-history"></i> Visualiser l'Historique</a>`;
 
                     // if(data.statut_eb.id !== 'encours') {
                     //     dropDown += `<a class="dropdown-item btn-send" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-paper-plane"></i> Envoyer</a>`;
@@ -401,7 +432,51 @@ $(document).ready(function () {
                 }
             }
 
-        ]
+        ];
+    }
+
+    let tasksEncours = {
+        element: 'tasksEncours',
+        elementDT: undefined,
+        route: filterTasks.length ? '/api/tasks/filter/' + filterTasks.data('filter') + '/EnCours' : '/api/tasks/data/EnCours',
+        refreshBtn: '#refreshTasksEnCours',
+        columns: TasksEncoursColumns,
+        history: {
+            elementDT: undefined,
+            route: filterTasks.length ? '/api/tasks/history/' + filterTasks.data('filter') + '/EnCours' : '/api/tasks/history/EnCours',
+            columns: [
+                {data: 'agent_traitant', title: 'Agent traitant', name: 'agent_traitant'},
+                {data: 'cause_du_report', title: 'Cause du report', name: 'cause_du_report'},
+                {data: 'statut_du_report', title: 'Statut du report', name: 'statut_du_report'},
+                {data: 'accord_region', title: 'Accord région', name: 'accord_region'},
+                {data: 'statut_final', title: 'Statut final', name: 'statut_final'},
+                {data: 'updated_at', title: 'Quand', name: 'updated_at'},
+            ]
+        }
+    };
+
+    let tasksInstance = {
+        element: 'tasksInstance',
+        elementDT: undefined,
+        route: filterTasks.length ? '/api/tasks/filter/' + filterTasks.data('filter') + '/Instance' : '/api/tasks/data/Instance',
+        refreshBtn: '#refreshTasksInstance',
+        columns: tasksInstanceColumns,
+        history: {
+            elementDT: undefined,
+            route: filterTasks.length ? '/api/tasks/history/' + filterTasks.data('filter') + '/Instance' : '/api/tasks/history/Instance',
+            columns: [
+                {data: 'agent_traitant', title: 'Agent traitant', name: 'agent_traitant'},
+                {data: 'statut_du_report', title: 'Statut du report', name: 'statut_du_report'},
+                {data: 'statut_final', title: 'Statut final', name: 'statut_final'},
+                {data: 'updated_at', title: 'Quand', name: 'updated_at'},
+                // {
+                //     data: 'user', name: 'user', title: 'Utilisateur',
+                //     render: function (data, type, row, meta) {
+                //         return data ? data.firstname : '';
+                //     }
+                // }
+            ]
+        }
     };
 
     if (elementExists(tasksEncours)) {
@@ -426,8 +501,8 @@ $(document).ready(function () {
     }
 
     function InitDataTable(object, data) {
-        if ($.fn.DataTable.isDataTable(object.datatable)) {
-            object.datatable.destroy();
+        if ($.fn.DataTable.isDataTable(object.elementDT)) {
+            object.elementDT.destroy();
         }
         toggleLoader($(object.refreshBtn).parents('.col-12'));
         let table = $('#' + object.element);
@@ -450,6 +525,51 @@ $(document).ready(function () {
             columns: object.columns,
             initComplete: function (settings, response) {
                 toggleLoader($(object.refreshBtn).parents('.col-12'), true);
+            }
+
+        });
+    }
+
+    // let historyData = $('.historyPreview');
+    // let historyPreview = $('.btn-view-history');
+    $(document).on('click', '.historyPreview', function () {
+        let type = $(this).data('type').toLowerCase();
+        getHistoryTasks(type === 'encours' ? tasksEncours : tasksInstance);
+    });
+
+    $(document).on('click', '.btn-view-history', function () {
+        let rowData = $(this).closest('tr').find('td:first [name=input-choose]');
+        let type = $(this).data('type').toLowerCase();
+        let data_row = rowData.data('row');
+        let data_type = rowData.data('type');
+        console.log(this, data_row, data_type, type);
+        getHistoryTasks(type === 'encours' ? tasksEncours : tasksInstance, {task_id: data_row.id});
+    });
+
+    function getHistoryTasks(object, data = null) {
+        if ($.fn.DataTable.isDataTable(object.history.elementDT)) {
+            object.history.elementDT.destroy();
+        }
+        // toggleLoader($(object.refreshBtn).parents('.col-12'));
+        let table = $('#historyPreview');
+        // table.DataTable().destroy();
+        object.history.elementDT = table.DataTable({
+
+            destroy: true,
+            responsive: true,
+            searching: true,
+
+            language: frLang,
+            pageLength: 10,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                type: 'GET',
+                url: APP_URL + object.history.route + '/' + (data ? data.task_id : ''),
+            },
+            columns: object.history.columns,
+            initComplete: function (settings, response) {
+                // toggleLoader($(object.refreshBtn).parents('.col-12'), true);
             }
 
         });
