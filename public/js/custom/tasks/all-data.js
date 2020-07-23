@@ -215,13 +215,49 @@ $(document).ready(function () {
         });
     });
 
+    let TasksEncoursColumns = [
+        {data: 'agent_traitant', title: 'Agent traitant'},
+        {data: 'region', title: 'Région'},
+        {data: 'prestataire', title: 'Prestataire'},
+        {data: 'nom_tech', title: 'Nom Tech'},
+        {data: 'prenom_tech', title: 'Prénom Tech'},
+        {data: 'date', title: 'Date'},
+        {data: 'creneaux', title: 'Creneaux'},
+        {data: 'type', title: 'Type'},
+        {data: 'client', title: 'Client'},
+        {data: 'as', title: 'AS'},
+        {data: 'code_postal', title: 'Code Postal'},
+        {data: 'ville', title: 'Ville'},
+        {data: 'voie', title: 'Voie'},
+        {data: 'rue', title: 'Rue'},
+        {data: 'numero_abo', title: 'Numéro Abo'},
+        {data: 'nom_abo', title: 'Nom Abo'},
+        {data: 'report_multiple', title: 'Report multiple'},
+        {data: 'cause_du_report', title: 'Cause du report'},
+        {data: 'statut_du_report', title: 'Statut du report'},
+        // {data: 'statut_final', title: 'Statut final'},
 
-    let tasksEncours = {
-        element: 'tasksEncours',
-        elementDT: undefined,
-        route: filterTasks.length ? '/api/tasks/filter/' + filterTasks.data('filter') + '/EnCours' : '/api/tasks/data/EnCours',
-        refreshBtn: '#refreshTasksEnCours',
-        columns: [
+        {data: 'accord_region', title: 'Accord région'},
+        {data: 'task_type', title: 'Type'},
+    ];
+    let tasksInstanceColumns = [
+        {data: 'numero_de_labonne_reference_client', title: 'Numero de l\'abonne / Référence client'},
+        {data: 'station_de_modulation_Ville', title: 'Station de Modulation / Ville'},
+        {data: 'zone_region', title: 'ZONE / Région'},
+        {data: 'stit', title: 'STIT'},
+        {data: 'commune', title: 'COMMUNE'},
+        {data: 'code_postal', title: 'Code postal'},
+        {data: 'numero_de_lappel_reference_sfr', title: 'Numero de l\'appel / Référence SFR'},
+        {data: 'libcap_typologie_inter', title: 'LIB_CAP / Typologie Inter'},
+        {data: 'date_de_rendez_vous', title: 'Date de rendez-vous'},
+        {data: 'code_md_code_echec', title: 'CODE_MD / Code échec'},
+        {data: 'agent_traitant', title: 'Agent traitant'},
+        {data: 'statut_du_report', title: 'Statut du report'},
+        // {data: 'statut_final', title: 'statut final'},
+        {data: 'task_type', title: 'Type'},
+    ];
+    if (filterTasks.length) {
+        TasksEncoursColumns = [
             {
                 data: null, className: 'align-middle text-center', orderable: false, searchable: false,
                 render: function (data, type, row, meta) {
@@ -311,27 +347,8 @@ $(document).ready(function () {
                     //     </div>`;
                 }
             }
-
-        ],
-        history: {
-            elementDT: undefined,
-            route: filterTasks.length ? '/api/tasks/history/' + filterTasks.data('filter') + '/EnCours' : '/api/tasks/history/EnCours',
-            columns: [
-                {data: 'agent_traitant', title: 'Agent traitant', name: 'agent_traitant'},
-                {data: 'cause_du_report', title: 'Cause du report', name: 'cause_du_report'},
-                {data: 'statut_du_report', title: 'Statut du report', name: 'statut_du_report'},
-                {data: 'accord_region', title: 'Accord région', name: 'accord_region'},
-                {data: 'statut_final', title: 'Statut final', name: 'statut_final'},
-                {data: 'updated_at', title: 'Quand', name: 'updated_at'},
-            ]
-        }
-    };
-    let tasksInstance = {
-        element: 'tasksInstance',
-        elementDT: undefined,
-        route: filterTasks.length ? '/api/tasks/filter/' + filterTasks.data('filter') + '/Instance' : '/api/tasks/data/Instance',
-        refreshBtn: '#refreshTasksInstance',
-        columns: [
+        ];
+        tasksInstanceColumns = [
             {
                 data: null, className: 'align-middle text-center', orderable: false, searchable: false,
                 render: function (data, type, row, meta) {
@@ -413,7 +430,35 @@ $(document).ready(function () {
                 }
             }
 
-        ],
+        ];
+    }
+
+    let tasksEncours = {
+        element: 'tasksEncours',
+        elementDT: undefined,
+        route: filterTasks.length ? '/api/tasks/filter/' + filterTasks.data('filter') + '/EnCours' : '/api/tasks/data/EnCours',
+        refreshBtn: '#refreshTasksEnCours',
+        columns: TasksEncoursColumns,
+        history: {
+            elementDT: undefined,
+            route: filterTasks.length ? '/api/tasks/history/' + filterTasks.data('filter') + '/EnCours' : '/api/tasks/history/EnCours',
+            columns: [
+                {data: 'agent_traitant', title: 'Agent traitant', name: 'agent_traitant'},
+                {data: 'cause_du_report', title: 'Cause du report', name: 'cause_du_report'},
+                {data: 'statut_du_report', title: 'Statut du report', name: 'statut_du_report'},
+                {data: 'accord_region', title: 'Accord région', name: 'accord_region'},
+                {data: 'statut_final', title: 'Statut final', name: 'statut_final'},
+                {data: 'updated_at', title: 'Quand', name: 'updated_at'},
+            ]
+        }
+    };
+
+    let tasksInstance = {
+        element: 'tasksInstance',
+        elementDT: undefined,
+        route: filterTasks.length ? '/api/tasks/filter/' + filterTasks.data('filter') + '/Instance' : '/api/tasks/data/Instance',
+        refreshBtn: '#refreshTasksInstance',
+        columns: tasksInstanceColumns,
         history: {
             elementDT: undefined,
             route: filterTasks.length ? '/api/tasks/history/' + filterTasks.data('filter') + '/Instance' : '/api/tasks/history/Instance',
