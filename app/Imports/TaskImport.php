@@ -32,7 +32,7 @@ class TaskImport implements WithHeadingRow, WithChunkReading, WithBatchInserts, 
         if ($days) {
             $this->days = explode(',', $days);
             $date_filter = $this->tables_data['date_filter'];
-            \DB::table($this->tables_data['table'])->whereIn($date_filter, $this->days)->delete();
+            \DB::table($this->tables_data['table'])->whereIn(is_array($date_filter) ? $date_filter[0] : $date_filter, $this->days)->delete();
         }
         $this->user_flag = getImportedData(false);
         $this->user_flag->flags = [
@@ -51,10 +51,21 @@ class TaskImport implements WithHeadingRow, WithChunkReading, WithBatchInserts, 
             $date_filter = $this->tables_data['date_filter'];
             $columns = $this->tables_data['columns'];
             $tableId =$this->tables_data['id'];
-            $rowDate = $row[$date_filter];
             $pushedId = '';
-            if (is_integer($row[$date_filter])) {
-                $rowDate = Date::excelToDateTimeObject($row[$date_filter]);
+            $pushedDateFilter = '';
+            if(is_array($date_filter)){
+                array_walk($date_filter,function($key ,$value) use (&$pushedDateFilter,&$row){
+                    if(isset($row[$key])){
+                        $pushedDateFilter = $key;
+                    }
+                });
+            }else{
+                $pushedDateFilter = $date_filter;
+            }
+            $rowDate = $row[$pushedDateFilter];
+
+            if (is_integer($row[$pushedDateFilter])) {
+                $rowDate = Date::excelToDateTimeObject($row[$pushedDateFilter]);
                 $rowDate = $rowDate->format('Y-m-d');
             }
             if (!$this->days || in_array($rowDate, $this->days)) {

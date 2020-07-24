@@ -21,7 +21,7 @@ return [
             'table' => 'instance',
             'class' => 'Instance',
             'id' => ['numero_de_lappel_reference_sfr','numero_de_lappel','reference_sfr'],
-            'date_filter' => 'date_de_rendez_vous',
+            'date_filter' => ['date_de_rendez_vous','date_rdv'],
             'data_columns' => [
                 'numero_de_labonnereference_client' => 'Numero de l\'abonne/Référence client',
                 'numero_de_lappel_reference_sfr' => 'Numero de l\'appel / Référence SFR',
@@ -61,6 +61,7 @@ return [
                 'lib_cap' => 'libcap_typologie_inter',
                 'typologie_inter' => 'libcap_typologie_inter',
                 'date_de_rendez_vous' => 'date_de_rendez_vous',
+                'date_rdv' => 'date_de_rendez_vous',
                 'code_md_code_echec' => 'code_md_code_echec',
                 'code_md' => 'code_md_code_echec',
                 'code_echec' => 'code_md_code_echec',
