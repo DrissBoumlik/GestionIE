@@ -41,4 +41,8 @@ class TicketsController extends Controller
         return $this->ticketsRepository->all($request,$status);
     }
 
+    public function updateTicket(Request $request,$id){
+         return $this->ticketsRepository->update($request,$id);
+    }
+
 }

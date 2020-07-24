@@ -56,4 +56,16 @@ class TicketsRepository
 
     }
 
+    public function update(Request $request,$id){
+        $ticket = Tickets::find($id);
+        $ticket->agent_traitant = auth()->user()->id;
+        $ticket->statut_finale       = $request->get('statut_finale');
+        $ticket->motif_ko            = $request->get('motif_ko');
+        $ticket->motif_report        = $request->get('motif_report');
+        $ticket->as_j_1              = $request->get('as_j_1');
+        $ticket->statut_ticket       = $request->get('statut_ticket');
+        $ticket->update();
+        return $ticket;
+    }
+
 }

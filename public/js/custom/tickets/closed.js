@@ -19,7 +19,7 @@
         },
         columns: [
             {"data": "id", "title": "id" , "name" : "id"},
-            {"data": "agent_traitant", "title": "agent traitant", "name" :"id"},
+            {"data": "agent_traitant", "title": "agent traitant", "name" :"agent_traitant"},
             {'data': 'region','title' :'region' , "name" :"agent_traitant"},
             {'data':'numero_intervention','title' :'numéro intervention' , "name" :'numero_intervention'},
             {'data' : 'cdp' , 'title' : 'cdp' , "name" :'cdp'},

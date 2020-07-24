@@ -35,8 +35,8 @@ Route::group([
     Route::get('/b2bSfr/valid','TicketsController@valid')->name('b2bSfr.valid');
     Route::get('/b2bSfr/closed','TicketsController@closed')->name('b2bSfr.closed');
     Route::post('/b2bSfr/tickets/getTickets/{status}','TicketsController@getTickets');
+    Route::put('/b2bSfr/tickets/updateTicket/{id}','TicketsController@updateTicket');
 
-//
 
     Route::get('/', 'HomeController@home');
     Route::get('/dashboard', 'HomeController@home')->name('dashboard');

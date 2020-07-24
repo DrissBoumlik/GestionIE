@@ -51,25 +51,37 @@ class TaskImport implements WithHeadingRow, WithChunkReading, WithBatchInserts, 
             $date_filter = $this->tables_data['date_filter'];
             $columns = $this->tables_data['columns'];
             $tableId =$this->tables_data['id'];
-
             $rowDate = $row[$date_filter];
+            $pushedId = '';
             if (is_integer($row[$date_filter])) {
                 $rowDate = Date::excelToDateTimeObject($row[$date_filter]);
                 $rowDate = $rowDate->format('Y-m-d');
             }
             if (!$this->days || in_array($rowDate, $this->days)) {
-                $id = $this->tables_data['id'];
-                $exists = count($this->allData->where($id, $row[$id]));
+                    $id = $this->tables_data['id'];
+                    if(is_array($id)){
+                        array_walk($id,function($key ,$value) use (&$pushedId,&$row){
+                            if(isset($row[$key])){
+                                $pushedId = $key;
+                            }
+                        });
+                        $exists = count($this->allData->where($pushedId, $row[$pushedId]));
+                    }
+                    else{
+                        $exists = count($this->allData->where($id, $row[$id]));
+                        $pushedId = $id;
+                    }
                 if ($exists) {
                     $this->rejectedData->push($row);
                     return $items;
                 } else {
                     $item = [];
-                    if (is_integer($row[$tableId])) {
+                    if (is_integer($row[$pushedId])) {
                         $item['task_type'] = 'FTTH';
                     } else {
                         $item['task_type'] = 'FTTB';
                     }
+
                     array_walk($columns, function ($column, $key) use (&$item, $row, $columns, $date_filter, $rowDate) {
                         if ($key == $date_filter) {
                             $item[$column] = $rowDate;

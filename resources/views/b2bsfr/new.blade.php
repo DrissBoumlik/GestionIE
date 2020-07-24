@@ -77,10 +77,10 @@
                 @csrf
                 <h3>Ajouter une nouvelle ticket</h3>
                 <div class="row mb-2 mb-2">
-                <div class="col-md-6">
-                    <label for="agent_traitant">Agent traitant</label>
-                    <input type="text" class="form-control" id="agent_traitant" name="agent_traitant" value="{{ auth()->user()->id }}" placeholder="agent_traitant" readonly>
-                </div>
+                    <div class="col-md-6">
+                        <label for="agent_traitant">Agent traitant</label>
+                        <input type="text" class="form-control" id="agent_traitant" name="agent_traitant" value="{{ auth()->user()->id }}" placeholder="agent_traitant" readonly>
+                    </div>
                     <div class="col-md-6">
                         <label for="region">Région</label>
 
@@ -164,21 +164,17 @@
                 </div>
 
                 <div class="row mb-2">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label for="date_reception">Date Réception Ticket</label>
                         <input type="datetime-local" class="form-control" name="date_reception" id="date_reception" value="{{'date_reception'}}" required>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label for="date_planification">Date planification</label>
                         <input type="datetime-local" class="form-control" name="date_planification" id="date_planification" value="{{'date_planification'}}" required>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label for="report">Report</label>
                         <input type="datetime-local" class="form-control" name="report" id="report" value="{{'report'}}" required>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="motif_report">Motif Report</label>
-                        <input type="text" class="form-control" name="motif_report" id="motif_report" value="{{old('motif_report')}}" required>
                     </div>
                 </div>
 
@@ -188,14 +184,14 @@
                 </div>
 
                 <div class="row mb-2">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="statut_finale">Statut Final</label>
                         {!! Form::select('statut_finale', ['ok' => 'ok',
                                                            'ko' => 'ko',
                                                            ],
                                         $statut_finale ?? '', ["class" => "form-control", "id" => "statut_finale", "placeholder" => "choissisez un statut", 'required'] ) !!}
                     </div>
-                    <div class="col-md-6 motif_handler d-none">
+                    <div class="col-md-4 motif_handler d-none">
                         <label for="motif_ko">Motif KO</label>
                         {!! Form::select('motif_ko', ['Circet' => 'Circet',
                                                       'Client' => 'Client',
@@ -204,6 +200,16 @@
 
                                                            ],
                                         $motif_ko ?? '', ["class" => "form-control", "id" => "motif_ko", "placeholder" => "choissisez un motif"] ) !!}
+                    </div>
+                    <div class="col-md-4 motif_handler d-none">
+                        <label for="motif_report">Motif Report</label>
+                        {!! Form::select('motif_report', ['Demande CDP' => 'Demande CDP',
+                                                          'Demande Client' => 'Demande Client',
+                                                          'ABS Tech'    => 'ABS Tech',
+                                                          'Priorisation SAV' => 'Priorisation SAV'
+
+                                                           ],
+                                        $motif_report ?? '', ["class" => "form-control", "id" => "motif_report", "placeholder" => "choissisez un motif de report"] ) !!}
                     </div>
                 </div>
 
