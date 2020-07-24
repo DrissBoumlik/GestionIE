@@ -32,6 +32,7 @@
             {'data' : 'date_reception', 'title':'date reception' , "name" :'date_reception'},
             {'data' : 'date_planification', 'title':'dateplanification' , "name" :'date_planification'},
             {'data' : 'report', 'title':'report' , "name" :'report'},
+            {'data' : 'commentaire_report', 'title':'commentaire_report' , "name" :'commentaire_report'},
             {'data' : 'motif_report', 'title':'motif_report' , "name" :'motif_report'},
             {'data' : 'statut_finale', 'title':'statut_finale' , "name" :'statut_finale'},
             {'data' : 'nom_tech', 'title':'nom_tech' , "name" :'nom_tech'},
@@ -78,6 +79,13 @@
         $('#modal-edit-ticket').modal('show');
     });
 
+    $(document).on('click','.btn-view-history',function () {
+        const $row = $(this).closest('tr');
+        const data =  $('#ticketsEncours').DataTable().row($row).data();
+        getTicketHistorique(data);
+        $('#modal-ticket-history').modal('show');
+    });
+
     $(document).on('click','#submit-ticket-form',function (e) {
             let values = $('#tickets-edit-form').serializeArray();
             let formData = values.reduce(function(obj, item) {
@@ -103,6 +111,8 @@
         $('#motif_report').val(data.motif_report).trigger('change.select2');
         $('#as_j_1').val(data.as_j_1).trigger('change.select2');
         $('#statut_ticket').val(data.statut_ticket).trigger('change.select2');
+        $('#commentaire_report').text(data.commentaire_report);
+        $('#commentaire').text(data.commentaire);
     };
 
     $('#statut_finale').on('change.select2',function () {
@@ -151,3 +161,35 @@ const editTicketService = (data) => {
 };
 
 
+const getTicketHistorique = (data) =>{
+    let tabledata = $('#ticketsHistory');
+    if($.fn.DataTable.isDataTable(tabledata)){
+        tabledata.DataTable().destroy();
+    }
+    const table = tabledata.DataTable( {
+        "language": {
+            "url": `${APP_URL}/json/jquery.dataTables.fr.l10n.json`
+        },
+        "responsive": true,
+        "autoWidth": false,
+        "processing": true,
+        "serverSide": true,
+        "order": [[0, 'desc']],
+        "ajax": {
+            "type": "GET",
+            "url": `${APP_URL}/b2bSfr/tickets/getTicketHistory/${data.id}`,
+            "dataSrc": "data"
+        },
+        columns: [
+            {"data": "agent_traitant", "title": "agent traitant", "name" :"agent_traitant"},
+            {'data' : 'motif_report', 'title':'motif_report' , "name" :'motif_report'},
+            {'data' : 'statut_finale', 'title':'statut_finale' , "name" :'statut_finale'},
+            {'data' : 'motif_ko', 'title':'motif_ko', "name" :'motif_ko'},
+            {'data' : 'commentaire_report', 'title':'commentaire_report' , "name" :'commentaire_report'},
+            {'data' : 'as_j_1', 'title':'as_j_1', "name" :'as_j_1'},
+            {'data' : 'statut_ticket', 'title':'statut_ticket', "name" :'statut_ticket'},
+            {'data' : 'commentaire', 'title':'commentaire', "name" :'commentaire'},
+            {'data' : 'created_at', 'title':'quand', "name" :'created_at'},
+        ],
+    } );
+};

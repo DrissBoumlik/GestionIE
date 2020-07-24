@@ -45,4 +45,8 @@ class TicketsController extends Controller
          return $this->ticketsRepository->update($request,$id);
     }
 
+    public function getTicketHistory($id){
+        return $this->ticketsRepository->history($id);
+    }
+
 }

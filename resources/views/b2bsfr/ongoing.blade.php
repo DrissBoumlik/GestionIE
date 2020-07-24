@@ -121,7 +121,7 @@
                     <div class="modal-content">
                         <div class="block block-themed block-transparent mb-1">
                             <div class="block-header bg-primary-dark">
-                                <h3 class="block-title"></h3>
+                                <h3 class="block-title">Modifier le ticket</h3>
                                 <div class="block-options">
                                     <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
                                         <i class="fa fa-fw fa-times"></i>
@@ -167,6 +167,12 @@
                                                             $motif_report ?? '', ["class" => "form-control", "id" => "motif_report", "placeholder" => "choissisez un motif de report"] ) !!}
                                         </div>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label for="commentaire_report">Commentaire Report</label>
+                                        <textarea class="form-control" id="commentaire_report" name="commentaire_report" rows="4" placeholder="Commentaire..." required>{{ old('commentaire_report') }}</textarea>
+                                    </div>
+
                                     <div class="row mb-2">
                                         <div class="col-md-6">
                                             <label for="as_j_1">AS J-1</label>
@@ -185,6 +191,11 @@
 
                                         </div>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label for="commentaire">Commentaire</label>
+                                        <textarea class="form-control" id="commentaire" name="commentaire" rows="4" placeholder="Commentaire..." required>{{ old('commentaire') }}</textarea>
+                                    </div>
                                     <button class="btn btn-square btn-warning btn-wdth-rc" type="submit" name="submit-tickets" id="submit-ticket-form">
                                         Modifier le ticket
                                     </button>
@@ -195,6 +206,56 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modal-ticket-history" tabindex="-1" role="dialog"
+                 aria-labelledby="modal-ticket-history" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-dialog-ticket modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="block block-themed block-transparent mb-1">
+                            <div class="block-header bg-primary-dark">
+                                <h3 class="block-title">Visualiser l'historique</h3>
+                                <div class="block-options">
+                                    <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
+                                        <i class="fa fa-fw fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="block-content font-size-sm">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h3 class="card-title d-inline-block">l'historique de ticket</h3>
+                                                    <hr>
+                                                    <!-- /.card-header -->
+                                                    <div class="card-body table-responsive">
+                                                        <table id="ticketsHistory"
+                                                               class="not-stats-table table table-bordered table-striped table-valign-middle capitalize">
+                                                            <tr>
+                                                                <th>agent_traitant</th>
+                                                                <th>motif_report</th>
+                                                                <th>statut_finale</th>
+                                                                <th>motif_ko</th>
+                                                                <th>commentaire report</th>
+                                                                <th>as_j_1</th>
+                                                                <th>statut_ticket</th>
+                                                                <th>commentaire</th>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <!-- /.card-body -->
+                                                </div>
+                                                <!-- /.card -->
+                                            </div>
+                                            <!-- /.col -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- END Stats -->
     </div>

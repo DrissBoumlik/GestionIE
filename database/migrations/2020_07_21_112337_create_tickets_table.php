@@ -27,9 +27,9 @@ class CreateTicketsTable extends Migration
             $table->string('Sous_type_Inter',30);
             $table->dateTime('date_reception');
             $table->dateTime('date_planification');
-            $table->dateTime('report');
-            $table->string('motif_report',20);
-            $table->text('commentaire_report');
+            $table->dateTime('report')->nullable();
+            $table->string('motif_report',20)->nullable();
+            $table->text('commentaire_report')->nullable();
             $table->string('statut_finale',20);
             $table->string('nom_tech',20);
             $table->string('prenom_tech',20);

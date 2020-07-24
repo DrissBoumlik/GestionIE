@@ -174,13 +174,13 @@
                     </div>
                     <div class="col-md-4">
                         <label for="report">Report</label>
-                        <input type="datetime-local" class="form-control" name="report" id="report" value="{{'report'}}" required>
+                        <input type="datetime-local" class="form-control" name="report" id="report" value="{{'report'}}">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="commentaire_report">Commentaire Report</label>
-                    <textarea class="form-control" id="commentaire_report" name="commentaire_report" rows="4" placeholder="Commentaire..." required>{{ old('commentaire_report') }}</textarea>
+                    <textarea class="form-control" id="commentaire_report" name="commentaire_report" rows="4" placeholder="Commentaire...">{{ old('commentaire_report') }}</textarea>
                 </div>
 
                 <div class="row mb-2">

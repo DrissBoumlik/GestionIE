@@ -5,6 +5,7 @@ namespace App\Repositories;
 
 
 use App\Models\Tickets;
+use App\Models\TicketsLog;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateTicketRequest;
 use Yajra\DataTables\DataTables;
@@ -15,13 +16,26 @@ class TicketsRepository
     {
         $tickets = Tickets::select(
             ['id', 'agent_traitant','region','numero_intervention','cdp','num_cdp','type_intervention', 'client', 'cp','Ville',
-                'Sous_type_Inter','date_reception','date_planification','report','motif_report','statut_finale',
+                'Sous_type_Inter','date_reception','date_planification','report','commentaire_report','motif_report','statut_finale',
                 'nom_tech','prenom_tech','num_tel','adresse_mail','motif_ko','as_j_1','statut_ticket','commentaire'
             ])
             ->where('statut_ticket', '=', $status)
             ->get();
 
         return DataTables::of($tickets)->toJson();
+
+    }
+
+    public function history($id)
+    {
+        $ticketLogs = TicketsLog::select(
+            [ 'agent_traitant','motif_report','statut_finale', 'motif_ko','commentaire_report','as_j_1','statut_ticket','commentaire','created_at'
+            ])
+            ->where('ticket_id', '=', $id)
+            ->orderBy('created_at','asc')
+            ->get();
+
+        return DataTables::of($ticketLogs)->toJson();
 
     }
 
@@ -54,6 +68,17 @@ class TicketsRepository
         $ticket->commentaire         = $request->get('commentaire');
         $ticket->save();
 
+        $ticketLog = new TicketsLog();
+        $ticketLog->agent_traitant      = auth()->user()->id;
+        $ticketLog->ticket_id           = $ticket->id;
+        $ticketLog->motif_report        = $request->get('motif_report');
+        $ticketLog->commentaire_report  = $request->get('commentaire_report');
+        $ticketLog->statut_finale       = $request->get('statut_finale');
+        $ticketLog->motif_ko            = $request->get('motif_ko');
+        $ticketLog->as_j_1              = $request->get('as_j_1');
+        $ticketLog->statut_ticket       = $request->get('statut_ticket');
+        $ticketLog->commentaire         = $request->get('commentaire');
+        $ticketLog->save();
     }
 
     public function update(Request $request,$id){
@@ -64,7 +89,22 @@ class TicketsRepository
         $ticket->motif_report        = $request->get('motif_report');
         $ticket->as_j_1              = $request->get('as_j_1');
         $ticket->statut_ticket       = $request->get('statut_ticket');
+        $ticket->commentaire_report  = $request->get('commentaire_report');
+        $ticket->commentaire         = $request->get('commentaire');
         $ticket->update();
+
+        $ticketLog = new TicketsLog();
+        $ticketLog->agent_traitant      = auth()->user()->id;
+        $ticketLog->ticket_id           = $id;
+        $ticketLog->motif_report        = $request->get('motif_report');
+        $ticketLog->commentaire_report  = $request->get('commentaire_report');
+        $ticketLog->statut_finale       = $request->get('statut_finale');
+        $ticketLog->motif_ko            = $request->get('motif_ko');
+        $ticketLog->as_j_1              = $request->get('as_j_1');
+        $ticketLog->statut_ticket       = $request->get('statut_ticket');
+        $ticketLog->commentaire         = $request->get('commentaire');
+        $ticketLog->save();
+
         return $ticket;
     }
 
