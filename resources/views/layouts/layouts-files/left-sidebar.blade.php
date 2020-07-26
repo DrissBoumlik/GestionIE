@@ -151,22 +151,22 @@
           </a>
         </li>
         <li class="nav-main-item">
-          <a class="nav-main-link {{ request()->is('b2bSfr.ongoing')  ? ' active' : '' }}"
-             href="{{ route('b2bSfr.ongoing') }}">
+          <a class="nav-main-link {{ request()->is('b2bSfr/tickets/En cours')  ? ' active' : '' }}"
+             href="{{ route('b2bSfr.tickets',['status' => 'En cours']) }}">
             <i class="nav-main-link-icon si si-shield"></i>
             <span class="nav-main-link-name">Status encours</span>
           </a>
         </li>
         <li class="nav-main-item">
           <a class="nav-main-link{{ request()->is('b2bSfr.valid') ? ' active' : '' }}"
-             href="{{ route('b2bSfr.valid') }}">
+             href="{{ route('b2bSfr.tickets',['status' => 'Validé']) }}">
             <i class="nav-main-link-icon si si-shield"></i>
             <span class="nav-main-link-name">Status validé</span>
           </a>
         </li>
         <li class="nav-main-item">
           <a class="nav-main-link{{ request()->is('b2bSfr.closed') ? ' active' : '' }}"
-             href="{{ route('b2bSfr.closed') }}">
+             href="{{ route('b2bSfr.tickets',['status' => 'Clôturé']) }}">
             <i class="nav-main-link-icon si si-shield"></i>
             <span class="nav-main-link-name">Status clôturé</span>
           </a>

@@ -1,7 +1,7 @@
 @extends('layouts.backend')
 
 @section('page-title')
-    Dashboard
+    Ajouter un ticket
 @endsection
 
 @section('css_after')
@@ -87,7 +87,7 @@
                         {!! Form::select('region', ['CE'     => 'CE',
                                                     'IDF'    => 'IDF',
                                                      'SE'    => 'SE',
-                                                     'SO'    => 'SE',
+                                                     'SO'    => 'SO',
                                                      'CORSE' => 'CORSE'
                                                      ],
                                         $region ?? '', ["class" => "form-control", "id" => "region", "placeholder" => "choisissez une region", 'required'] ) !!}

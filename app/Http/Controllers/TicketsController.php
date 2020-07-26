@@ -15,6 +15,16 @@ class TicketsController extends Controller
         $this->ticketsRepository = $ticketsRepository;
     }
 
+    public function index(Request $request,$status){
+
+        $tickets = $this->ticketsRepository->index($request,$status);
+        if($request->ajax()) {
+
+            return view('b2bsfr.ajax.index', compact('tickets'));
+        }
+        return view('b2bsfr.index',compact('tickets','status'));
+    }
+
     public function create(){
         return view('b2bsfr.new');
     }
@@ -25,24 +35,18 @@ class TicketsController extends Controller
         return redirect()->back()->with('message', 'le ticket a été ajouté avec succès');
     }
 
-    public function ongoing(){
-        return view('b2bsfr.ongoing');
-    }
-
-    public function valid(){
-        return view('b2bsfr.valid');
-    }
-
-    public function closed(){
-        return view('b2bsfr.closed');
-    }
-
-    public function getTickets(Request $request,$status){
-        return $this->ticketsRepository->all($request,$status);
+    public function edit($id){
+        $ticket = $this->ticketsRepository->edit($id);
+        return view('b2bsfr.edit',compact('ticket'));
     }
 
     public function updateTicket(Request $request,$id){
-         return $this->ticketsRepository->update($request,$id);
+        $this->ticketsRepository->update($request,$id);
+        return redirect()->back()->with('message', 'le ticket a été modifié avec succès');
+    }
+
+    public function showTicketHistoryPage($id){
+        return view('b2bsfr.history',compact('id'));
     }
 
     public function getTicketHistory($id){

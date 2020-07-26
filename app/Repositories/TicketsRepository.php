@@ -12,19 +12,52 @@ use Yajra\DataTables\DataTables;
 
 class TicketsRepository
 {
-    public function all(Request $request,$status)
-    {
-        $tickets = Tickets::select(
-            ['id', 'agent_traitant','region','numero_intervention','cdp','num_cdp','type_intervention', 'client', 'cp','Ville',
-                'Sous_type_Inter','date_reception','date_planification','report','commentaire_report','motif_report','statut_finale',
-                'nom_tech','prenom_tech','num_tel','adresse_mail','motif_ko','as_j_1','statut_ticket','commentaire'
-            ])
-            ->where('statut_ticket', '=', $status)
-            ->get();
+    public function index(Request $request,$status){
 
-        return DataTables::of($tickets)->toJson();
-
+        $tickets =$this->getTicketsQuery($request,$status);
+        $tickets = $tickets->paginate(10);
+        return $tickets;
     }
+
+    private function getTicketsQuery(Request $request,$status){
+            return Tickets::where(function($query) use ($request,$status){
+                $query->where('statut_ticket', '=', $status);
+
+                if(isset($request['type_intervention']) && !empty($request['type_intervention'])) {
+                    $type_intervention = $request['type_intervention'];
+                    $query->where('type_intervention', $type_intervention);
+                }
+
+                if(isset($request['statut_finale']) && !empty($request['statut_finale'])) {
+                    $statut_finale = $request['statut_finale'];
+                    $query->where('statut_finale', $statut_finale);
+                }
+
+                if(isset($request['motif_ko']) && !empty($request['motif_ko'])) {
+                    $motif_ko = $request['motif_ko'];
+                    $query->where('motif_ko', $motif_ko);
+                }
+
+                if(isset($request['motif_report']) && !empty($request['motif_report'])) {
+                    $motif_report = $request['motif_report'];
+                    $query->where('motif_report', $motif_report);
+                }
+
+                if(isset($request['as_j_1']) && !empty($request['as_j_1'])) {
+                    $as_j_1 = $request['as_j_1'];
+                    $query->where('as_j_1', $as_j_1);
+                }
+
+                if((isset($request['start-date']) && !empty($request['start-date']))  && (isset($request['end-date']) && !empty($request['end-date'])) ){
+                    $start_date = $request['start-date'];
+                    $end_date = $request['end-date'];
+                    $query->whereBetween('created_at', [$start_date, $end_date]);
+                }
+            })
+                ->orderByDesc('tickets.id');
+    }
+
+
 
     public function history($id)
     {
@@ -81,12 +114,27 @@ class TicketsRepository
         $ticketLog->save();
     }
 
+    public function edit($id){
+        return Tickets::find($id);
+    }
+
     public function update(Request $request,$id){
+
+        $motif_report = $request->get('motif_report');
+        $motif_ko = $request->get('motif_ko');
+
+        if($request->get('statut_finale') === 'ok'){
+            $motif_report = null;
+            $motif_ko = null;
+        }else{
+            $motif_report = $request->get('motif_report');;
+            $motif_ko = $request->get('motif_ko');;
+        }
         $ticket = Tickets::find($id);
         $ticket->agent_traitant = auth()->user()->id;
         $ticket->statut_finale       = $request->get('statut_finale');
-        $ticket->motif_ko            = $request->get('motif_ko');
-        $ticket->motif_report        = $request->get('motif_report');
+        $ticket->motif_ko            = $motif_ko;
+        $ticket->motif_report        = $motif_report;
         $ticket->as_j_1              = $request->get('as_j_1');
         $ticket->statut_ticket       = $request->get('statut_ticket');
         $ticket->commentaire_report  = $request->get('commentaire_report');
@@ -96,10 +144,10 @@ class TicketsRepository
         $ticketLog = new TicketsLog();
         $ticketLog->agent_traitant      = auth()->user()->id;
         $ticketLog->ticket_id           = $id;
-        $ticketLog->motif_report        = $request->get('motif_report');
         $ticketLog->commentaire_report  = $request->get('commentaire_report');
         $ticketLog->statut_finale       = $request->get('statut_finale');
-        $ticketLog->motif_ko            = $request->get('motif_ko');
+        $ticketLog->motif_report        = $motif_report;
+        $ticketLog->motif_ko            = $motif_ko;
         $ticketLog->as_j_1              = $request->get('as_j_1');
         $ticketLog->statut_ticket       = $request->get('statut_ticket');
         $ticketLog->commentaire         = $request->get('commentaire');
