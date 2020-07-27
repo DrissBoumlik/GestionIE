@@ -46,6 +46,7 @@ class TaskImport implements WithHeadingRow, WithChunkReading, WithBatchInserts, 
 
     public function collection(Collection $rows)
     {
+        $this->allData = app('App\\Models\\' . $this->tables_data['class'])::select($this->tables_data['id'])->get();
         $data = $rows->reduce(function ($items, $row) {
 //            $formatted_date = $this->transformDate($row['date]);
             $date_filter = $this->tables_data['date_filter'];
@@ -132,12 +133,12 @@ class TaskImport implements WithHeadingRow, WithChunkReading, WithBatchInserts, 
                         'updated_at' => date('Y-m-d H:i:s'),
                     ];
                     */
-                    $this->allData->push($item);
                     $items[] = $item;
                     return $items;
                 }
             }
         }, []);
+
 
         if ($data && count($data)) {
             app('App\\Models\\' . $this->tables_data['class'])::insert($data);
