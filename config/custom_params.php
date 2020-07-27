@@ -20,12 +20,15 @@ return [
         0 => [
             'table' => 'instance',
             'class' => 'Instance',
-            'id' => ['numero_de_lappel_reference_sfr','numero_de_lappel','reference_sfr'],
+            'id' => ['numero_de_lappel_reference_sfr' => 'numero_de_labonne_reference_client',
+                'reference_client' => 'numero_de_labonne_reference_client',
+                'numero_de_labonne' => 'numero_de_labonne_reference_client',
+                        ],
             'date_filter' => ['date_de_rendez_vous','date_rdv'],
             'data_columns' => [
-                'numero_de_labonnereference_client' => 'Numero de l\'abonne/Référence client',
+                'numero_de_labonne_reference_client' => 'Numero de l\'abonne/Référence client',
                 'numero_de_lappel_reference_sfr' => 'Numero de l\'appel / Référence SFR',
-                'lib_cap_typologie_inter' => 'LIB_CAP / Typologie Inter'
+                'libcap_typologie_inter' => 'LIB_CAP / Typologie Inter'
             ],
             'columns' => [
                 // columns for the "INSTANCE" table
@@ -74,8 +77,8 @@ return [
         1 => [
             'table' => 'en_cours',
             'class' => 'EnCours',
-            'id' => 'as',
-            'date_filter' => 'date',
+            'id' => ['as' => 'as'],
+            'date_filter' => ['date'],
             'data_columns' => [
                 'prestataire' => 'Prestataire',
                 'as' => 'AS',

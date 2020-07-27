@@ -51,17 +51,14 @@ class TaskImport implements WithHeadingRow, WithChunkReading, WithBatchInserts, 
             $date_filter = $this->tables_data['date_filter'];
             $columns = $this->tables_data['columns'];
             $tableId =$this->tables_data['id'];
-            $pushedId = '';
+            $pushedIdKey = '';
+            $pushedIdValue = '';
             $pushedDateFilter = '';
-            if(is_array($date_filter)){
-                array_walk($date_filter,function($key ,$value) use (&$pushedDateFilter,&$row){
-                    if(isset($row[$key])){
-                        $pushedDateFilter = $key;
-                    }
-                });
-            }else{
-                $pushedDateFilter = $date_filter;
-            }
+            array_walk($date_filter,function($key ,$value) use (&$pushedDateFilter,$row){
+                if(isset($row[$key])){
+                    $pushedDateFilter = $key;
+                }
+            });
             $rowDate = $row[$pushedDateFilter];
 
             if (is_integer($row[$pushedDateFilter])) {
@@ -69,32 +66,36 @@ class TaskImport implements WithHeadingRow, WithChunkReading, WithBatchInserts, 
                 $rowDate = $rowDate->format('Y-m-d');
             }
             if (!$this->days || in_array($rowDate, $this->days)) {
-                    $id = $this->tables_data['id'];
-                    if(is_array($id)){
-                        array_walk($id,function($key ,$value) use (&$pushedId,&$row){
-                            if(isset($row[$key])){
-                                $pushedId = $key;
-                            }
-                        });
-                        $exists = count($this->allData->where($pushedId, $row[$pushedId]));
-                    }
-                    else{
-                        $exists = count($this->allData->where($id, $row[$id]));
-                        $pushedId = $id;
-                    }
+                    $ids = $this->tables_data['id'];
+                    array_walk($ids,function($value, $key) use (&$pushedIdKey,&$pushedIdValue,$row){
+                        if(isset($row[$key])){
+                            $pushedIdKey = $key;
+                            $pushedIdValue = $value;
+                        }
+                    });
+                    $exists = count($this->allData->where($pushedIdValue, $row[$pushedIdKey]));
+
                 if ($exists) {
-                    $this->rejectedData->push($row);
-                    return $items;
-                } else {
                     $item = [];
-                    if (is_integer($row[$pushedId])) {
+                    array_walk($columns, function ($column, $key) use (&$item, $row, $columns, $pushedDateFilter, $rowDate) {
+                        if (isset($row[$key])) {
+                            $item[$column] = $row[$key];
+                        }
+                    });
+                    $this->rejectedData->push($item);
+                    return $items;
+                }
+                else
+                    {
+                    $item = [];
+                    if (is_integer($row[$pushedIdKey])) {
                         $item['task_type'] = 'FTTH';
                     } else {
                         $item['task_type'] = 'FTTB';
                     }
 
-                    array_walk($columns, function ($column, $key) use (&$item, $row, $columns, $date_filter, $rowDate) {
-                        if ($key == $date_filter) {
+                    array_walk($columns, function ($column, $key) use (&$item, $row, $columns, $pushedDateFilter, $rowDate) {
+                        if ($key == $pushedDateFilter) {
                             $item[$column] = $rowDate;
                             return;
                         }
@@ -137,7 +138,7 @@ class TaskImport implements WithHeadingRow, WithChunkReading, WithBatchInserts, 
                 }
             }
         }, []);
-//        dd($data);
+
         if ($data && count($data)) {
             app('App\\Models\\' . $this->tables_data['class'])::insert($data);
             if ($this->user_flag) {
