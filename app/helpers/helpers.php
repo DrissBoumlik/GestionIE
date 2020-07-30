@@ -219,7 +219,7 @@ if (!function_exists('makeFilterSubQuery')) {
             }
         }
 
-        if ($filter && $filter->date_filter[0] !== '') {
+        if ($filter && $filter->date_filter) {
             $queryFilters[] = $dateColumn .' in ("' . join('","', $filter->date_filter) . '")';
         } else {
             $queryFilters[] = $dateColumn .' like "' . $currentMonth . '"';
@@ -244,7 +244,7 @@ if (!function_exists('applyFilter')) {
         if ($column && $filter && $filter->rows_filter) {
             $results = $results->whereIn( $column, $filter->rows_filter);
         }
-        if ($filter && $filter->date_filter[0] !== '') {
+        if ($filter && $filter->date_filter) {
             $results = $results->whereIn($dateColumn, $filter->date_filter);
         } else {
             $results = $results->where($dateColumn, 'like', $currentMonth);
