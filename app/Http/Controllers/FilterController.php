@@ -31,4 +31,5 @@ class FilterController extends Controller
     {
         return $this->filterRepository->saveUserFilter($request);
     }
+
 }

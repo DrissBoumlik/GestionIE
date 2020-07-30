@@ -2,18 +2,20 @@
   font-weight: normal
 
 
-.treejs .treejs-checkbox:before
-  width: 1.25rem !important
-  height: 1.25rem !important
-  border-radius: 50% !important
-  border-color: #df8e83 !important
-  background-color: #f9eae8 !important
-  top: 0px
+.treejs .treejs-checkbox
+    margin-right: 5px !important
+    &:before
+            width: 1.25rem !important
+            height: 1.25rem !important
+            border-radius: 50% !important
+            border-color: #F69940 !important
+            background-color: #F69940 !important
+            top: 0
 
 .importChoiceInout:checked + .treejs-checkbox:before
   background-color: #d26a5c !important
   border-color: #d26a5c !important
-  
+
 .importChoiceInout:checked + .treejs-checkbox:after
   position: absolute
   content: ' '

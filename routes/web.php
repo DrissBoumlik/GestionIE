@@ -19,6 +19,7 @@ Route::group([
     'middleware' => ['auth'],
 ], function () {
 
+    Route::get('/dates/{table}', 'ReportingController@getDates');
 
     //region Users / Roles / Permissions
     Route::get('/profile', 'UserController@profile');
@@ -29,6 +30,8 @@ Route::group([
     Route::resource('/roles', 'RoleController');
     Route::get('/getRoles', 'RoleController@getRoles');
     //endregion
+
+    //region B2b
     Route::match(['get', 'post'],'b2bSfr/tickets/{status}','TicketsController@index')->name('b2bSfr.tickets');
     Route::get('b2bSfr/create','TicketsController@create')->name('b2bSfr.create');
     Route::post('/b2bSfr/store','TicketsController@store')->name('b2bSfr.store');
@@ -36,7 +39,11 @@ Route::group([
     Route::put('/b2bSfr/tickets/updateTicket/{id}','TicketsController@updateTicket')->name('b2bSfr.tickets.update');
     Route::get('b2bSfr/tickets/getTicketHistory/{id}','TicketsController@getTicketHistory')->name('b2bSfr.tickets.history');
     Route::get('b2bSfr/tickets/showTicketHistoryPage/{id}','TicketsController@showTicketHistoryPage')->name('b2bSfr.tickets.showTicketHistoryPage');
-
+    Route::get('reporting','ReportingController@index')->name('reporting');
+    Route::post('reporting/getInstance','ReportingController@getInstance');
+    Route::post('/reporting/getEnCours','ReportingController@getEnCours');
+    Route::post('/reporting/getGlobalData','ReportingController@getGlobalData');
+    //end region
 
     Route::get('/', 'HomeController@home');
     Route::get('/dashboard', 'HomeController@home')->name('dashboard');
@@ -62,6 +69,10 @@ Route::group([
     Route::get('/import/data/count', 'ImportController@getInsertedData');
     Route::get('/import/status/edit/{flag}', 'ImportController@editImportingStatus');
     //endregion
+
+    Route::get('/user/filter', 'FilterController@getUserFilter');
+    Route::post('/user/filter', 'FilterController@saveUserFilter');
+
 
     Route::get('/unauthorized', 'ExceptionController@unauthorized');
 });

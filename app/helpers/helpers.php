@@ -183,12 +183,10 @@ if (!function_exists('getMonthName')) {
 }
 
 if (!function_exists('makeFilterSubQuery')) {
-    function makeFilterSubQuery(Request $request, $route, $column = null)
+    function makeFilterSubQuery(Request $request, $route, $column = null,$dateColumn = null)
     {
         $user = getAuthUser();
-        $agenceCode = $request->get('agence_code');
-        $agentName = $request->get('agent_name');
-        $filters = ['route' => $route, 'user_id' => $user->id, 'agent_name' => $agentName, 'isGlobal' => null];
+        $filters = ['route' => $route, 'user_id' => $user->id, 'agent_name' => $user->lastname, 'isGlobal' => null];
 
 
         $dates = $request->get('dates');
@@ -197,7 +195,7 @@ if (!function_exists('makeFilterSubQuery')) {
         $filter = Filter::firstOrCreate($filters);
         $queryFilters = null;
         $filterSaved = false;
-        if ($request->exists('refreshMode')) {
+        if ($request->get('refreshMode') === 'true') {
             if (!is_array($dates)) {
                 $dates = explode(',', $dates);
             }
@@ -220,15 +218,17 @@ if (!function_exists('makeFilterSubQuery')) {
                 $filterSaved = true;
             }
         }
-        if ($filter && $filter->date_filter) {
-            $queryFilters[] = 'Date_Note in ("' . join('","', $filter->date_filter) . '")';
+
+        if ($filter && $filter->date_filter[0] !== '') {
+            $queryFilters[] = $dateColumn .' in ("' . join('","', $filter->date_filter) . '")';
         } else {
-            $queryFilters[] = 'Date_Note like "' . $currentMonth . '"';
+            $queryFilters[] = $dateColumn .' like "' . $currentMonth . '"';
         }
         if ($column && $filter && $filter->rows_filter) {
             $queryFilters[] = $column . ' in ("' . join('","', $filter->rows_filter) . '")';
         }
         $queryFilters = join(' and ', $queryFilters);
+
 
         if ($filter && !$filter->exists && !$filterSaved) {
             $filter = null;
@@ -238,16 +238,16 @@ if (!function_exists('makeFilterSubQuery')) {
 }
 
 if (!function_exists('applyFilter')) {
-    function applyFilter($results, $filter, $column = null)
+    function applyFilter($results, $filter, $column = null,$dateColumn = null)
     {
         $currentMonth = date('Y-m') . '%';
         if ($column && $filter && $filter->rows_filter) {
-            $results = $results->whereIn('st.' . $column, $filter->rows_filter);
+            $results = $results->whereIn( $column, $filter->rows_filter);
         }
-        if ($filter && $filter->date_filter) {
-            $results = $results->whereIn('st.Date_Note', $filter->date_filter);
+        if ($filter && $filter->date_filter[0] !== '') {
+            $results = $results->whereIn($dateColumn, $filter->date_filter);
         } else {
-            $results = $results->where('st.Date_Note', 'like', $currentMonth);
+            $results = $results->where($dateColumn, 'like', $currentMonth);
         }
         return $results;
     }

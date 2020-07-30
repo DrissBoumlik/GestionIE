@@ -158,19 +158,26 @@
           </a>
         </li>
         <li class="nav-main-item">
-          <a class="nav-main-link{{ request()->is('b2bSfr.valid') ? ' active' : '' }}"
+          <a class="nav-main-link{{ request()->is('b2bSfr/tickets/valid') ? ' active' : '' }}"
              href="{{ route('b2bSfr.tickets',['status' => 'Validé']) }}">
             <i class="nav-main-link-icon si si-shield"></i>
             <span class="nav-main-link-name">Status validé</span>
           </a>
         </li>
         <li class="nav-main-item">
-          <a class="nav-main-link{{ request()->is('b2bSfr.closed') ? ' active' : '' }}"
+          <a class="nav-main-link{{ request()->is('b2bSfr/tickets/closed') ? ' active' : '' }}"
              href="{{ route('b2bSfr.tickets',['status' => 'Clôturé']) }}">
             <i class="nav-main-link-icon si si-shield"></i>
             <span class="nav-main-link-name">Status clôturé</span>
           </a>
         </li>
+            <li class="nav-main-item">
+                <a class="nav-main-link{{ request()->is('reporting') ? ' active' : '' }}"
+                   href="{{ route('reporting') }}">
+                    <i class="nav-main-link-icon si si-shield"></i>
+                    <span class="nav-main-link-name">Reporting</span>
+                </a>
+            </li>
       @endif
     </ul>
   </div>
