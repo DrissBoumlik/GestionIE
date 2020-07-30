@@ -89,8 +89,16 @@
                       <label for="statut">{{ $param['title'] }}</label>
                       <select type="text" class="form-control" id="{{ $key }}" name="{{ $key }}"
                               style="width: 100%">
+                          @if($key !== 'agent_traitant')
+                          <option selected disabled></option>
+                          @endif
                         @foreach ($param['values'] as $paramValue)
-                          <option value="{{ $paramValue }}">{{ $paramValue }}</option>
+                                  @if($key !== 'statut_final')
+                                        <option value="{{ $paramValue }}">{{ $paramValue }}</option>
+                                  @else
+
+                                          <option value="{{ $paramValue }}" selected="{{$paramValue === 'EN COURS'}}">{{ $paramValue }}</option>
+                                  @endif
                         @endforeach
                       </select>
                     </div>
