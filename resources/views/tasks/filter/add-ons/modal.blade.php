@@ -90,7 +90,7 @@
                       <select type="text" class="form-control" id="{{ $key }}" name="{{ $key }}"
                               style="width: 100%">
                           @if($key !== 'agent_traitant')
-                          <option selected disabled></option>
+                          <option selected disabled>choissir un {{str_replace('_',' ',$key)}}</option>
                           @endif
                         @foreach ($param['values'] as $paramValue)
                                   @if($key !== 'statut_final')
