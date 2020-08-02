@@ -2,7 +2,7 @@
 
     window.getDatesFilter = function (globalElements) {
         $.ajax({
-            url: APP_URL + '/dates/en_cours',
+            url: APP_URL + '/dates',
             method: 'GET',
             success: function (response) {
                 let treeData = response.dates;
@@ -174,6 +174,12 @@
         });
         userFilter(userObject, true);
         getData(instance, {
+            refreshMode: true,
+        });
+        getData(enCours, {
+            refreshMode: true,
+        });
+        getData(globalData, {
             refreshMode: true,
         });
     });

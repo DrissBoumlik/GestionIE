@@ -20,9 +20,9 @@ class ReportingController extends Controller
         return view('reporting.reporting');
     }
 
-    public function getDates(Request $request,$table)
+    public function getDates(Request $request)
     {
-        $dates = $this->reportingRepository->getDateNotes($request,$table);
+        $dates = $this->reportingRepository->getDateNotes($request);
         return ['dates' => $dates];
     }
 

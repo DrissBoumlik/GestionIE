@@ -5,27 +5,38 @@ namespace App\Repositories;
 
 
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 class ReportingRepository
 {
-    public function getDateNotes(Request $request,$table)
+
+    public function getDateNotes(Request $request)
     {
-        $selectedColumn = ($table === 'instance') ? 'date_de_rendez_vous' : 'date';
-        $dates = \DB::table($table)
+        $instance = \DB::table('instance')
             ->select(
-                DB::raw("YEAR(".$selectedColumn.") as year"),
-                DB::raw("MONTH(".$selectedColumn.") as month"),
-                DB::raw("concat('S', WEEKOFYEAR(".$selectedColumn.")) as week"),
-                $selectedColumn
+                DB::raw("YEAR(date_de_rendez_vous) as year"),
+                DB::raw("MONTH(date_de_rendez_vous) as month"),
+                DB::raw("concat('S', WEEKOFYEAR(date_de_rendez_vous)) as week"),
+                DB::raw("date_de_rendez_vous as date")
+            )
+            ->distinct()
+            ->whereNull('isNotReady');
+        $dates =  \DB::table('en_cours')
+            ->select(
+                DB::raw("YEAR(date) as year"),
+                DB::raw("MONTH(date) as month"),
+                DB::raw("concat('S', WEEKOFYEAR(date)) as week"),
+                'date'
             )
             ->distinct()
             ->whereNull('isNotReady')
-            ->orderBy($selectedColumn)
+            ->union($instance)
+            ->orderBy('date')
             ->get()
-            ->groupBy(['year', 'month', 'week', $selectedColumn])
+            ->groupBy(['year', 'month', 'week', 'date'])
             ->map(function ($year, $index) {
                 $_year = new \stdClass();
                 $_year->id = $index; // year name
@@ -92,7 +103,7 @@ class ReportingRepository
 
 
         if (!count($instance)) {
-            $data = ['data' => []];
+            $data = ['filter' => $filter,'zoneFilter' => $zone,'checkedZoneFilter' => $filter->rows_filter,'data' => $instance];
             return $data;
         } else {
             $temp = $instance->groupBy(['task_type']);
@@ -234,28 +245,19 @@ class ReportingRepository
         $instance = \DB::table('instance');
 
         $instance = $instance->select(\DB::raw('agent_traitant, numero_de_labonne_reference_client as identifiant, date_de_rendez_vous as date,task_type,count(numero_de_labonne_reference_client) as count') )
-            ->whereNull('isNotReady')->whereNotNull('agent_traitant');
+            ->whereNull('isNotReady');
         $instance = applyFilter($instance, $filter,'zone_region','date_de_rendez_vous');
+        $instance = $instance->groupBy('agent_traitant','identifiant','date', 'task_type');
 
-        $en_cours = \DB::table('en_cours');
-        $en_cours = $en_cours->select(\DB::raw('agent_traitant, `as` as identifiant ,date,task_type,count(`as`) as count') )
-            ->whereNull('isNotReady')->whereNotNull('agent_traitant');
-        $en_cours = applyFilter($en_cours, $filter,'ville','date');
+        $globalData = \DB::table('en_cours');
+        $globalData =$globalData->select(\DB::raw('agent_traitant, `as` as identifiant ,date,task_type,count(`as`) as count') )
+            ->whereNull('isNotReady');
+        $globalData = applyFilter($globalData, $filter,'ville','date');
+        $globalData
+            ->union($instance)
+            ->orderBy('agent_traitant');
 
-
-        $zone = \DB::table('en_cours')
-            ->select('ville')
-            ->distinct()
-            ->whereNull('isNotReady')
-            ->pluck('ville');
-
-        $instance = $instance->orderBy('agent_traitant');
-        $instance = $instance->groupBy('agent_traitant','identifiant','date_de_rendez_vous', 'task_type')->get();
-
-        $en_cours = $en_cours->orderBy('agent_traitant');
-        $en_cours = $en_cours->groupBy('agent_traitant','identifiant','date', 'task_type')->get();
-
-        $globalData = $instance->merge($en_cours);
+        $globalData = $globalData->groupBy('agent_traitant','identifiant','date', 'task_type')->get();
 
         $keys = $globalData->groupBy(['task_type'])->keys();
 
@@ -264,6 +266,17 @@ class ReportingRepository
         if(!$keys->contains('FTTB'))
             $keys->push('FTTB');
 
+        $zoneEn_cours = \DB::table('en_cours')
+            ->select('ville')
+            ->distinct()
+            ->whereNull('isNotReady');
+
+        $zone = \DB::table('instance')
+            ->select(DB::raw('zone_region as ville'))
+            ->distinct()
+            ->whereNull('isNotReady')
+            ->union($zoneEn_cours)
+            ->pluck('ville');
 
         if (!count($globalData)) {
             $data = ['filter' => $filter,'zoneFilter' => $zone,'checkedZoneFilter' => $request->get('rowFilter'),'data' => []];

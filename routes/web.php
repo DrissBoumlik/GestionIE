@@ -19,7 +19,7 @@ Route::group([
     'middleware' => ['auth'],
 ], function () {
 
-    Route::get('/dates/{table}', 'ReportingController@getDates');
+    Route::get('/dates', 'ReportingController@getDates');
 
     //region Users / Roles / Permissions
     Route::get('/profile', 'UserController@profile');

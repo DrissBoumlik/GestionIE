@@ -48,7 +48,7 @@
                         <div class="card-body">
                             <div class="card-body table-responsive">
                                 <table id="instance"
-                                       class="table table-striped table-bordered p-5">
+                                       class="table table-bordered table-striped table-valign-middle capitalize">
                                     <tr>
                                         <th>RESSOURCE</th>
                                         <th>Numero de l'appel / Référence SFR</th>
@@ -85,7 +85,7 @@
                         <div class="card-body">
                             <div class="card-body table-responsive">
                                 <table id="enCours"
-                                       class="table table-striped table-bordered p-5">
+                                       class="table table-bordered table-striped table-valign-middle capitalize">
                                     <tr>
                                         <th>RESSOURCE</th>
                                         <th>AS</th>
@@ -122,7 +122,7 @@
                         <div class="card-body">
                             <div class="card-body table-responsive">
                                 <table id="global"
-                                       class="table table-striped table-bordered p-5">
+                                       class="table table-bordered table-striped table-valign-middle capitalize">
                                     <tr>
                                         <th>RESSOURCE</th>
                                         <th>Numero de l'appel / Référence SFR //AS</th>
