@@ -177,31 +177,8 @@
                         <input type="datetime-local" class="form-control" name="report" id="report" value="{{'report'}}">
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="commentaire_report">Commentaire Report</label>
-                    <textarea class="form-control" id="commentaire_report" name="commentaire_report" rows="4" placeholder="Commentaire...">{{ old('commentaire_report') }}</textarea>
-                </div>
-
-                <div class="row mb-2">
+                <div class="row mb-2 justify-content-end">
                     <div class="col-md-4">
-                        <label for="statut_finale">Statut Final</label>
-                        {!! Form::select('statut_finale', ['ok' => 'ok',
-                                                           'ko' => 'ko',
-                                                           ],
-                                        $statut_finale ?? '', ["class" => "form-control", "id" => "statut_finale", "placeholder" => "choissisez un statut", 'required'] ) !!}
-                    </div>
-                    <div class="col-md-4 motif_handler d-none">
-                        <label for="motif_ko">Motif KO</label>
-                        {!! Form::select('motif_ko', ['Circet' => 'Circet',
-                                                      'Client' => 'Client',
-                                                      'SFR'    => 'SFR',
-                                                      'Opérateurs TIERS' => 'Opérateurs TIERS'
-
-                                                           ],
-                                        $motif_ko ?? '', ["class" => "form-control", "id" => "motif_ko", "placeholder" => "choissisez un motif"] ) !!}
-                    </div>
-                    <div class="col-md-4 motif_handler d-none">
                         <label for="motif_report">Motif Report</label>
                         {!! Form::select('motif_report', ['Demande CDP' => 'Demande CDP',
                                                           'Demande Client' => 'Demande Client',
@@ -210,6 +187,30 @@
 
                                                            ],
                                         $motif_report ?? '', ["class" => "form-control", "id" => "motif_report", "placeholder" => "choissisez un motif de report"] ) !!}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="commentaire_report">Commentaire Report</label>
+                    <textarea class="form-control" id="commentaire_report" name="commentaire_report" rows="4" placeholder="Commentaire...">{{ old('commentaire_report') }}</textarea>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <label for="statut_finale">Statut Final</label>
+                        {!! Form::select('statut_finale', ['ok' => 'ok',
+                                                           'ko' => 'ko',
+                                                           ],
+                                        $statut_finale ?? '', ["class" => "form-control", "id" => "statut_finale", "placeholder" => "choissisez un statut", 'required'] ) !!}
+                    </div>
+                    <div class="col-md-6 motif_handler">
+                        <label for="motif_ko">Motif KO</label>
+                        {!! Form::select('motif_ko', ['Circet' => 'Circet',
+                                                      'Client' => 'Client',
+                                                      'SFR'    => 'SFR',
+                                                      'Opérateurs TIERS' => 'Opérateurs TIERS'
+
+                                                           ],
+                                        $motif_ko ?? '', ["class" => "form-control", "id" => "motif_ko", "placeholder" => "choissisez un motif"] ) !!}
                     </div>
                 </div>
 
