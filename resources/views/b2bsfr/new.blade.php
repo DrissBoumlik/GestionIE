@@ -202,7 +202,7 @@
                                                            ],
                                         $statut_finale ?? '', ["class" => "form-control", "id" => "statut_finale", "placeholder" => "choissisez un statut", 'required'] ) !!}
                     </div>
-                    <div class="col-md-6 motif_handler">
+                    <div class="col-md-6 motif_handler d-none">
                         <label for="motif_ko">Motif KO</label>
                         {!! Form::select('motif_ko', ['Circet' => 'Circet',
                                                       'Client' => 'Client',
