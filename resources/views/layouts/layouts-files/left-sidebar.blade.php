@@ -142,7 +142,7 @@
           </ul>
         </li>
       @endif
-      @if(isB2bSfr())
+      @if(isB2bSfrGroup())
         <li class="nav-main-item">
           <a class="nav-main-link {{ request()->is('b2bSfr.create')  ? ' active' : '' }}"
              href="{{ route('b2bSfr.create') }}">
@@ -172,54 +172,13 @@
           </a>
         </li>
       @endif
-        @if(isAgent())
-            <li
-                class="nav-main-item{{ (request()->is('tasks/filter/urgent') || request()->is('tasks/filter/urgent/*')) ? ' open' : '' }}">
-                <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true"
-                   href="#">
-                    <i class="nav-main-link-icon far fa-chart-bar"></i>
-                    <span class="nav-main-link-name">Tâches prioritaires</span>
+        @if(isB2bSfrAdmin())
+            <li class="nav-main-item">
+                <a class="nav-main-link{{ (request()->is('users') || request()->is('users/*')) ? ' active' : '' }}"
+                   href="{{ route('users.index') }}">
+                    <i class="nav-main-link-icon si si-users"></i>
+                    <span class="nav-main-link-name">Utilisateurs</span>
                 </a>
-                <ul class="nav-main-submenu">
-                    <li class="nav-main-item">
-                        <a
-                            class="nav-main-link {{ (request()->is('tasks/filter/urgent/encours') || request()->is('tasks/filter/urgent/encours/*')) ? ' active' : '' }}"
-                            href="{{ route('tasks.dataView.filter', ['status'=>'urgent', 'type'=> 'encours']) }}">
-                            <span class="nav-main-link-name">En Cours</span>
-                        </a>
-                    </li>
-                    <li class="nav-main-item">
-                        <a
-                            class="nav-main-link {{ (request()->is('tasks/filter/urgent/instance') || request()->is('tasks/filter/urgent/instance/*')) ? ' active' : '' }}"
-                            href="{{ route('tasks.dataView.filter', ['status'=>'urgent', 'type'=> 'instance']) }}">
-                            <span class="nav-main-link-name">Instance</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li
-                class="nav-main-item{{ (request()->is('tasks/filter/a_traiter') || request()->is('tasks/filter/a_traiter/*')) ? ' open' : '' }}">
-                <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true"
-                   href="#">
-                    <i class="nav-main-link-icon far fa-chart-bar"></i>
-                    <span class="nav-main-link-name">Tâches à Traitées</span>
-                </a>
-                <ul class="nav-main-submenu">
-                    <li class="nav-main-item">
-                        <a
-                            class="nav-main-link {{ (request()->is('tasks/filter/a_traiter/encours') || request()->is('tasks/filter/a_traiter/encours/*')) ? ' active' : '' }}"
-                            href="{{ route('tasks.dataView.filter', ['status'=>'a_traiter', 'type'=> 'encours']) }}">
-                            <span class="nav-main-link-name">En Cours</span>
-                        </a>
-                    </li>
-                    <li class="nav-main-item">
-                        <a
-                            class="nav-main-link {{ (request()->is('tasks/filter/a_traiter/instance') || request()->is('tasks/filter/a_traiter/instance/*')) ? ' active' : '' }}"
-                            href="{{ route('tasks.dataView.filter', ['status'=>'a_traiter', 'type'=> 'instance']) }}">
-                            <span class="nav-main-link-name">Instance</span>
-                        </a>
-                    </li>
-                </ul>
             </li>
         @endif
     </ul>

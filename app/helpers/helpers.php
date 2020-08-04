@@ -575,8 +575,14 @@ if (!function_exists('isAgent')) {
 }
 
 if (!function_exists('isB2bSfr')) {
-    function isB2bSfr()
+    function isB2bSfrGroup()
     {
-        return ($user ?? auth()->user())->role->name == 'B2bSfr';
+        $roleName = ($user ?? auth()->user())->role->name;
+        return $roleName = 'B2bSfr' || $roleName = 'B2bSfrAdmin';
+    }
+
+    function isB2bSfrAdmin()
+    {
+        return ($user ?? auth()->user())->role->name == 'B2bSfrAdmin';
     }
 }

@@ -16,6 +16,7 @@ class RolesTableSeeder extends Seeder
             ['name' => 'admin', 'description' => 'admin'],
             ['name' => 'agent', 'description' => 'Agent'],
             ['name' => 'B2bSfr', 'description' => 'B2bSfr'],
+            ['name' => 'B2bSfrAdmin', 'description' => 'B2bSfrAdmin'],
         ]);
     }
 }

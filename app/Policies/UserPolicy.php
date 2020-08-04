@@ -29,7 +29,7 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        return $user->isInAdminGroup();
+        return [$user->isInAdminGroup(), $user->isB2bSfrAdmin()];
     }
 
     /**
@@ -40,7 +40,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        return $user->isInAdminGroup();
+        return [$user->isInAdminGroup(), $user->isB2bSfrAdmin()];
     }
 
     /**
@@ -52,7 +52,7 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        return $user->isInAdminGroup();
+        return [$user->isInAdminGroup(), $user->isB2bSfrAdmin()];
     }
 
     /**
@@ -64,7 +64,7 @@ class UserPolicy
      */
     public function deleteUser(User $user, User $model)
     {
-        return $user->isInAdminGroup() && !$model->isInAdminGroup();
+        return  [$user->isInAdminGroup() && !$model->isInAdminGroup(), $user->isB2bSfrAdmin() && $user->isB2bSfrAdmin()];
     }
 
     /**

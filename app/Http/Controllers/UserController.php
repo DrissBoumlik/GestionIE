@@ -21,9 +21,16 @@ class UserController extends Controller
 
     public function getUsers(Request $request, YDT $dataTables)
     {
+
         $users = User::whereHas('role', function ($query) {
-            $query->where('name', 'not like', 'superAdmin');
+            if(auth()->user()->role->name === 'B2bSfrAdmin'){
+                $query->whereIn('name',['B2bSfr','B2bSfrAdmin']);
+            }else{
+                $query->where('name', 'not like', 'superAdmin');
+                $query->whereNotIn('name',['B2bSfr','B2bSfrAdmin']);
+            }
         })->get();
+
         return DataTables::of($users)
             ->setRowId(function ($user) {
                 return 'user-' . $user->id;
@@ -52,7 +59,11 @@ class UserController extends Controller
     {
         $this->authorize('create', auth()->user());
 
-        $roles = Role::all();
+        if(auth()->user()->role->name === 'B2bSfrAdmin'){
+            $roles = Role::whereIn('name',['B2bSfr','B2bSfrAdmin'])->get();
+        }else{
+            $roles= Role::whereNotIn('name',['B2bSfr','B2bSfrAdmin'])->get();
+        }
         return view('users.create')->with(['roles' => $roles]);
     }
 
@@ -78,7 +89,7 @@ class UserController extends Controller
             'status' => $request->status ? true : false,
             'password' => Hash::make($request->password),
             'role_id' => $request->role,
-            'agent_name' => ($request->rolesubstr === 3) ? substr($request->firstname,0,1) .$request->lastname : $request->agent_name,
+            'agent_name' => ($request->role === 3) ? substr($request->firstname,0,1) .$request->lastname : $request->agent_name,
         ]);
 
         return redirect('/users');
@@ -196,7 +207,11 @@ class UserController extends Controller
     public function profile()
     {
         $user = auth()->user();
-        $roles = Role::all();
+        if(auth()->user()->role->name === 'B2bSfrAdmin'){
+            $roles = Role::whereIn('name',['B2bSfr','B2bSfrAdmin'])->get();
+        }else{
+            $roles= Role::whereNotIn('name',['B2bSfr','B2bSfrAdmin'])->get();
+        }
         return view('users.profile')->with(['user' => $user, 'roles' => $roles]);
     }
 
@@ -205,7 +220,11 @@ class UserController extends Controller
         // Authorization
 //        $this->authorize('view', auth()->user());
 
-        $roles = Role::all();
+        if(auth()->user()->role->name === 'B2bSfrAdmin'){
+            $roles = Role::whereIn('name',['B2bSfr','B2bSfrAdmin'])->get();
+        }else{
+            $roles= Role::whereNotIn('name',['B2bSfr','B2bSfrAdmin'])->get();
+        }
         return view('users.show')->with(['user' => $user, 'roles' => $roles]);
     }
 

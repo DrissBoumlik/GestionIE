@@ -48,5 +48,29 @@ class UsersTableSeeder extends Seeder
             'remember_token' => Str::random(10),
             'role_id' => 3
         ]);
+        User::create([
+            'firstname' => 'John',
+            'lastname' => 'B2bSfr',
+            'email' => 'b2bSfr@circet.fr',
+            'status' => true,
+            'picture' => '/media/avatars/superAdmin.png',
+            'gender' => 'male',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+            'remember_token' => Str::random(10),
+            'role_id' => 4
+        ]);
+        User::create([
+            'firstname' => 'John',
+            'lastname' => 'B2bSfrAdmin',
+            'email' => 'ad.b2bSfr@circet.fr',
+            'status' => true,
+            'picture' => '/media/avatars/user.png',
+            'gender' => 'male',
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+            'remember_token' => Str::random(10),
+            'role_id' => 5
+        ]);
     }
 }

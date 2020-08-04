@@ -66,6 +66,11 @@ class User extends Authenticatable
         return $this->role->name == 'agent';
     }
 
+    public function isB2bSfrAdmin()
+    {
+        return $this->role->name == 'B2bSfrAdmin';
+    }
+
     public function role()
     {
         return $this->belongsTo(Role::class);
