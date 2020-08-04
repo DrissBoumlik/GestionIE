@@ -18,7 +18,8 @@ class CreateFiltersTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('route')->nullable();
             $table->json('date_filter')->nullable();
-            $table->json('rows_filter')->nullable();
+            $table->json('rows_zone')->nullable();
+            $table->json('rows_cdp')->nullable();
             $table->string('agent_name', 100)->nullable();
             $table->boolean('isGlobal')->nullable();
             $table->timestamps();

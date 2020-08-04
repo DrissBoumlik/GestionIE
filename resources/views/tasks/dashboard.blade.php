@@ -34,6 +34,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
 
+
+    <script src="{{ asset('/js/custom/reporting/all-data.js') }}"></script>
+
     <script>
         $(function () {
             @if($errors->any())
@@ -99,11 +102,11 @@
 @endsection
 @section('content')
     <!-- Page Content -->
-    <div class="content content-narrow">
-        <hr class="separator">
-        <!-- Stats -->
+    <div class="block-content font-size-sm">
         <div class="container-fluid">
+            @if(isInAdminGroup())
+                @include('../../reporting/reporting')
+            @endif
         </div>
-        <!-- END Stats -->
     </div>
 @endsection

@@ -42,8 +42,8 @@
     };
 
     let userObject = {
-        filterTree: {dates: [], rows: [], datesTreeObject: undefined},
-        filterElement: {dates: '#tree-view-00', zoneRows: ''},
+        filterTree: {dates: [], zoneRows: [],cdpRows:[], datesTreeObject: undefined},
+        filterElement: {dates: '#tree-view-00', zoneRows: '',cdpRows:''},
     };
 
     window.userFilter = function (userObject, isPost = false) {
@@ -76,15 +76,14 @@
         refreshBtn :'#refreshInstance',
         columns: [
             {data: 'agent_traitant',title: 'RESSOURCE', name: 'agent_traitant'},
-            {data: 'numero_de_labonne_reference_client',title: 'Numero de l\'appel / Référence SFR', name: 'numero_de_labonne_reference_client'},
             {data: 'date_de_rendez_vous',title: 'date de rendez vous', name: 'date_de_rendez_vous'},
             {data: 'FTTH',title: 'FTTH', name: 'FTTH'},
             {data: 'FTTB', title: 'FTTB', name: 'FTTB'},
             {data: 'total',title: 'total', name: 'total'},
         ],
         data: undefined,
-        filterTree: {dates: [], zoneRows: [], datesTreeObject: undefined},
-        filterElement: {dates: '#tree-view-01', zoneRows: '#instance-zone-filter-01'},
+        filterTree: {dates: [], zoneRows: [],cdpRows:[], datesTreeObject: undefined},
+        filterElement: {dates: '#tree-view-01', zoneRows: '#instance-zone-filter-01',cdpRows: '#instance-cdp-filter-01'},
         route: '/reporting/getInstance',
     };
     if (elementExists(instance)) {
@@ -105,15 +104,14 @@
         refreshBtn :'#refreshEnCours',
         columns: [
             {data: 'agent_traitant',title: 'RESSOURCE', name: 'agent_traitant'},
-            {data: 'as',title: 'as', name: 'as'},
             {data: 'date',title: 'date de rendez vous', name: 'date'},
             {data: 'FTTH',title: 'FTTH', name: 'FTTH'},
             {data: 'FTTB', title: 'FTTB', name: 'FTTB'},
             {data: 'total',title: 'total', name: 'total'},
         ],
         data: undefined,
-        filterTree: {dates: [], zoneRows: [], datesTreeObject: undefined},
-        filterElement: {dates: '#tree-view-02', zoneRows: '#instance-zone-filter-02'},
+        filterTree: {dates: [], zoneRows: [],cdpRows:[], datesTreeObject: undefined},
+        filterElement: {dates: '#tree-view-02', zoneRows: '#enCours-zone-filter-02', cdpRows: '#enCours-cdp-filter-02'},
         route: '/reporting/getEnCours',
     };
     if (elementExists(enCours)) {
@@ -134,15 +132,14 @@
         refreshBtn :'#refreshGlobal',
         columns: [
             {data: 'agent_traitant',title: 'RESSOURCE', name: 'agent_traitant'},
-            {data: 'identifiant',title: 'Numero de l\'appel / Référence SFR //AS', name: 'identifiant'},
             {data: 'date',title: 'date de rendez vous', name: 'date'},
             {data: 'FTTH',title: 'FTTH', name: 'FTTH'},
             {data: 'FTTB', title: 'FTTB', name: 'FTTB'},
             {data: 'total',title: 'total', name: 'total'},
         ],
         data: undefined,
-        filterTree: {dates: [], zoneRows: [], datesTreeObject: undefined},
-        filterElement: {dates: '#tree-view-03', zoneRows: '#instance-zone-filter-03'},
+        filterTree: {dates: [], zoneRows: [],cdpRows:[], datesTreeObject: undefined},
+        filterElement: {dates: '#tree-view-03', zoneRows: '#global-zone-filter-03', cdpRows: '#global-cdp-filter-03'},
         route: '/reporting/getGlobalData',
     };
     if (elementExists(globalData)) {
@@ -192,7 +189,11 @@
              data = {...data, refreshMode: true};
          }
          if (object.filterTree && object.filterTree.zoneRows) {
-             data = {...data, 'rowFilter': object.filterTree.zoneRows};
+             console.log(object.filterTree.zoneRows);
+             data = {...data, 'rowzone': object.filterTree.zoneRows};
+         }
+         if (object.filterTree && object.filterTree.cdpRows) {
+             data = {...data, 'rowcdp': object.filterTree.cdpRows};
          }
          if (object.filterTree) {
              data = {...data, 'dates': object.filterTree.dates};
@@ -230,7 +231,6 @@
                 if(response.filter){
                     object.filterTree.dates = response.filter.date_filter;
                 }
-                console.log(response);
                 if(response.zoneFilter){
                     let rowsFilterData = response.zoneFilter.map(function (d, index) {
                         return {
@@ -244,11 +244,30 @@
                         loaded: function () {
                             if (response.filter && response.zoneFilter) {
                                 this.values = object.filterTree.zoneRows = (response.checkedZoneFilter) ? response.checkedZoneFilter : response.zoneFilter;
-                                console.log(object.filterTree.zoneRows);
                             }
                         },
                         onChange: function () {
                             object.filterTree.zoneRows = this.values;
+                        }
+                    });
+                }
+                if(response.cdpFilter){
+                    let rowsFilterData = response.cdpFilter.map(function (d, index) {
+                        return {
+                            id: d,
+                            text: d
+                        };
+                    });
+                    new Tree(object.filterElement.cdpRows, {
+                        data: [{id: '-1', text: 'cdp', children: rowsFilterData}],
+                        closeDepth: 1,
+                        loaded: function () {
+                            if (response.filter && response.cdpFilter) {
+                                this.values = object.filterTree.cdpRows = (response.checkedCdpFilter) ? response.checkedCdpFilter : response.cdpFilter;
+                            }
+                        },
+                        onChange: function () {
+                            object.filterTree.cdpRows = this.values;
                         }
                     });
                 }

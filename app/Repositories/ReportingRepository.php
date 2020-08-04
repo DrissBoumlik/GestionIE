@@ -75,14 +75,14 @@ class ReportingRepository
 
         $_route = getRoute(Route::current());
         $route = str_replace('/columns', '', $_route);
-        list($filter, $queryFilters) = makeFilterSubQuery($request, $route,'zone_region','date_de_rendez_vous');
+        list($filter, $queryFilters) = makeFilterSubQuery($request, $route,'zone_region','code_postal','date_de_rendez_vous');
 
         $instance = \DB::table('instance');
 
-        $instance = $instance->select('agent_traitant','numero_de_labonne_reference_client','date_de_rendez_vous', 'task_type',\DB::raw('count(numero_de_labonne_reference_client) as count') )
+        $instance = $instance->select('agent_traitant','date_de_rendez_vous', 'task_type',\DB::raw('count(numero_de_labonne_reference_client) as count') )
             ->whereNull('isNotReady');
 
-        $instance = applyFilter($instance, $filter,'zone_region','date_de_rendez_vous');
+        $instance = applyFilter($instance, $filter,'zone_region','code_postal','date_de_rendez_vous');
 
         $zone = \DB::table('instance')
             ->select('zone_region')
@@ -90,9 +90,14 @@ class ReportingRepository
             ->whereNull('isNotReady')
             ->pluck('zone_region');
 
+        $cdp = \DB::table('instance')
+            ->select('code_postal')
+            ->distinct()
+            ->whereNull('isNotReady')
+            ->pluck('code_postal');
 
         $instance = $instance->orderBy('agent_traitant');
-        $instance = $instance->groupBy('agent_traitant','numero_de_labonne_reference_client','date_de_rendez_vous', 'task_type')->get();
+        $instance = $instance->groupBy('agent_traitant','date_de_rendez_vous', 'task_type')->get();
 
         $keys = $instance->groupBy(['task_type'])->keys();
 
@@ -103,7 +108,7 @@ class ReportingRepository
 
 
         if (!count($instance)) {
-            $data = ['filter' => $filter,'zoneFilter' => $zone,'checkedZoneFilter' => $filter->rows_filter,'data' => $instance];
+            $data = ['filter' => $filter,'zoneFilter' => $zone,'checkedZoneFilter' => $filter->rows_zone,'data' => [], 'cdpFilter'=>$cdp ,'checkedCdpFilter' =>$filter->rows_cdp];
             return $data;
         } else {
             $temp = $instance->groupBy(['task_type']);
@@ -118,38 +123,32 @@ class ReportingRepository
             });
             $instance = $temp->flatten();
 
-            $instance = $instance->groupBy('numero_de_labonne_reference_client');
+            $instance = $instance->groupBy(['agent_traitant','date_de_rendez_vous']);
             $instance = $instance->map(function ($element) use ($keys) {
-                $row = new \stdClass();
-                $row->values = [];
-
-                $col_arr = $keys->all();
-                $items = $element->map(function ($call, $index) use (&$row, &$col_arr) {
-                    $row->agent_traitant = $call->agent_traitant;
-                    $row->numero_de_labonne_reference_client = $call->numero_de_labonne_reference_client;
-                    $row->date_de_rendez_vous = $call->date_de_rendez_vous;
-                    $task_type = $call->task_type;
-                    $row->$task_type = $call->count;
-                    $row->values[$task_type] = $call->count;
-                    $row->total =  isset($row->total) ? $row->total + $call->count : $call->count;
-                    $col_arr = array_diff($col_arr, [$task_type]);
-                    return $row;
-                });
-
-                $_item = $items->last();
-
-                foreach ($col_arr as $col) {
-                    $_item->values[$col] = 0;
-                    $_item->$col = '0';
-                }
-                ksort($_item->values);
-
-                $_item->values = collect($_item->values)->values();
-                return $_item;
-            });
+                return $element->map(function ($elementCall, $elementIndex) use ($keys) {
+                    $elementCall =   $elementCall->map(function ($call,$index) use($keys){
+                        $row = new \stdClass();
+                        $row->values = [];
+                        $row->agent_traitant = $call->agent_traitant;
+                        $row->date_de_rendez_vous = $call->date_de_rendez_vous;
+                        $keys->map(function ($key,$keyIndex) use(&$row,$call){
+                            if(isset($call->$key)){
+                                $row->$key =  $call->count ;
+                                $row->values[$key] = $call->count;
+                                $row->total =  isset($row->total) ? $row->total + $call->count : $call->count;
+                            }else{
+                                $row->$key =  0 ;
+                                $row->values[$key] = 0;
+                            }
+                        });
+                        return $row;
+                    });
+                    return $elementCall;
+                })->flatten();
+            })->flatten();
             $instance = $instance->values();
 
-            return ['filter' => $filter,'zoneFilter' => $zone,'checkedZoneFilter' => $filter->rows_filter,'data' => $instance];
+            return ['filter' => $filter,'zoneFilter' => $zone,'checkedZoneFilter' => $filter->rows_zone,'data' => $instance, 'cdpFilter'=>$cdp ,'checkedCdpFilter' =>$filter->rows_cdp];
         }
     }
 
@@ -157,14 +156,14 @@ class ReportingRepository
 
         $_route = getRoute(Route::current());
         $route = str_replace('/columns', '', $_route);
-        list($filter, $queryFilters) = makeFilterSubQuery($request, $route,'ville','date');
+        list($filter, $queryFilters) = makeFilterSubQuery($request, $route,'ville','code_postal','date');
 
         $en_cours = \DB::table('en_cours');
 
-        $en_cours = $en_cours->select('agent_traitant','as','date', 'task_type',\DB::raw('count(`as`) as count') )
+        $en_cours = $en_cours->select('agent_traitant','date', 'task_type',\DB::raw('count(`as`) as count') )
             ->whereNull('isNotReady');
 
-        $en_cours = applyFilter($en_cours, $filter,'ville','date');
+        $en_cours = applyFilter($en_cours, $filter,'ville','code_postal','date');
 
 
         $zone = \DB::table('en_cours')
@@ -173,9 +172,15 @@ class ReportingRepository
             ->whereNull('isNotReady')
             ->pluck('ville');
 
+        $cdp = \DB::table('en_cours')
+            ->select('code_postal')
+            ->distinct()
+            ->whereNull('isNotReady')
+            ->pluck('code_postal');
+
 
         $en_cours = $en_cours->orderBy('agent_traitant');
-        $en_cours = $en_cours->groupBy('agent_traitant','as','date', 'task_type')->get();
+        $en_cours = $en_cours->groupBy('agent_traitant','date', 'task_type')->get();
 
         $keys = $en_cours->groupBy(['task_type'])->keys();
 
@@ -186,7 +191,7 @@ class ReportingRepository
 
 
         if (!count($en_cours)) {
-            $data = ['filter' => $filter,'zoneFilter' => $zone,'checkedZoneFilter' => $request->get('rowFilter'),'data' => []];
+            $data = ['filter' => $filter,'zoneFilter' => $zone,'checkedZoneFilter' =>$filter->rows_zone ,'data' => [], 'cdpFilter'=>$cdp ,'checkedCdpFilter' =>$filter->rows_cdp];
             return $data;
         } else {
             $temp = $en_cours->groupBy(['task_type']);
@@ -201,38 +206,33 @@ class ReportingRepository
             });
             $en_cours = $temp->flatten();
 
-            $en_cours = $en_cours->groupBy('as','date');
+            $en_cours = $en_cours->groupBy(['agent_traitant','date']);
             $en_cours = $en_cours->map(function ($element) use ($keys) {
-                $row = new \stdClass();
-                $row->values = [];
-
-                $col_arr = $keys->all();
-                $items = $element->map(function ($call, $index) use (&$row, &$col_arr) {
-                    $row->agent_traitant = $call->agent_traitant;
-                    $row->as = $call->as;
-                    $row->date = $call->date;
-                    $task_type = $call->task_type;
-                    $row->$task_type = $call->count;
-                    $row->values[$task_type] = $call->count;
-                    $row->total =  isset($row->total) ? $row->total + $call->count : $call->count;
-                    $col_arr = array_diff($col_arr, [$task_type]);
-                    return $row;
-                });
-
-                $_item = $items->last();
-
-                foreach ($col_arr as $col) {
-                    $_item->values[$col] = 0;
-                    $_item->$col = '0';
-                }
-                ksort($_item->values);
-
-                $_item->values = collect($_item->values)->values();
-                return $_item;
-            });
+                return $element->map(function ($elementCall, $elementIndex) use ($keys) {
+                    $elementCall =   $elementCall->map(function ($call,$index) use($keys){
+                          $row = new \stdClass();
+                          $row->values = [];
+                        $row->agent_traitant = $call->agent_traitant;
+                        $row->date = $call->date;
+                        $keys->map(function ($key,$keyIndex) use(&$row,$call){
+                            if(isset($call->$key)){
+                                $row->$key =  $call->count ;
+                                $row->values[$key] = $call->count;
+                                $row->total =  isset($row->total) ? $row->total + $call->count : $call->count;
+                            }else{
+                                $row->$key =  0 ;
+                                $row->values[$key] = 0;
+                            }
+                        });
+                        return $row;
+                    });
+                      return $elementCall;
+                })->flatten();
+            })->flatten();
             $en_cours = $en_cours->values();
 
-            return ['filter' => $filter,'zoneFilter' => $zone,'checkedZoneFilter' => $filter->rows_filter,'data' => $en_cours];
+
+            return ['filter' => $filter,'zoneFilter' => $zone,'checkedZoneFilter' => $filter->rows_zone,'data' => $en_cours,  'cdpFilter'=>$cdp ,'checkedCdpFilter' =>$filter->rows_cdp];
         }
     }
 
@@ -240,24 +240,24 @@ class ReportingRepository
 
         $_route = getRoute(Route::current());
         $route = str_replace('/columns', '', $_route);
-        list($filter, $queryFilters) = makeFilterSubQuery($request, $route,'ville','date');
+        list($filter, $queryFilters) = makeFilterSubQuery($request, $route,'ville','code_postal','date');
 
         $instance = \DB::table('instance');
 
-        $instance = $instance->select(\DB::raw('agent_traitant, numero_de_labonne_reference_client as identifiant, date_de_rendez_vous as date,task_type,count(numero_de_labonne_reference_client) as count') )
+        $instance = $instance->select(\DB::raw('agent_traitant, date_de_rendez_vous as date,task_type,count(numero_de_labonne_reference_client) as count') )
             ->whereNull('isNotReady');
-        $instance = applyFilter($instance, $filter,'zone_region','date_de_rendez_vous');
-        $instance = $instance->groupBy('agent_traitant','identifiant','date', 'task_type');
+        $instance = applyFilter($instance, $filter,'zone_region','code_postal','date_de_rendez_vous');
+        $instance = $instance->groupBy('agent_traitant','date', 'task_type');
 
         $globalData = \DB::table('en_cours');
-        $globalData =$globalData->select(\DB::raw('agent_traitant, `as` as identifiant ,date,task_type,count(`as`) as count') )
+        $globalData =$globalData->select(\DB::raw('agent_traitant, date,task_type,count(`as`) as count') )
             ->whereNull('isNotReady');
-        $globalData = applyFilter($globalData, $filter,'ville','date');
+        $globalData = applyFilter($globalData, $filter,'ville','code_postal','date');
         $globalData
             ->union($instance)
             ->orderBy('agent_traitant');
 
-        $globalData = $globalData->groupBy('agent_traitant','identifiant','date', 'task_type')->get();
+        $globalData = $globalData->groupBy('agent_traitant','date', 'task_type')->get();
 
         $keys = $globalData->groupBy(['task_type'])->keys();
 
@@ -278,8 +278,20 @@ class ReportingRepository
             ->union($zoneEn_cours)
             ->pluck('ville');
 
+        $cdpInstance = \DB::table('instance')
+            ->select('code_postal')
+            ->distinct()
+            ->whereNull('isNotReady');
+
+        $cdp = \DB::table('en_cours')
+            ->select('code_postal')
+            ->distinct()
+            ->whereNull('isNotReady')
+            ->union($cdpInstance)
+            ->pluck('code_postal');
+
         if (!count($globalData)) {
-            $data = ['filter' => $filter,'zoneFilter' => $zone,'checkedZoneFilter' => $request->get('rowFilter'),'data' => []];
+            $data = ['filter' => $filter,'zoneFilter' => $zone,'checkedZoneFilter' => $filter->row_zone,'data' => [],  'cdpFilter'=>$cdp ,'checkedCdpFilter' =>$filter->rows_cdp];
             return $data;
         } else {
             $temp = $globalData->groupBy(['task_type']);
@@ -294,37 +306,33 @@ class ReportingRepository
             });
             $globalData = $temp->flatten();
 
-            $globalData = $globalData->groupBy(['identifiant']);
+            $globalData = $globalData->groupBy(['agent_traitant','date']);
             $globalData = $globalData->map(function ($element) use ($keys) {
-                $row = new \stdClass();
-                $row->values = [];
+                return $element->map(function ($elementCall, $elementIndex) use ($keys) {
+                    $elementCall =   $elementCall->map(function ($call,$index) use($keys){
+                        $row = new \stdClass();
+                        $row->values = [];
+                        $row->agent_traitant = $call->agent_traitant;
+                        $row->date = $call->date;
+                        $keys->map(function ($key,$keyIndex) use(&$row,$call){
+                            if(isset($call->$key)){
+                                $row->$key =  $call->count ;
+                                $row->values[$key] = $call->count;
+                                $row->total =  isset($row->total) ? $row->total + $call->count : $call->count;
+                            }else{
+                                $row->$key =  0 ;
+                                $row->values[$key] = 0;
+                            }
+                        });
+                        return $row;
+                    });
+                    return $elementCall;
+                })->flatten();
+            })->flatten();
 
-                $col_arr = $keys->all();
-                $items = $element->map(function ($call, $index) use (&$row, &$col_arr) {
-                    $row->agent_traitant = $call->agent_traitant;
-                    $row->identifiant = $call->identifiant;
-                    $row->date = $call->date;
-                    $task_type = $call->task_type;
-                    $row->$task_type = $call->count;
-                    $row->values[$task_type] = $call->count;
-                    $row->total =  isset($row->total) ? $row->total + $call->count : $call->count;
-                    $col_arr = array_diff($col_arr, [$task_type]);
-                    return $row;
-                });
-                $_item = $items->last();
-
-                foreach ($col_arr as $col) {
-                    $_item->values[$col] = 0;
-                    $_item->$col = '0';
-                }
-                ksort($_item->values);
-
-                $_item->values = collect($_item->values)->values();
-                return $_item;
-            });
             $globalData = $globalData->values();
 
-            return ['filter' => $filter,'zoneFilter' => $zone,'checkedZoneFilter' => $filter->rows_filter,'data' => $globalData];
+            return ['filter' => $filter,'zoneFilter' => $zone,'checkedZoneFilter' => $filter->rows_zone,'data' => $globalData,'cdpFilter'=>$cdp ,'checkedCdpFilter' =>$filter->rows_cdp];
         }
     }
 }

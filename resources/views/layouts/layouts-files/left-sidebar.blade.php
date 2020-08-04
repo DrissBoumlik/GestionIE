@@ -141,13 +141,6 @@
             </li>
           </ul>
         </li>
-            <li class="nav-main-item">
-                <a class="nav-main-link{{ request()->is('reporting') ? ' active' : '' }}"
-                   href="{{ route('reporting') }}">
-                    <i class="nav-main-link-icon si si-shield"></i>
-                    <span class="nav-main-link-name">Reporting</span>
-                </a>
-            </li>
       @endif
       @if(isB2bSfr())
         <li class="nav-main-item">
