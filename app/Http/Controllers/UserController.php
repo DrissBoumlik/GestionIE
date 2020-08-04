@@ -79,7 +79,7 @@ class UserController extends Controller
             'status' => $request->status ? true : false,
             'password' => Hash::make($request->password),
             'role_id' => $request->role,
-            'agent_name' => substr($request->firstname,0,1) .$request->lastname,
+            'agent_name' => ($request->rolesubstr === 3) ? substr($request->firstname,0,1) .$request->lastname : $request->agent_name,
         ]);
 
         return redirect('/users');
