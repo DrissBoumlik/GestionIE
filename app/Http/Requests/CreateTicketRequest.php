@@ -13,7 +13,7 @@ class CreateTicketRequest extends FormRequest
      */
     public function authorize()
     {
-        return isB2bSfr();
+        return isB2bSfrGroup();
     }
 
     /**
