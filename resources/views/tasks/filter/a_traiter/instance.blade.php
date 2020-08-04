@@ -51,7 +51,7 @@
         <div
           class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center mt-5 mb-2 text-center text-sm-left">
           <div class="flex-sm-fill">
-            @if(request()->has('agent_name'))
+            @if(request()->has('agent_name') && request()->get('agent_name'))
               {{ $agent = $data['agent'] }}
               <h1 class="font-w600 text-white mb-0 invisible" data-toggle="appear">Dashboard
                 Agent {{strtoupper($agent)}}</h1>

@@ -570,7 +570,7 @@ if (!function_exists('isAdmin')) {
 if (!function_exists('isAgent')) {
     function isAgent()
     {
-        return ($user ?? auth()->user())->role->name == 'Agent';
+        return ($user ?? auth()->user())->role->name == 'agent';
     }
 }
 
