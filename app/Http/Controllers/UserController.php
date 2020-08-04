@@ -68,7 +68,6 @@ class UserController extends Controller
             'gender' => ['nullable', 'in:male,female'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role' => ['required', 'exists:roles,id'],
-            'agent_name' => ['required_if:role,==,3', 'max:20']
         ]);
         $user = User::create([
             'firstname' => $request->firstname,
