@@ -91,7 +91,7 @@
                             {!! Form::select('statut_finale', ['ok' => 'ok',
                                                                'ko' => 'ko',
                                                                ],
-                                            $ticket->statut_finale ?? '', ["class" => "form-control", "id" => "statut_finale", "placeholder" => "choissisez un statut", 'required'] ) !!}
+                                            $ticket->statut_finale ?? '', ["class" => "form-control", "id" => "statut_finale", "placeholder" => "choissisez un statut"] ) !!}
                         </div>
                         <div class="col-md-4 motif_handler d-none">
                             <label for="motif_ko">Motif KO</label>
