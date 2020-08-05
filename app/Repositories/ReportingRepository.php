@@ -79,7 +79,7 @@ class ReportingRepository
 
         $instance = \DB::table('instance');
 
-        $instance = $instance->select('agent_traitant','date_de_rendez_vous', 'task_type',\DB::raw('count(numero_de_labonne_reference_client) as count') )
+        $instance = $instance->select('agent_traitant', 'task_type',\DB::raw('count(numero_de_labonne_reference_client) as count') )
             ->whereNull('isNotReady');
 
         $instance = applyFilter($instance, $filter,'zone_region','code_postal','date_de_rendez_vous');
@@ -97,7 +97,7 @@ class ReportingRepository
             ->pluck('code_postal');
 
         $instance = $instance->orderBy('agent_traitant');
-        $instance = $instance->groupBy('agent_traitant','date_de_rendez_vous', 'task_type')->get();
+        $instance = $instance->groupBy('agent_traitant', 'task_type')->get();
 
         $keys = $instance->groupBy(['task_type'])->keys();
 
@@ -123,29 +123,33 @@ class ReportingRepository
             });
             $instance = $temp->flatten();
 
-            $instance = $instance->groupBy(['agent_traitant','date_de_rendez_vous']);
+            $instance = $instance->groupBy('agent_traitant');
             $instance = $instance->map(function ($element) use ($keys) {
-                return $element->map(function ($elementCall, $elementIndex) use ($keys) {
-                    $elementCall =   $elementCall->map(function ($call,$index) use($keys){
-                        $row = new \stdClass();
-                        $row->values = [];
-                        $row->agent_traitant = $call->agent_traitant;
-                        $row->date_de_rendez_vous = $call->date_de_rendez_vous;
-                        $keys->map(function ($key,$keyIndex) use(&$row,$call){
-                            if(isset($call->$key)){
-                                $row->$key =  $call->count ;
-                                $row->values[$key] = $call->count;
-                                $row->total =  isset($row->total) ? $row->total + $call->count : $call->count;
-                            }else{
-                                $row->$key =  0 ;
-                                $row->values[$key] = 0;
-                            }
-                        });
-                        return $row;
-                    });
-                    return $elementCall;
-                })->flatten();
-            })->flatten();
+                $row = new \stdClass();
+                $row->values = [];
+
+                $col_arr = $keys->all();
+                $items = $element->map(function ($call, $index) use (&$row, &$col_arr) {
+                    $row->agent_traitant = $call->agent_traitant;
+                    $task_type = $call->task_type;
+                    $row->$task_type = $call->count;
+                    $row->values[$task_type] = $call->count;
+                    $row->total =  isset($row->total) ? $row->total + $call->count : $call->count;
+                    $col_arr = array_diff($col_arr, [$task_type]);
+                    return $row;
+                });
+
+                $_item = $items->last();
+
+                foreach ($col_arr as $col) {
+                    $_item->values[$col] = 0;
+                    $_item->$col = '0';
+                }
+                ksort($_item->values);
+
+                $_item->values = collect($_item->values)->values();
+                return $_item;
+            });
             $instance = $instance->values();
 
             return ['filter' => $filter,'zoneFilter' => $zone,'checkedZoneFilter' => $filter->rows_zone,'data' => $instance, 'cdpFilter'=>$cdp ,'checkedCdpFilter' =>$filter->rows_cdp];
@@ -160,7 +164,7 @@ class ReportingRepository
 
         $en_cours = \DB::table('en_cours');
 
-        $en_cours = $en_cours->select('agent_traitant','date', 'task_type',\DB::raw('count(`as`) as count') )
+        $en_cours = $en_cours->select('agent_traitant', 'task_type',\DB::raw('count(`as`) as count') )
             ->whereNull('isNotReady');
 
         $en_cours = applyFilter($en_cours, $filter,'ville','code_postal','date');
@@ -180,7 +184,7 @@ class ReportingRepository
 
 
         $en_cours = $en_cours->orderBy('agent_traitant');
-        $en_cours = $en_cours->groupBy('agent_traitant','date', 'task_type')->get();
+        $en_cours = $en_cours->groupBy('agent_traitant', 'task_type')->get();
 
         $keys = $en_cours->groupBy(['task_type'])->keys();
 
@@ -206,29 +210,33 @@ class ReportingRepository
             });
             $en_cours = $temp->flatten();
 
-            $en_cours = $en_cours->groupBy(['agent_traitant','date']);
+            $en_cours = $en_cours->groupBy('agent_traitant');
             $en_cours = $en_cours->map(function ($element) use ($keys) {
-                return $element->map(function ($elementCall, $elementIndex) use ($keys) {
-                    $elementCall =   $elementCall->map(function ($call,$index) use($keys){
-                          $row = new \stdClass();
-                          $row->values = [];
-                        $row->agent_traitant = $call->agent_traitant;
-                        $row->date = $call->date;
-                        $keys->map(function ($key,$keyIndex) use(&$row,$call){
-                            if(isset($call->$key)){
-                                $row->$key =  $call->count ;
-                                $row->values[$key] = $call->count;
-                                $row->total =  isset($row->total) ? $row->total + $call->count : $call->count;
-                            }else{
-                                $row->$key =  0 ;
-                                $row->values[$key] = 0;
-                            }
-                        });
-                        return $row;
-                    });
-                      return $elementCall;
-                })->flatten();
-            })->flatten();
+                $row = new \stdClass();
+                $row->values = [];
+
+                $col_arr = $keys->all();
+                $items = $element->map(function ($call, $index) use (&$row, &$col_arr) {
+                    $row->agent_traitant = $call->agent_traitant;
+                    $task_type = $call->task_type;
+                    $row->$task_type = $call->count;
+                    $row->values[$task_type] = $call->count;
+                    $row->total =  isset($row->total) ? $row->total + $call->count : $call->count;
+                    $col_arr = array_diff($col_arr, [$task_type]);
+                    return $row;
+                });
+
+                $_item = $items->last();
+
+                foreach ($col_arr as $col) {
+                    $_item->values[$col] = 0;
+                    $_item->$col = '0';
+                }
+                ksort($_item->values);
+
+                $_item->values = collect($_item->values)->values();
+                return $_item;
+            });
             $en_cours = $en_cours->values();
 
 
@@ -244,20 +252,20 @@ class ReportingRepository
 
         $instance = \DB::table('instance');
 
-        $instance = $instance->select(\DB::raw('agent_traitant, date_de_rendez_vous as date,task_type,count(numero_de_labonne_reference_client) as count') )
+        $instance = $instance->select(\DB::raw('agent_traitant,task_type,count(numero_de_labonne_reference_client) as count') )
             ->whereNull('isNotReady');
         $instance = applyFilter($instance, $filter,'zone_region','code_postal','date_de_rendez_vous');
-        $instance = $instance->groupBy('agent_traitant','date', 'task_type');
+        $instance = $instance->groupBy('agent_traitant', 'task_type');
 
         $globalData = \DB::table('en_cours');
-        $globalData =$globalData->select(\DB::raw('agent_traitant, date,task_type,count(`as`) as count') )
+        $globalData =$globalData->select(\DB::raw('agent_traitant,task_type,count(`as`) as count') )
             ->whereNull('isNotReady');
         $globalData = applyFilter($globalData, $filter,'ville','code_postal','date');
         $globalData
             ->union($instance)
             ->orderBy('agent_traitant');
 
-        $globalData = $globalData->groupBy('agent_traitant','date', 'task_type')->get();
+        $globalData = $globalData->groupBy('agent_traitant', 'task_type')->get();
 
         $keys = $globalData->groupBy(['task_type'])->keys();
 
@@ -306,31 +314,34 @@ class ReportingRepository
             });
             $globalData = $temp->flatten();
 
-            $globalData = $globalData->groupBy(['agent_traitant','date']);
+            $globalData = $globalData->groupBy('agent_traitant');
             $globalData = $globalData->map(function ($element) use ($keys) {
-                return $element->map(function ($elementCall, $elementIndex) use ($keys) {
-                    $elementCall =   $elementCall->map(function ($call,$index) use($keys){
-                        $row = new \stdClass();
-                        $row->values = [];
-                        $row->agent_traitant = $call->agent_traitant;
-                        $row->date = $call->date;
-                        $keys->map(function ($key,$keyIndex) use(&$row,$call){
-                            if(isset($call->$key)){
-                                $row->$key =  $call->count ;
-                                $row->values[$key] = $call->count;
-                                $row->total =  isset($row->total) ? $row->total + $call->count : $call->count;
-                            }else{
-                                $row->$key =  0 ;
-                                $row->values[$key] = 0;
-                            }
-                        });
-                        return $row;
-                    });
-                    return $elementCall;
-                })->flatten();
-            })->flatten();
+                $row = new \stdClass();
+                $row->values = [];
 
+                $col_arr = $keys->all();
+                $items = $element->map(function ($call, $index) use (&$row, &$col_arr) {
+                    $row->agent_traitant = $call->agent_traitant;
+                    $task_type = $call->task_type;
+                    $row->$task_type = $call->count;
+                    $row->values[$task_type] = $call->count;
+                    $row->total =  isset($row->total) ? $row->total + $call->count : $call->count;
+                    $col_arr = array_diff($col_arr, [$task_type]);
+                    return $row;
+                });
+                $_item = $items->last();
+
+                foreach ($col_arr as $col) {
+                    $_item->values[$col] = 0;
+                    $_item->$col = '0';
+                }
+                ksort($_item->values);
+
+                $_item->values = collect($_item->values)->values();
+                return $_item;
+            });
             $globalData = $globalData->values();
+
 
             return ['filter' => $filter,'zoneFilter' => $zone,'checkedZoneFilter' => $filter->rows_zone,'data' => $globalData,'cdpFilter'=>$cdp ,'checkedCdpFilter' =>$filter->rows_cdp];
         }

@@ -21,7 +21,6 @@
                                        class="table table-bordered table-striped table-valign-middle capitalize">
                                     <tr>
                                         <th>RESSOURCE</th>
-                                        <th>date de rendez vous</th>
                                         <th>FTTH</th>
                                         <th>FTTB</th>
                                         <th>Total</th>
@@ -58,7 +57,6 @@
                                        class="table table-bordered table-striped table-valign-middle capitalize">
                                     <tr>
                                         <th>RESSOURCE</th>
-                                        <th>date</th>
                                         <th>FTTH</th>
                                         <th>FTTB</th>
                                         <th>Total</th>
@@ -95,7 +93,6 @@
                                        class="table table-bordered table-striped table-valign-middle capitalize">
                                     <tr>
                                         <th>RESSOURCE</th>
-                                        <th>date</th>
                                         <th>FTTH</th>
                                         <th>FTTB</th>
                                         <th>Total</th>

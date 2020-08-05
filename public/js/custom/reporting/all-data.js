@@ -76,7 +76,6 @@
         refreshBtn :'#refreshInstance',
         columns: [
             {data: 'agent_traitant',title: 'RESSOURCE', name: 'agent_traitant'},
-            {data: 'date_de_rendez_vous',title: 'date de rendez vous', name: 'date_de_rendez_vous'},
             {data: 'FTTH',title: 'FTTH', name: 'FTTH'},
             {data: 'FTTB', title: 'FTTB', name: 'FTTB'},
             {data: 'total',title: 'total', name: 'total'},
@@ -104,7 +103,6 @@
         refreshBtn :'#refreshEnCours',
         columns: [
             {data: 'agent_traitant',title: 'RESSOURCE', name: 'agent_traitant'},
-            {data: 'date',title: 'date de rendez vous', name: 'date'},
             {data: 'FTTH',title: 'FTTH', name: 'FTTH'},
             {data: 'FTTB', title: 'FTTB', name: 'FTTB'},
             {data: 'total',title: 'total', name: 'total'},
@@ -132,7 +130,6 @@
         refreshBtn :'#refreshGlobal',
         columns: [
             {data: 'agent_traitant',title: 'RESSOURCE', name: 'agent_traitant'},
-            {data: 'date',title: 'date de rendez vous', name: 'date'},
             {data: 'FTTH',title: 'FTTH', name: 'FTTH'},
             {data: 'FTTB', title: 'FTTB', name: 'FTTB'},
             {data: 'total',title: 'total', name: 'total'},
