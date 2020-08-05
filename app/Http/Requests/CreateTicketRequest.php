@@ -37,7 +37,6 @@ class CreateTicketRequest extends FormRequest
             'date_reception' 		=> 'required',
             'date_planification' 	=> 'required',
             'motif_report' 			=> 'max:20',
-            'statut_finale' 		=> 'required|max:20',
             'nom_tech' 				=> 'required|max:20',
             'prenom_tech' 			=> 'required|max:20',
             'num_tel' 				=> 'required|max:15',
