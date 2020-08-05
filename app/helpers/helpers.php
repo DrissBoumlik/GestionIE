@@ -578,7 +578,7 @@ if (!function_exists('isB2bSfr')) {
     function isB2bSfrGroup()
     {
         $roleName = ($user ?? auth()->user())->role->name;
-        return $roleName = 'B2bSfr' || $roleName = 'B2bSfrAdmin';
+        return $roleName == 'B2bSfr' || $roleName == 'B2bSfrAdmin';
     }
 
     function isB2bSfrAdmin()
