@@ -28,23 +28,26 @@ class ReportingController extends Controller
 
     public function getInstance(Request $request){
         $data = $this->reportingRepository->getInstanceData($request);
-        return DataTables::of($data['data'])->with('filter',$data['filter'])
+        return DataTables::of($data['data'])->with('dateFilter',$data['dateFilter'])
             ->with('zoneFilter',$data['zoneFilter'])->with('checkedZoneFilter',$data['checkedZoneFilter'])
-            ->with('cdpFilter',$data['cdpFilter'])->with('checkedCdpFilter',$data['checkedCdpFilter'])->toJson();
+            ->with('cdpFilter',$data['cdpFilter'])->with('checkedCdpFilter',$data['checkedCdpFilter'])
+            ->with('cityFilter',$data['cityFilter'])->with('checkedcityFilter',$data['checkedcityFilter'])->toJson();
     }
 
     public function getEnCours(Request $request){
         $data = $this->reportingRepository->getEnCoursData($request);
-        return DataTables::of($data['data'])->with('filter',$data['filter'])
+        return DataTables::of($data['data'])->with('dateFilter',$data['dateFilter'])
             ->with('zoneFilter',$data['zoneFilter'])->with('checkedZoneFilter',$data['checkedZoneFilter'])
-            ->with('cdpFilter',$data['cdpFilter'])->with('checkedCdpFilter',$data['checkedCdpFilter'])->toJson();
+            ->with('cdpFilter',$data['cdpFilter'])->with('checkedCdpFilter',$data['checkedCdpFilter'])
+            ->with('cityFilter',$data['cityFilter'])->with('checkedcityFilter',$data['checkedcityFilter'])->toJson();
     }
 
     public function getGlobalData(Request $request){
         $data = $this->reportingRepository->getGlobalData($request);
-        return DataTables::of($data['data'])->with('filter',$data['filter'])
+        return DataTables::of($data['data'])->with('dateFilter',$data['dateFilter'])
             ->with('zoneFilter',$data['zoneFilter'])->with('checkedZoneFilter',$data['checkedZoneFilter'])
-            ->with('cdpFilter',$data['cdpFilter'])->with('checkedCdpFilter',$data['checkedCdpFilter'])->toJson();
+            ->with('cdpFilter',$data['cdpFilter'])->with('checkedCdpFilter',$data['checkedCdpFilter'])
+            ->with('cityFilter',$data['cityFilter'])->with('checkedcityFilter',$data['checkedcityFilter'])->toJson();
     }
 
 

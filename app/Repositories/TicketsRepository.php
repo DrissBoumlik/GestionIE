@@ -12,52 +12,17 @@ use Yajra\DataTables\DataTables;
 
 class TicketsRepository
 {
-    public function index(Request $request,$status){
+    public function show(Request $request,$status){
+            $tickets = Tickets::select(
+                ['id', 'agent_traitant','region','numero_intervention','cdp','num_cdp','type_intervention', 'client', 'cp','Ville',
+                    'Sous_type_Inter','date_reception','date_planification','report','motif_report','statut_finale',
+                    'nom_tech','prenom_tech','num_tel','adresse_mail','motif_ko','as_j_1','statut_ticket','commentaire'
+                ])->where('statut_ticket', '=', $status)
+                ->get();
 
-        $tickets =$this->getTicketsQuery($request,$status);
-        $tickets = $tickets->paginate(10);
-        return $tickets;
+            return DataTables::of($tickets)->toJson();
+
     }
-
-    private function getTicketsQuery(Request $request,$status){
-            return Tickets::where(function($query) use ($request,$status){
-                $query->where('statut_ticket', '=', $status);
-
-                if(isset($request['type_intervention']) && !empty($request['type_intervention'])) {
-                    $type_intervention = $request['type_intervention'];
-                    $query->where('type_intervention', $type_intervention);
-                }
-
-                if(isset($request['statut_finale']) && !empty($request['statut_finale'])) {
-                    $statut_finale = $request['statut_finale'];
-                    $query->where('statut_finale', $statut_finale);
-                }
-
-                if(isset($request['motif_ko']) && !empty($request['motif_ko'])) {
-                    $motif_ko = $request['motif_ko'];
-                    $query->where('motif_ko', $motif_ko);
-                }
-
-                if(isset($request['motif_report']) && !empty($request['motif_report'])) {
-                    $motif_report = $request['motif_report'];
-                    $query->where('motif_report', $motif_report);
-                }
-
-                if(isset($request['as_j_1']) && !empty($request['as_j_1'])) {
-                    $as_j_1 = $request['as_j_1'];
-                    $query->where('as_j_1', $as_j_1);
-                }
-
-                if((isset($request['start-date']) && !empty($request['start-date']))  && (isset($request['end-date']) && !empty($request['end-date'])) ){
-                    $start_date = $request['start-date'];
-                    $end_date = $request['end-date'];
-                    $query->whereBetween('created_at', [$start_date, $end_date]);
-                }
-            })
-                ->orderByDesc('tickets.id');
-    }
-
-
 
     public function history($id)
     {

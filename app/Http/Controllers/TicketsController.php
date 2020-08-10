@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateTicketRequest;
 use App\Repositories\TicketsRepository;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class TicketsController extends Controller
 {
@@ -16,13 +17,11 @@ class TicketsController extends Controller
     }
 
     public function index(Request $request,$status){
+        return view('b2bsfr.index',compact('status'));
+    }
 
-        $tickets = $this->ticketsRepository->index($request,$status);
-        if($request->ajax()) {
-
-            return view('b2bsfr.ajax.index', compact('tickets'));
-        }
-        return view('b2bsfr.index',compact('tickets','status'));
+    public function show(Request $request,$status){
+        return $this->ticketsRepository->show($request,$status);
     }
 
     public function create(){

@@ -32,7 +32,8 @@ Route::group([
     //endregion
 
     //region B2b
-    Route::match(['get', 'post'],'b2bSfr/tickets/{status}','TicketsController@index')->name('b2bSfr.tickets');
+    Route::get('b2bSfr/tickets/{status}','TicketsController@index')->name('b2bSfr.tickets');
+    Route::get('b2bSfr/getTickets/byStatus/{status}','TicketsController@show');
     Route::get('b2bSfr/create','TicketsController@create')->name('b2bSfr.create');
     Route::post('/b2bSfr/store','TicketsController@store')->name('b2bSfr.store');
     Route::get('b2bSfr/tickets/edit/{id}','TicketsController@edit')->name('b2bSfr.tickets.edit');

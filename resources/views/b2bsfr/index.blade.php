@@ -4,94 +4,105 @@
     list des tickets {{$status ?? ''}}
 @endsection
 
+@section('css_after')
+    <!-- DataTables -->
+    <link rel="stylesheet" href={{ asset("/plugins/datatables/css/dataTables.bootstrap4.css") }}>
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
+    <link rel="stylesheet" href="{{ asset('/plugins/sweetalert2/sweetalert2.min.css') }}">
+
+@endsection
+
 @section('js_after')
-    <!-- Page JS Code -->
-    <script src="{{ asset('js/custom/tickets/ticket_index_page.js') }}"></script>
+    <!-- DataTables -->
+    <script src={{ asset("/plugins/datatables/js/jquery.dataTables.js") }}></script>
+    <script src={{ asset("/plugins/datatables/js/dataTables.bootstrap4.js") }}></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
+    <script src="{{ asset("/plugins/sweetalert2/sweetalert2.all.min.js") }}"></script>
+
+    <script src="{{ asset("/plugins/tree-view/tree.js") }}"></script>
+
+    <script src="{{ asset('js/custom/tickets/ticket_index_page.js') }}" status= '{{$status ?? ''}}'></script>
+@endsection
+
+@section('content-header')
+    <div class="bg-image overflow-hidden"
+         style="background-image: url('{{ asset('/media/backgrounds/photo3@2x.jpg') }}');">
+        <div class="bg-primary-dark-op">
+            <div class="content content-narrow content-full">
+                <div
+                    class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center mt-5 mb-2 text-center text-sm-left">
+                    <div class="flex-sm-fill">
+                        <h2 class="h4 font-w400 text-white-75 mb-0 invisible" data-toggle="appear" data-timeout="250">
+                            Bonjour {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END Hero -->
 @endsection
 
 @section('content')
-    <div class="dashboard-rc">
-            <div class="content">
-                <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
-                    <h3 class="flex-sm-fill h3 font-weight-bolder ">Faire une recherche</h3>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-12 col-md-12 col-lg-12 col-xl-12">
-                        <div class="block block-link-pop border-primary border-rc" style="margin-bottom: 0;">
-                            <div class="block-content" style="padding-bottom: 2px;">
-                                <form id="success-form" method="POST" action="{{ route('b2bSfr.tickets',['status' => $status]) }}">
-                                    @csrf
-                                    <div class="form-row">
-                                        <div class="form-group col-md-3">
-                                            <label for="type_intervention">Type d'intervention</label>
-                                            {!! Form::select('type_intervention', ['S1' => 'S1',
-                                                                                   'S2' => 'S2',
-                                                                                   'IMES STIT' => 'IMES STIT',
-                                                                                   'IMES Extranet' => 'IMES Extranet'
-                                                                                   ],
-                                                            $type_intervention ?? '', ["class" => "form-control", "id" => "type_intervention", "placeholder" => "choisissez une type d'intervention"] ) !!}
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="statut_finale">Statut Final</label>
-                                            {!! Form::select('statut_finale', ['ok' => 'ok',
-                                                                               'ko' => 'ko',
-                                                                               ],
-                                                            $statut_finale ?? '', ["class" => "form-control", "id" => "statut_finale", "placeholder" => "choissisez un statut"] ) !!}
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="motif_ko">Motif KO</label>
-                                            {!! Form::select('motif_ko', ['Circet' => 'Circet',
-                                                                          'Client' => 'Client',
-                                                                          'SFR'    => 'SFR',
-                                                                          'Opérateurs TIERS' => 'Opérateurs TIERS'
 
-                                                                               ],
-                                                            $motif_ko ?? '', ["class" => "form-control", "id" => "motif_ko", "placeholder" => "choissisez un motif"] ) !!}
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="motif_report">Motif Report</label>
-                                            {!! Form::select('motif_report', ['Demande CDP' => 'Demande CDP',
-                                                                              'Demande Client' => 'Demande Client',
-                                                                              'ABS Tech'    => 'ABS Tech',
-                                                                              'Priorisation SAV' => 'Priorisation SAV'
+    <div class="content content-narrow">
 
-                                                                               ],
-                                                            $motif_report ?? '', ["class" => "form-control", "id" => "motif_report", "placeholder" => "choissisez un motif de report"] ) !!}
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-3">
-                                            <label for="as_j_1">AS J-1</label>
-                                            {!! Form::select('as_j_1', ['oui' => 'oui',
-                                                                        'non' => 'non',
-                                                                        ],
-                                                            $as_j_1 ?? '', ["class" => "form-control", "id" => "as_j_1", "placeholder" => ""] ) !!}
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="start-date">Date début</label>
-                                            <input type="date" class="form-control" id="start-date" name="start-date" value="{{ old('start-date') }}" placeholder="">
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="end-date">Date fin</label>
-                                            <input type="date" class="form-control" id="end-date" name="end-date" value="{{ old('end-date') }}" placeholder="">
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label for=""></label>
-                                            <button type="submit" id="filter-btn" class="btn btn-primary form-control" style="margin-top: 5px;">Rechercher</button>
-                                        </div>
-                                    </div>
-                                </form>
+        <!-- Stats -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title d-inline-block">les tickets {{$status ?? ''}}</h3>
+                            <hr>
+                            <div class="refresh-form">
+                                <div id="tree-view-tickets-encours" class="tree-view d-inline-flex"></div>
+                                <button type="button" id="refreshticketsEnCours"
+                                        class="btn btn-primary">
+                                    <span class="btn-field font-weight-normal position-relative">Rafraîchir</span>
+                                </button>
                             </div>
                         </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive">
+                            <table id="tickets"
+                                   class="not-stats-table table table-bordered table-striped table-valign-middle capitalize">
+                                <tr>
+                                    <th>id</th>
+                                    <th>agent_traitant</th>
+                                    <th>region</th>
+                                    <th>numero_intervention</th>
+                                    <th>cdp</th>
+                                    <th>num_cdp</th>
+                                    <th>type_intervention</th>
+                                    <th>client</th>
+                                    <th>cp</th>
+                                    <th>Ville</th>
+                                    <th>Sous_type_Inter</th>
+                                    <th>date_reception</th>
+                                    <th>date_planification</th>
+                                    <th>report</th>
+                                    <th>motif_report</th>
+                                    <th>statut_finale</th>
+                                    <th>nom_tech</th>
+                                    <th>prenom_tech</th>
+                                    <th>num_tel</th>
+                                    <th>adresse_mail</th>
+                                    <th>motif_ko</th>
+                                    <th>as_j_1</th>
+                                    <th>statut_ticket</th>
+                                    <th>commentaire</th>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
                     </div>
+                    <!-- /.card -->
                 </div>
-
+                <!-- /.col -->
             </div>
-    </div>
-    <div class="block" id="tickets_list_block" style="background-color: transparent;">
-        <div class="content" id="tickets_list_wrapper">
-            @include('b2bsfr.ajax.index')
+            <!-- /.row -->
         </div>
+        <!-- END Stats -->
     </div>
 @endsection
-

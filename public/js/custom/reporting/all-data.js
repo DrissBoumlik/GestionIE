@@ -82,7 +82,7 @@
         ],
         data: undefined,
         filterTree: {dates: [], zoneRows: [],cdpRows:[], datesTreeObject: undefined},
-        filterElement: {dates: '#tree-view-01', zoneRows: '#instance-zone-filter-01',cdpRows: '#instance-cdp-filter-01'},
+        filterElement: {dates: '#tree-view-01', zoneRows: '#instance-zone-filter-01',cdpRows: '#instance-cdp-filter-01',cityRows: '#instance-vile-filter-01'},
         route: '/reporting/getInstance',
     };
     if (elementExists(instance)) {
@@ -109,7 +109,7 @@
         ],
         data: undefined,
         filterTree: {dates: [], zoneRows: [],cdpRows:[], datesTreeObject: undefined},
-        filterElement: {dates: '#tree-view-02', zoneRows: '#enCours-zone-filter-02', cdpRows: '#enCours-cdp-filter-02'},
+        filterElement: {dates: '#tree-view-02', zoneRows: '#enCours-zone-filter-02', cdpRows: '#enCours-cdp-filter-02',cityRows: '#enCours-vile-filter-02'},
         route: '/reporting/getEnCours',
     };
     if (elementExists(enCours)) {
@@ -136,7 +136,7 @@
         ],
         data: undefined,
         filterTree: {dates: [], zoneRows: [],cdpRows:[], datesTreeObject: undefined},
-        filterElement: {dates: '#tree-view-03', zoneRows: '#global-zone-filter-03', cdpRows: '#global-cdp-filter-03'},
+        filterElement: {dates: '#tree-view-03', zoneRows: '#global-zone-filter-03', cdpRows: '#global-cdp-filter-03',cityRows: '#global-vile-filter-03'},
         route: '/reporting/getGlobalData',
     };
     if (elementExists(globalData)) {
@@ -192,6 +192,9 @@
          if (object.filterTree && object.filterTree.cdpRows) {
              data = {...data, 'rowcdp': object.filterTree.cdpRows};
          }
+         if (object.filterTree && object.filterTree.cityRows) {
+             data = {...data, 'rowcity': object.filterTree.cityRows};
+         }
          if (object.filterTree) {
              data = {...data, 'dates': object.filterTree.dates};
          }
@@ -225,8 +228,8 @@
             },
             columns: object.columns,
             initComplete: function (settings, response) {
-                if(response.filter){
-                    object.filterTree.dates = response.filter.date_filter;
+                if(response.dateFilter){
+                    object.filterTree.dates = response.dateFilter;
                 }
                 if(response.zoneFilter){
                     let rowsFilterData = response.zoneFilter.map(function (d, index) {
@@ -239,7 +242,7 @@
                         data: [{id: '-1', text: 'Zone', children: rowsFilterData}],
                         closeDepth: 1,
                         loaded: function () {
-                            if (response.filter && response.zoneFilter) {
+                            if (response.zoneFilter) {
                                 this.values = object.filterTree.zoneRows = (response.checkedZoneFilter) ? response.checkedZoneFilter : response.zoneFilter;
                             }
                         },
@@ -259,12 +262,32 @@
                         data: [{id: '-1', text: 'cdp', children: rowsFilterData}],
                         closeDepth: 1,
                         loaded: function () {
-                            if (response.filter && response.cdpFilter) {
+                            if (response.cdpFilter) {
                                 this.values = object.filterTree.cdpRows = (response.checkedCdpFilter) ? response.checkedCdpFilter : response.cdpFilter;
                             }
                         },
                         onChange: function () {
                             object.filterTree.cdpRows = this.values;
+                        }
+                    });
+                }
+                if(response.cityFilter){
+                    let rowsFilterData = response.cityFilter.map(function (d, index) {
+                        return {
+                            id: d,
+                            text: d
+                        };
+                    });
+                    new Tree(object.filterElement.cityRows, {
+                        data: [{id: '-1', text: 'ville', children: rowsFilterData}],
+                        closeDepth: 1,
+                        loaded: function () {
+                            if (response.cityFilter) {
+                                this.values = object.filterTree.cityRows = (response.checkedcityFilter) ? response.checkedcityFilter : response.cityFilter;
+                            }
+                        },
+                        onChange: function () {
+                            object.filterTree.cityRows = this.values;
                         }
                     });
                 }

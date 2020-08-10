@@ -8,6 +8,7 @@
                             <div class="refresh-form">
                                 <div id="tree-view-01" class="tree-view d-inline-flex btn-flex-star"></div>
                                 <div id="instance-zone-filter-01" class="tree-zone-view d-inline-flex"></div>
+                                <div id="instance-vile-filter-01" class="tree-vile-view d-inline-flex"></div>
                                 <div id="instance-cdp-filter-01" class="tree-cdp-view d-inline-flex"></div>
                                 <button type="button" id="refreshInstance"
                                         class="btn btn-primary float-right btn-flex-star d-none">
@@ -44,6 +45,7 @@
                             <div class="refresh-form">
                                 <div id="tree-view-02" class="tree-view d-inline-flex"></div>
                                 <div id="enCours-zone-filter-02" class="tree-zone-view d-inline-flex"></div>
+                                <div id="enCours-vile-filter-02" class="tree-vile-view d-inline-flex"></div>
                                 <div id="enCours-cdp-filter-02" class="tree-cdp-view d-inline-flex"></div>
                                 <button type="button" id="refreshEnCours"
                                         class="btn btn-primary float-right btn-flex-star d-none">
@@ -80,6 +82,7 @@
                             <div class="refresh-form">
                                 <div id="tree-view-03" class="tree-view d-inline-flex"></div>
                                 <div id="global-zone-filter-03" class="tree-zone-view d-inline-flex"></div>
+                                <div id="global-vile-filter-03" class="tree-vile-view d-inline-flex"></div>
                                 <div id="global-cdp-filter-03" class="tree-cdp-view d-inline-flex"></div>
                                 <button type="button" id="refreshGlobal"
                                         class="btn btn-primary float-right btn-flex-star d-none">
