@@ -31,7 +31,8 @@ class ReportingController extends Controller
         return DataTables::of($data['data'])->with('dateFilter',$data['dateFilter'])
             ->with('zoneFilter',$data['zoneFilter'])->with('checkedZoneFilter',$data['checkedZoneFilter'])
             ->with('cdpFilter',$data['cdpFilter'])->with('checkedCdpFilter',$data['checkedCdpFilter'])
-            ->with('cityFilter',$data['cityFilter'])->with('checkedcityFilter',$data['checkedcityFilter'])->toJson();
+            ->with('cityFilter',$data['cityFilter'])->with('checkedcityFilter',$data['checkedcityFilter'])
+            ->with('typeFilter',$data['typeFilter'])->with('checkedtypeFilter',$data['checkedtypeFilter'])->toJson();
     }
 
     public function getEnCours(Request $request){
@@ -39,7 +40,8 @@ class ReportingController extends Controller
         return DataTables::of($data['data'])->with('dateFilter',$data['dateFilter'])
             ->with('zoneFilter',$data['zoneFilter'])->with('checkedZoneFilter',$data['checkedZoneFilter'])
             ->with('cdpFilter',$data['cdpFilter'])->with('checkedCdpFilter',$data['checkedCdpFilter'])
-            ->with('cityFilter',$data['cityFilter'])->with('checkedcityFilter',$data['checkedcityFilter'])->toJson();
+            ->with('cityFilter',$data['cityFilter'])->with('checkedcityFilter',$data['checkedcityFilter'])
+            ->with('typeFilter',$data['typeFilter'])->with('checkedtypeFilter',$data['checkedtypeFilter'])->toJson();
     }
 
     public function getGlobalData(Request $request){
@@ -47,7 +49,12 @@ class ReportingController extends Controller
         return DataTables::of($data['data'])->with('dateFilter',$data['dateFilter'])
             ->with('zoneFilter',$data['zoneFilter'])->with('checkedZoneFilter',$data['checkedZoneFilter'])
             ->with('cdpFilter',$data['cdpFilter'])->with('checkedCdpFilter',$data['checkedCdpFilter'])
-            ->with('cityFilter',$data['cityFilter'])->with('checkedcityFilter',$data['checkedcityFilter'])->toJson();
+            ->with('cityFilter',$data['cityFilter'])->with('checkedcityFilter',$data['checkedcityFilter'])
+            ->with('typeFilter',$data['typeFilter'])->with('checkedtypeFilter',$data['checkedtypeFilter'])->toJson();
+    }
+
+    public function exportData(Request $request,$entity){
+        return $this->reportingRepository->exportDataCall($request,$entity);
     }
 
 

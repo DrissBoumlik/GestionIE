@@ -4,11 +4,13 @@
 namespace App\Repositories;
 
 
+use App\Export\ReportingExport;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportingRepository
 {
@@ -75,14 +77,14 @@ class ReportingRepository
 
         $_route = getRoute(Route::current());
         $route = str_replace('/columns', '', $_route);
-        list($filter, $queryFilters) = makeFilterSubQuery($request, $route,'zone_region','code_postal','station_de_modulation_Ville','date_de_rendez_vous');
+        list($filter, $queryFilters) = makeFilterSubQuery($request, $route,'zone_region','code_postal','station_de_modulation_Ville','libcap_typologie_inter','date_de_rendez_vous');
 
         $instance = \DB::table('instance');
 
         $instance = $instance->select('agent_traitant', 'task_type',\DB::raw('count(numero_de_labonne_reference_client) as count') )
             ->whereNull('isNotReady');
 
-        $instance = applyFilter($instance, $filter,'zone_region','code_postal','station_de_modulation_Ville','date_de_rendez_vous');
+        $instance = applyFilter($instance, $filter,'zone_region','code_postal','station_de_modulation_Ville','libcap_typologie_inter','date_de_rendez_vous');
 
         $zone = \DB::table('instance')
             ->select('zone_region')
@@ -102,6 +104,12 @@ class ReportingRepository
             ->whereNull('isNotReady')
             ->pluck('station_de_modulation_Ville');
 
+        $type = \DB::table('instance')
+            ->select('libcap_typologie_inter')
+            ->distinct()
+            ->whereNull('isNotReady')
+            ->pluck('libcap_typologie_inter');
+
         $instance = $instance->orderBy('agent_traitant');
         $instance = $instance->groupBy('agent_traitant', 'task_type')->get();
 
@@ -115,7 +123,7 @@ class ReportingRepository
 
         if (!count($instance)) {
             $data = ['dateFilter' => $filter->date_filter,'zoneFilter' => $zone,'checkedZoneFilter' => $filter->rows_zone,'data' => [], 'cdpFilter'=>$cdp ,'checkedCdpFilter' =>$filter->rows_cdp
-                , 'cityFilter' =>$ville, 'checkedcityFilter'=> $filter->rows_city];
+                , 'cityFilter' =>$ville, 'checkedcityFilter'=> $filter->rows_city, 'typeFilter' =>$type, 'checkedtypeFilter'=> $filter->rows_type];
             return $data;
         } else {
             $temp = $instance->groupBy(['task_type']);
@@ -160,7 +168,8 @@ class ReportingRepository
             $instance = $instance->values();
 
             return ['dateFilter' => $filter->date_filter,'zoneFilter' => $zone,'checkedZoneFilter' => $filter->rows_zone,'data' => $instance,
-                'cdpFilter'=>$cdp ,'checkedCdpFilter' =>$filter->rows_cdp, 'cityFilter' =>$ville, 'checkedcityFilter'=> $filter->rows_city ];
+                'cdpFilter'=>$cdp ,'checkedCdpFilter' =>$filter->rows_cdp, 'cityFilter' =>$ville, 'checkedcityFilter'=> $filter->rows_city
+                , 'typeFilter' =>$type, 'checkedtypeFilter'=> $filter->rows_type];
         }
     }
 
@@ -168,14 +177,14 @@ class ReportingRepository
 
         $_route = getRoute(Route::current());
         $route = str_replace('/columns', '', $_route);
-        list($filter, $queryFilters) = makeFilterSubQuery($request, $route,'region','code_postal','ville','date');
+        list($filter, $queryFilters) = makeFilterSubQuery($request, $route,'region','code_postal','ville','type','date');
 
         $en_cours = \DB::table('en_cours');
 
         $en_cours = $en_cours->select('agent_traitant', 'task_type',\DB::raw('count(`as`) as count') )
             ->whereNull('isNotReady');
 
-        $en_cours = applyFilter($en_cours, $filter,'region','code_postal','ville','date');
+        $en_cours = applyFilter($en_cours, $filter,'region','code_postal','ville','type','date');
 
 
         $zone = \DB::table('en_cours')
@@ -196,6 +205,12 @@ class ReportingRepository
             ->whereNull('isNotReady')
             ->pluck('ville');
 
+        $type = \DB::table('en_cours')
+            ->select('type')
+            ->distinct()
+            ->whereNull('isNotReady')
+            ->pluck('type');
+
         $en_cours = $en_cours->orderBy('agent_traitant');
         $en_cours = $en_cours->groupBy('agent_traitant', 'task_type')->get();
 
@@ -209,7 +224,7 @@ class ReportingRepository
 
         if (!count($en_cours)) {
             $data = ['dateFilter' => $filter->date_filter,'zoneFilter' => $zone,'checkedZoneFilter' =>$filter->rows_zone ,'data' => [], 'cdpFilter'=>$cdp ,'checkedCdpFilter' =>$filter->rows_cdp
-                , 'cityFilter' =>$ville, 'checkedcityFilter'=> $filter->rows_city ];
+                , 'cityFilter' =>$ville, 'checkedcityFilter'=> $filter->rows_city, 'typeFilter' =>$type, 'checkedtypeFilter'=> $filter->rows_type ];
             return $data;
         } else {
             $temp = $en_cours->groupBy(['task_type']);
@@ -255,7 +270,7 @@ class ReportingRepository
 
 
             return ['dateFilter' => $filter->date_filter,'zoneFilter' => $zone,'checkedZoneFilter' => $filter->rows_zone,'data' => $en_cours,  'cdpFilter'=>$cdp ,'checkedCdpFilter' =>$filter->rows_cdp,
-                'cityFilter' =>$ville, 'checkedcityFilter'=> $filter->rows_city ];
+                'cityFilter' =>$ville, 'checkedcityFilter'=> $filter->rows_city, 'typeFilter' =>$type, 'checkedtypeFilter'=> $filter->rows_type ];
         }
     }
 
@@ -263,19 +278,19 @@ class ReportingRepository
 
         $_route = getRoute(Route::current());
         $route = str_replace('/columns', '', $_route);
-        list($filter, $queryFilters) = makeFilterSubQuery($request, $route,'region','code_postal','ville','date');
+        list($filter, $queryFilters) = makeFilterSubQuery($request, $route,'region','code_postal','ville','type','date');
 
         $instance = \DB::table('instance');
 
         $instance = $instance->select(\DB::raw('agent_traitant,task_type,count(numero_de_labonne_reference_client) as count') )
             ->whereNull('isNotReady');
-        $instance = applyFilter($instance, $filter,'zone_region','code_postal','station_de_modulation_Ville','date_de_rendez_vous');
+        $instance = applyFilter($instance, $filter,'zone_region','code_postal','station_de_modulation_Ville','libcap_typologie_inter','date_de_rendez_vous');
         $instance = $instance->groupBy('agent_traitant', 'task_type');
 
         $globalData = \DB::table('en_cours');
         $globalData =$globalData->select(\DB::raw('agent_traitant,task_type,count(`as`) as count') )
             ->whereNull('isNotReady');
-        $globalData = applyFilter($globalData, $filter,'region','code_postal','ville','date');
+        $globalData = applyFilter($globalData, $filter,'region','code_postal','ville','type','date');
         $globalData
             ->union($instance)
             ->orderBy('agent_traitant');
@@ -325,10 +340,21 @@ class ReportingRepository
             ->union($villeInstance)
             ->pluck('ville');
 
+        $typeInstance = \DB::table('instance')
+            ->select(DB::raw('libcap_typologie_inter as type'))
+            ->distinct()
+            ->whereNull('isNotReady');
+
+        $type = \DB::table('en_cours')
+            ->select('type')
+            ->distinct()
+            ->whereNull('isNotReady')
+            ->union($typeInstance)
+            ->pluck('type');
 
         if (!count($globalData)) {
             $data = ['dateFilter' => $filter->date_filter,'zoneFilter' => $zone,'checkedZoneFilter' =>$filter->rows_zone ,'data' => [], 'cdpFilter'=>$cdp ,'checkedCdpFilter' =>$filter->rows_cdp
-                , 'cityFilter' =>$ville, 'checkedcityFilter'=> $filter->rows_city ];
+                , 'cityFilter' =>$ville, 'checkedcityFilter'=> $filter->rows_city, 'typeFilter' =>$type, 'checkedtypeFilter'=> $filter->rows_type ];
             return $data;
         } else {
             $temp = $globalData->groupBy(['task_type']);
@@ -372,7 +398,11 @@ class ReportingRepository
             $globalData = $globalData->values();
 
             return ['dateFilter' => $filter->date_filter,'zoneFilter' => $zone,'checkedZoneFilter' => $filter->rows_zone,'data' => $globalData,  'cdpFilter'=>$cdp ,'checkedCdpFilter' =>$filter->rows_cdp,
-                'cityFilter' =>$ville, 'checkedcityFilter'=> $filter->rows_city ];
+                'cityFilter' =>$ville, 'checkedcityFilter'=> $filter->rows_city, 'typeFilter' =>$type, 'checkedtypeFilter'=> $filter->rows_type ];
         }
+    }
+
+    public function exportDataCall(Request $request,$entity){
+        return Excel::download(new ReportingExport($request,$entity) , $entity.' export.xlsx');
     }
 }

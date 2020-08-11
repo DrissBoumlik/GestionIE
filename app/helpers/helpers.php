@@ -183,7 +183,7 @@ if (!function_exists('getMonthName')) {
 }
 
 if (!function_exists('makeFilterSubQuery')) {
-    function makeFilterSubQuery(Request $request, $route, $columnZone = null,$columnCdp = null,$columnVille = null,$dateColumn = null)
+    function makeFilterSubQuery(Request $request, $route, $columnZone = null,$columnCdp = null,$columnVille = null,$columnType = null,$dateColumn = null)
     {
         $user = getAuthUser();
         $filters = ['route' => $route, 'user_id' => $user->id, 'agent_name' => $user->lastname, 'isGlobal' => null];
@@ -193,6 +193,7 @@ if (!function_exists('makeFilterSubQuery')) {
         $rowsZOne = $request->get('rowzone');
         $rowsCdp = $request->get('rowcdp');
         $rowsCity = $request->get('rowcity');
+        $rowsType = $request->get('rowtype');
         $currentMonth = date('Y-m') . '%';
         $filter = Filter::firstOrCreate($filters);
         $queryFilters = null;
@@ -208,7 +209,8 @@ if (!function_exists('makeFilterSubQuery')) {
             $filter->rows_zone = $rowsZOne;
             $filter->rows_cdp = $rowsCdp;
             $filter->rows_city = $rowsCity;
-            if ($dates || $rowsZOne || $rowsCdp || $rowsCity) {
+            $filter->rows_type = $rowsType;
+            if ($dates || $rowsZOne || $rowsCdp || $rowsCity || $rowsType) {
                 $filterSaved = true;
                 $filter->save();
             } else {
@@ -228,6 +230,7 @@ if (!function_exists('makeFilterSubQuery')) {
             $filter->rows_zone = is_array($filter->rows_zone) ? $filter->rows_zone : json_decode($filter->rows_zone);
             $filter->rows_cdp  = is_array($filter->rows_cdp)  ? $filter->rows_cdp  : json_decode($filter->rows_cdp) ;
             $filter->rows_city = is_array($filter->rows_city) ? $filter->rows_city : json_decode($filter->rows_city) ;
+            $filter->rows_type = is_array($filter->rows_type) ? $filter->rows_type : json_decode($filter->rows_type) ;
             if ($filter && $filter->date_filter) {
                 $queryFilters[] = $dateColumn .' in ("' . join('","', $filter->date_filter) . '")';
             } else {
@@ -242,6 +245,9 @@ if (!function_exists('makeFilterSubQuery')) {
             if ($columnVille && $filter && $filter->rows_city) {
                 $queryFilters[] = $columnVille . ' in ("' . join('","', $filter->rows_city) . '")';
             }
+            if ($columnVille && $filter && $filter->rows_type) {
+                $queryFilters[] = $columnType . ' in ("' . join('","', $filter->rows_type) . '")';
+            }
         }
         $queryFilters = join(' and ', $queryFilters);
 
@@ -254,7 +260,7 @@ if (!function_exists('makeFilterSubQuery')) {
 }
 
 if (!function_exists('applyFilter')) {
-    function applyFilter($results, $filter, $columnZone = null, $columnCdp = null,$columnVille = null,$dateColumn = null)
+    function applyFilter($results, $filter, $columnZone = null, $columnCdp = null,$columnVille = null,$columnType = null,$dateColumn = null)
     {
         $currentMonth = date('Y-m') . '%';
         if ($columnZone && $filter && $filter->rows_zone) {
@@ -263,8 +269,11 @@ if (!function_exists('applyFilter')) {
         if ($columnCdp && $filter && $filter->rows_cdp) {
             $results = $results->whereIn( $columnCdp, $filter->rows_cdp);
         }
-        if ($columnCdp && $filter && $filter->rows_city) {
+        if ($columnVille && $filter && $filter->rows_city) {
             $results = $results->whereIn( $columnVille, $filter->rows_city);
+        }
+        if ($columnType && $filter && $filter->rows_type) {
+            $results = $results->whereIn( $columnType, $filter->rows_type);
         }
         if ($filter && $filter->date_filter) {
             $results = $results->whereIn($dateColumn, $filter->date_filter);

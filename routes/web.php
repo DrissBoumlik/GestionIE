@@ -40,10 +40,12 @@ Route::group([
     Route::put('/b2bSfr/tickets/updateTicket/{id}','TicketsController@updateTicket')->name('b2bSfr.tickets.update');
     Route::get('b2bSfr/tickets/getTicketHistory/{id}','TicketsController@getTicketHistory')->name('b2bSfr.tickets.history');
     Route::get('b2bSfr/tickets/showTicketHistoryPage/{id}','TicketsController@showTicketHistoryPage')->name('b2bSfr.tickets.showTicketHistoryPage');
+
     Route::get('reporting','ReportingController@index')->name('reporting');
     Route::post('reporting/getInstance','ReportingController@getInstance');
     Route::post('/reporting/getEnCours','ReportingController@getEnCours');
     Route::post('/reporting/getGlobalData','ReportingController@getGlobalData');
+    Route::get('/reporting/exportData/{entity}','ReportingController@exportData')->name('exportData');
     //end region
 
     Route::get('/', 'HomeController@home');

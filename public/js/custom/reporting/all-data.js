@@ -82,7 +82,7 @@
         ],
         data: undefined,
         filterTree: {dates: [], zoneRows: [],cdpRows:[], datesTreeObject: undefined},
-        filterElement: {dates: '#tree-view-01', zoneRows: '#instance-zone-filter-01',cdpRows: '#instance-cdp-filter-01',cityRows: '#instance-vile-filter-01'},
+        filterElement: {dates: '#tree-view-01', zoneRows: '#instance-zone-filter-01',cdpRows: '#instance-cdp-filter-01',cityRows: '#instance-vile-filter-01',typeRows: '#instance-type-filter-01'},
         route: '/reporting/getInstance',
     };
     if (elementExists(instance)) {
@@ -109,7 +109,7 @@
         ],
         data: undefined,
         filterTree: {dates: [], zoneRows: [],cdpRows:[], datesTreeObject: undefined},
-        filterElement: {dates: '#tree-view-02', zoneRows: '#enCours-zone-filter-02', cdpRows: '#enCours-cdp-filter-02',cityRows: '#enCours-vile-filter-02'},
+        filterElement: {dates: '#tree-view-02', zoneRows: '#enCours-zone-filter-02', cdpRows: '#enCours-cdp-filter-02',cityRows: '#enCours-vile-filter-02',typeRows: '#enCours-type-filter-02'},
         route: '/reporting/getEnCours',
     };
     if (elementExists(enCours)) {
@@ -136,7 +136,7 @@
         ],
         data: undefined,
         filterTree: {dates: [], zoneRows: [],cdpRows:[], datesTreeObject: undefined},
-        filterElement: {dates: '#tree-view-03', zoneRows: '#global-zone-filter-03', cdpRows: '#global-cdp-filter-03',cityRows: '#global-vile-filter-03'},
+        filterElement: {dates: '#tree-view-03', zoneRows: '#global-zone-filter-03', cdpRows: '#global-cdp-filter-03',cityRows: '#global-vile-filter-03',typeRows: '#global-type-filter-03'},
         route: '/reporting/getGlobalData',
     };
     if (elementExists(globalData)) {
@@ -195,6 +195,9 @@
          if (object.filterTree && object.filterTree.cityRows) {
              data = {...data, 'rowcity': object.filterTree.cityRows};
          }
+         if (object.filterTree && object.filterTree.typeRows) {
+             data = {...data, 'rowtype': object.filterTree.typeRows};
+         }
          if (object.filterTree) {
              data = {...data, 'dates': object.filterTree.dates};
          }
@@ -239,7 +242,7 @@
                         };
                     });
                     new Tree(object.filterElement.zoneRows, {
-                        data: [{id: '-1', text: 'Zone', children: rowsFilterData}],
+                        data: [{id: '-1', text: 'Region', children: rowsFilterData}],
                         closeDepth: 1,
                         loaded: function () {
                             if (response.zoneFilter) {
@@ -259,7 +262,7 @@
                         };
                     });
                     new Tree(object.filterElement.cdpRows, {
-                        data: [{id: '-1', text: 'cdp', children: rowsFilterData}],
+                        data: [{id: '-1', text: 'Code Postal', children: rowsFilterData}],
                         closeDepth: 1,
                         loaded: function () {
                             if (response.cdpFilter) {
@@ -288,6 +291,26 @@
                         },
                         onChange: function () {
                             object.filterTree.cityRows = this.values;
+                        }
+                    });
+                }
+                if(response.typeFilter){
+                    let rowsFilterData = response.typeFilter.map(function (d, index) {
+                        return {
+                            id: d,
+                            text: d
+                        };
+                    });
+                    new Tree(object.filterElement.typeRows, {
+                        data: [{id: '-1', text: 'type', children: rowsFilterData}],
+                        closeDepth: 1,
+                        loaded: function () {
+                            if (response.cityFilter) {
+                                this.values = object.filterTree.typeRows = (response.checkedtypeFilter) ? response.checkedtypeFilter : response.typeFilter;
+                            }
+                        },
+                        onChange: function () {
+                            object.filterTree.typeRows = this.values;
                         }
                     });
                 }
