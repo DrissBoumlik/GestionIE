@@ -8,16 +8,18 @@ use App\Models\Tickets;
 use App\Models\TicketsLog;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateTicketRequest;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class TicketsRepository
 {
     public function show(Request $request,$status){
-            $tickets = Tickets::select(
-                ['id', 'agent_traitant','region','numero_intervention','cdp','num_cdp','type_intervention', 'client', 'cp','Ville',
+            $tickets = DB::table('tickets')
+                ->select('tickets.id','lastname','region','numero_intervention','cdp','num_cdp','type_intervention', 'client', 'cp','Ville',
                     'Sous_type_Inter','date_reception','date_planification','report','motif_report','statut_finale',
-                    'nom_tech','prenom_tech','num_tel','adresse_mail','motif_ko','as_j_1','statut_ticket','commentaire'
-                ])->where('statut_ticket', '=', $status)
+                    'nom_tech','prenom_tech','num_tel','adresse_mail','motif_ko','as_j_1','statut_ticket','commentaire')
+                ->join('users','tickets.agent_traitant','=','users.id')
+                ->where('statut_ticket', '=', $status)
                 ->get();
 
             return DataTables::of($tickets)->toJson();
@@ -26,9 +28,9 @@ class TicketsRepository
 
     public function history($id)
     {
-        $ticketLogs = TicketsLog::select(
-            [ 'agent_traitant','motif_report','statut_finale', 'motif_ko','commentaire_report','as_j_1','statut_ticket','commentaire','created_at'
-            ])
+        $ticketLogs = DB::table('tickets_logs')
+            ->select('lastname','motif_report','statut_finale', 'motif_ko','commentaire_report','as_j_1','statut_ticket','commentaire','tickets_logs.created_at')
+            ->join('users','tickets_logs.agent_traitant','=','users.id')
             ->where('ticket_id', '=', $id)
             ->orderBy('created_at','asc')
             ->get();

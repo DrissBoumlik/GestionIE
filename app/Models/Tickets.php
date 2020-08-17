@@ -32,4 +32,12 @@ class Tickets extends Model
         'statut_ticket',
         'commentaire'
     ];
+
+    /**
+     * Get the user (auth).
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User')->select(array('id', 'lastname'));
+    }
 }

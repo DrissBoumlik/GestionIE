@@ -79,7 +79,7 @@
                 <div class="row mb-2 mb-2">
                     <div class="col-md-6">
                         <label for="agent_traitant">Agent traitant</label>
-                        <input type="text" class="form-control" id="agent_traitant" name="agent_traitant" value="{{ auth()->user()->id }}" placeholder="agent_traitant" readonly>
+                        <input type="text" class="form-control" id="agent_traitant" name="agent_traitant" value="{{ auth()->user()->lastname }}" placeholder="agent_traitant" readonly>
                     </div>
                     <div class="col-md-6">
                         <label for="region">Région</label>

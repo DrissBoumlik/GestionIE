@@ -18,7 +18,7 @@
             "dataSrc": "data"
         },
         columns: [
-            {"data": "agent_traitant", "title": "agent traitant", "name" :"agent_traitant"},
+            {"data": "lastname", "title": "agent traitant", "name" :"lastname"},
             {'data' : 'statut_finale', 'title':'statut_finale' , "name" :'statut_finale'},
             {'data' : 'motif_report', 'title':'motif_report' , "name" :'motif_report'},
             {'data' : 'motif_ko', 'title':'motif_ko', "name" :'motif_ko'},
