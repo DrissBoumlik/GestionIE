@@ -101,6 +101,12 @@
                 <span class="btn-field font-weight-normal position-relative">Rafraîchir</span>
               </button>
             </div>
+            <div class="col-6 text-center">
+                <a href="{{route('tasks.dataExport','instance')}}" style="color: #ffffff"
+                   class="btn btn-primary mb-3 capitalize-first-letter bg-orange w-100">
+                    exporter les données au format Excel
+                </a>
+            </div>
           </div>
           <!-- /.card-header -->
           <div class="card-body table-responsive">

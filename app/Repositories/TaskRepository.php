@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-
+use App\Export\tasksExport;
 use App\Models\EnCours;
 use App\Models\EnCoursLog;
 use App\Models\Instance;
@@ -10,6 +10,7 @@ use App\Models\InstanceLog;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TaskRepository
 {
@@ -166,5 +167,8 @@ class TaskRepository
             'code' => 200
         ];
         return $response;
+    }
+    public function exportDataCall(Request $request,$type){
+        return Excel::download(new tasksExport($request,$type) , $type.' export.xlsx');
     }
 }

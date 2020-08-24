@@ -10,6 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 
 
 // Auth Routes
@@ -53,6 +56,8 @@ Route::group([
 
     Route::get('/tasks/data/{type?}', 'TaskController@allData')->name('tasks.dataView');
     Route::post('/api/tasks/data/{type}', 'TaskController@getTasks')->name('tasks.data');
+    Route::get('/tasks/exportData/{type}', 'TaskController@exportData')->name('tasks.dataExport');
+
 
     Route::get('/tasks/filter/{status}/{type}', 'TaskController@viewTasksByStatus')->name('tasks.dataView.filter');
     Route::post('/api/tasks/filter/{status}/{type}', 'TaskController@getTasksbyStatus')->name('tasks.data.filter');

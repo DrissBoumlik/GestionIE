@@ -78,4 +78,7 @@ class TaskController extends Controller
         $response = $this->taskRepository->assignTask($request, $type);
         return response()->json($response);
     }
+    public function exportData(Request $request,$type){
+        return $this->taskRepository->exportDataCall($request,$type);
+    }
 }
