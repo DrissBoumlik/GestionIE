@@ -108,6 +108,29 @@
             </li>
           </ul>
         </li>
+        <li class="nav-main-item{{ request()->is('tasks/') || request()->is('/tasks/traite/*') ? ' open' : '' }}">
+            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true"
+               href="#">
+              <i class="nav-main-link-icon far fa-chart-bar"></i>
+              <span class="nav-main-link-name">Tâches Clôturée</span>
+            </a>
+            <ul class="nav-main-submenu">
+              <li class="nav-main-item">
+                <a
+                  class="nav-main-link {{ (request()->is('tasks/traite/encours') || request()->is('tasks/traite/encours/*')) ? ' active' : '' }}"
+                  href="{{ route('tasks.dataView.statutF', 'encours') }}">
+                  <span class="nav-main-link-name">En Cours</span>
+                </a>
+              </li>
+              <li class="nav-main-item">
+                <a
+                  class="nav-main-link {{ (request()->is('tasks/traite/instance') || request()->is('tasks/traite/instance/*')) ? ' active' : '' }}"
+                  href="{{ route('tasks.dataView.statutF', 'instance') }}">
+                  <span class="nav-main-link-name">Instance</span>
+                </a>
+              </li>
+            </ul>
+          </li>
         <li class="nav-main-item">
           <a class="nav-main-link{{ (request()->is('users') || request()->is('users/*')) ? ' active' : '' }}"
              href="{{ route('users.index') }}">

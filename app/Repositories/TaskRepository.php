@@ -51,7 +51,11 @@ class TaskRepository
         return $data;
 
     }
-
+    public function getTasksWithStatutFinalTraite(Request $request, $type)
+    {
+        $class = 'App\\Models\\'. $type;
+        return $class::where('statut_final','TRAITE')->get();
+    }
     public function dropTask(Request $request, $type)
     {
         $user = User::find($request->user_id);

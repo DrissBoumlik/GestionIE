@@ -60,6 +60,19 @@ class TaskController extends Controller
 
         return DataTables::of($tasks)->toJson();
     }
+    public function viewTasksByStatusFinal(Request $request,$type)
+    {
+        if ($type){
+    return view('tasks.traite.' . $type)->with(['data' => $request->all()]);
+    }
+    return view('tasks.traite')->with(['data' => $request->all()]);
+    }
+    public function getTasksbyStatusFinal(Request $request, $type)
+    {
+        $tasks = [];
+            $tasks = $this->taskRepository->getTasksWithStatutFinalTraite($request, $type);
+            return DataTables::of($tasks)->toJson();
+    }
 
     public function dropTask(Request $request, $type)
     {
