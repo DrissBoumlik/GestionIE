@@ -40,8 +40,7 @@ class TicketsController extends Controller
     }
 
     public function updateTicket(Request $request,$id){
-        $this->ticketsRepository->update($request,$id);
-        return redirect()->back()->with('message', 'le ticket a été modifié avec succès');
+        return $this->ticketsRepository->update($request,$id);
     }
 
     public function showTicketHistoryPage($id){

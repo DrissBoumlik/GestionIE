@@ -87,21 +87,11 @@ class TicketsRepository
 
     public function update(Request $request,$id){
 
-        $motif_report = $request->get('motif_report');
-        $motif_ko = $request->get('motif_ko');
-
-        if($request->get('statut_finale') === 'ok'){
-            $motif_report = null;
-            $motif_ko = null;
-        }else{
-            $motif_report = $request->get('motif_report');;
-            $motif_ko = $request->get('motif_ko');;
-        }
         $ticket = Tickets::find($id);
         $ticket->agent_traitant = auth()->user()->id;
         $ticket->statut_finale       = $request->get('statut_finale');
-        $ticket->motif_ko            = $motif_ko;
-        $ticket->motif_report        = $motif_report;
+        $ticket->motif_ko            = $request->get('motif_ko');
+        $ticket->motif_report        = $request->get('motif_report');
         $ticket->as_j_1              = $request->get('as_j_1');
         $ticket->statut_ticket       = $request->get('statut_ticket');
         $ticket->commentaire_report  = $request->get('commentaire_report');
@@ -113,8 +103,8 @@ class TicketsRepository
         $ticketLog->ticket_id           = $id;
         $ticketLog->commentaire_report  = $request->get('commentaire_report');
         $ticketLog->statut_finale       = $request->get('statut_finale');
-        $ticketLog->motif_report        = $motif_report;
-        $ticketLog->motif_ko            = $motif_ko;
+        $ticketLog->motif_report        = $request->get('motif_report');
+        $ticketLog->motif_ko            = $request->get('motif_ko');
         $ticketLog->as_j_1              = $request->get('as_j_1');
         $ticketLog->statut_ticket       = $request->get('statut_ticket');
         $ticketLog->commentaire         = $request->get('commentaire');
