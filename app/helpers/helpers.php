@@ -586,20 +586,20 @@ if (!function_exists('isAdmin')) {
 }
 
 if (!function_exists('isAgent')) {
-    function isAgent()
+    function isAgent($user = null)
     {
         return ($user ?? auth()->user())->role->name == 'agent';
     }
 }
 
 if (!function_exists('isB2bSfr')) {
-    function isB2bSfrGroup()
+    function isB2bSfrGroup($user = null)
     {
         $roleName = ($user ?? auth()->user())->role->name;
         return $roleName == 'B2bSfr' || $roleName == 'B2bSfrAdmin';
     }
 
-    function isB2bSfrAdmin()
+    function isB2bSfrAdmin($user = null)
     {
         return ($user ?? auth()->user())->role->name == 'B2bSfrAdmin';
     }
