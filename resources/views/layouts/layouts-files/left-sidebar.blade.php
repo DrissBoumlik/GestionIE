@@ -24,13 +24,14 @@
   <!-- Side Navigation -->
   <div class="content-side content-side-full">
     <ul class="nav-main">
+      @if(isInAdminGroup())
       <li class="nav-main-item">
         <a class="nav-main-link{{ request()->is('dashboard') ? ' active' : '' }}" href="{{ route('dashboard') }}">
           <i class="nav-main-link-icon si si-cursor"></i>
           <span class="nav-main-link-name">Tableau de bord</span>
         </a>
       </li>
-      @if(isInAdminGroup())
+      @endif
         {{--                <li class="nav-main-item">--}}
         {{--                    <a class="nav-main-link{{ (request()->is('all-stats') || request()->is('all-stats/*')) ? ' active' : '' }}" href="{{ route('tasks.dataView') }}">--}}
         {{--                        <i class="nav-main-link-icon far fa-chart-bar"></i>--}}
@@ -131,6 +132,7 @@
               </li>
             </ul>
           </li>
+       @if(isInAdminGroup())
         <li class="nav-main-item">
           <a class="nav-main-link{{ (request()->is('users') || request()->is('users/*')) ? ' active' : '' }}"
              href="{{ route('users.index') }}">
@@ -148,7 +150,6 @@
           </a>
         </li>
       @endif
-      @if(isInAdminGroup())
         <li class="nav-main-item{{ request()->is('import/*') ? ' open' : '' }}">
           <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true"
              href="#">
@@ -164,7 +165,6 @@
             </li>
           </ul>
         </li>
-      @endif
       @if(isB2bSfrGroup())
         <li class="nav-main-item">
           <a class="nav-main-link {{ request()->is('b2bSfr.create')  ? ' active' : '' }}"
