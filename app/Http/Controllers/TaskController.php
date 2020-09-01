@@ -22,10 +22,14 @@ class TaskController extends Controller
 
     public function allData(Request $request, $type = null)
     {
-        if ($type) {
-            return view('tasks.all-data.' . $type)->with(['data' => $request->all()]);
+        $data = $request->all();
+        if (isAgent()) {
+            $data = array_merge($data, ['agent' => getAuthUser()->firstname]);
         }
-        return view('tasks.all-data')->with(['data' => $request->all()]);
+        if ($type) {
+            return view('tasks.all-data.' . $type)->with(['data' => $data]);
+        }
+        return view('tasks.all-data')->with(['data' => $data]);
     }
 
     public function getTasks(Request $request, $type)
@@ -60,18 +64,23 @@ class TaskController extends Controller
 
         return DataTables::of($tasks)->toJson();
     }
-    public function viewTasksByStatusFinal(Request $request,$type)
+
+    public function viewTasksByStatusFinal(Request $request, $type)
     {
-        if ($type){
-    return view('tasks.traite.' . $type)->with(['data' => $request->all()]);
+        $data = $request->all();
+        if (isAgent()) {
+            $data = array_merge($data, ['agent' => getAuthUser()->firstname]);
+        }
+        if ($type) {
+            return view('tasks.traite.' . $type)->with(['data' => $data]);
+        }
+        return view('tasks.traite')->with(['data' => $data]);
     }
-    return view('tasks.traite')->with(['data' => $request->all()]);
-    }
+
     public function getTasksbyStatusFinal(Request $request, $type)
     {
-        $tasks = [];
-            $tasks = $this->taskRepository->getTasksWithStatutFinalTraite($request, $type);
-            return DataTables::of($tasks)->toJson();
+        $tasks = $this->taskRepository->getTasksWithStatutFinalTraite($request, $type);
+        return DataTables::of($tasks)->toJson();
     }
 
     public function dropTask(Request $request, $type)
@@ -91,7 +100,9 @@ class TaskController extends Controller
         $response = $this->taskRepository->assignTask($request, $type);
         return response()->json($response);
     }
-    public function exportData(Request $request,$type){
-        return $this->taskRepository->exportDataCall($request,$type);
+
+    public function exportData(Request $request, $type)
+    {
+        return $this->taskRepository->exportDataCall($request, $type);
     }
 }
