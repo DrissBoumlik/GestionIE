@@ -173,6 +173,12 @@ class TaskRepository
         return $response;
     }
     public function exportDataCall(Request $request,$type){
-        return Excel::download(new tasksExport($request,$type) , $type.' export.xlsx');
+        $headers =[
+            'Content-Type' => 'application/text',
+            'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+            'Cache-Control' => 'post-check=0, pre-check=0, false',
+            'Pragma' => 'no-cache',                               ];
+
+        return Excel::download(new tasksExport($request,$type) , $type.' export.xlsx',\Maatwebsite\Excel\Excel::XLSX,$headers);
     }
 }

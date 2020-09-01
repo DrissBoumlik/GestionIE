@@ -403,6 +403,12 @@ class ReportingRepository
     }
 
     public function exportDataCall(Request $request,$entity){
-        return Excel::download(new ReportingExport($request,$entity) , $entity.' export.xlsx');
+        $headers =[
+            'Content-Type' => 'application/text',
+            'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+            'Cache-Control' => 'post-check=0, pre-check=0, false',
+            'Pragma' => 'no-cache',                               ];
+
+        return Excel::download(new ReportingExport($request,$entity) , $entity.' export.xlsx',\Maatwebsite\Excel\Excel::XLSX,$headers);
     }
 }
