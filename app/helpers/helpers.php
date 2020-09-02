@@ -592,6 +592,14 @@ if (!function_exists('isAgent')) {
     }
 }
 
+if (!function_exists('isStandarGroup')) {
+    function isStandarGroup($user = null)
+    {
+        $roleName = ($user ?? auth()->user())->role->name;
+        return $roleName == 'superAdmin' || $roleName == 'admin' || $roleName == 'agent';
+    }
+}
+
 if (!function_exists('isB2bSfr')) {
     function isB2bSfrGroup($user = null)
     {

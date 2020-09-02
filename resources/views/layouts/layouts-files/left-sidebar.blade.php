@@ -38,7 +38,7 @@
         {{--                        <span class="nav-main-link-name">Statistiques</span>--}}
         {{--                    </a>--}}
         {{--                </li>--}}
-          @if(isAgent())
+          @if(isStandarGroup())
         <li class="nav-main-item{{ request()->is('tasks/') || request()->is('tasks/data/*') ? ' open' : '' }}">
           <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true"
              href="#">
@@ -152,7 +152,7 @@
           </a>
         </li>
       @endif
-          @if(isAgent())
+          @if(isStandarGroup())
         <li class="nav-main-item{{ request()->is('import/*') ? ' open' : '' }}">
           <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true"
              href="#">
