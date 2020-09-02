@@ -38,6 +38,7 @@
         {{--                        <span class="nav-main-link-name">Statistiques</span>--}}
         {{--                    </a>--}}
         {{--                </li>--}}
+          @if(isAgent())
         <li class="nav-main-item{{ request()->is('tasks/') || request()->is('tasks/data/*') ? ' open' : '' }}">
           <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true"
              href="#">
@@ -132,6 +133,7 @@
               </li>
             </ul>
           </li>
+          @endif
        @if(isInAdminGroup())
         <li class="nav-main-item">
           <a class="nav-main-link{{ (request()->is('users') || request()->is('users/*')) ? ' active' : '' }}"
@@ -150,6 +152,7 @@
           </a>
         </li>
       @endif
+          @if(isAgent())
         <li class="nav-main-item{{ request()->is('import/*') ? ' open' : '' }}">
           <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true"
              href="#">
@@ -165,6 +168,7 @@
             </li>
           </ul>
         </li>
+          @endif
       @if(isB2bSfrGroup())
         <li class="nav-main-item">
           <a class="nav-main-link {{ request()->is('b2bSfr.create')  ? ' active' : '' }}"
