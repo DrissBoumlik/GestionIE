@@ -47,6 +47,8 @@ class TaskController extends Controller
 //        }
         $agents = User::whereHas('role', function ($query) {
             return $query->where('name', 'agent');
+        })->when(isAgent(), function ($query){
+            $query->where('id',auth()->user()->id);
         })->get();
         $params = config('custom_params.tasks_options')[$type]['columns'];
         $params['agent_traitant']['values'] = $agents->pluck('firstname')->all();

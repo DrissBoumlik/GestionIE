@@ -1,6 +1,7 @@
-$(document).ready(function () {
-    $('#page-container').addClass('sidebar-mini');
+(($) => {
 
+    $('#page-container').addClass('sidebar-mini');
+    let agent = JSON.parse(document.currentScript.getAttribute('agent'));
     let dates = undefined;
     /*
     $.ajax({
@@ -388,7 +389,9 @@ $(document).ready(function () {
                         </button>`;
                     dropDown += `<div class="dropdown-menu font-size-sm" aria-labelledby="dropdown-default-primary" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">`;
                     dropDown += `<a class="dropdown-item" href="#"><i class="fa fa-fw fa-download"></i> Télécharger</a>`;
-                    dropDown += `<a class="dropdown-item btn-edit" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-pencil-alt"></i> Modifier</a>`;
+                    if(((row.user) && row.user.id == agent.id)) {
+                        dropDown += `<a class="dropdown-item btn-edit" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-pencil-alt"></i> Modifier</a>`;
+                    }
                     dropDown += `<a class="dropdown-item btn-view-history" data-type="EnCours" data-toggle="modal" data-target="#modal-history" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-history"></i> Visualiser l'Historique</a>`;
 
                     // if(data.statut_eb.id !== 'encours') {
@@ -471,7 +474,9 @@ $(document).ready(function () {
                         </button>`;
                     dropDown += `<div class="dropdown-menu font-size-sm" aria-labelledby="dropdown-default-primary" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">`;
                     dropDown += `<a class="dropdown-item" href="#"><i class="fa fa-fw fa-download"></i> Télécharger</a>`;
-                    dropDown += `<a class="dropdown-item btn-edit" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-pencil-alt"></i> Modifier</a>`;
+                    if(((row.user) && row.user.id == agent.id)){
+                        dropDown += `<a class="dropdown-item btn-edit" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-pencil-alt"></i> Modifier</a>`;
+                    }
                     dropDown += `<a class="dropdown-item btn-view-history" data-type="Instance" data-toggle="modal" data-target="#modal-history" href="javascript:void(0)" data-id="${data.id}"><i class="fa fa-fw fa-history"></i> Visualiser l'Historique</a>`;
 
                     // if(data.statut_eb.id !== 'encours') {
@@ -635,4 +640,4 @@ $(document).ready(function () {
         });
     }
 
-});
+})(jQuery);

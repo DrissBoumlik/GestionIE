@@ -22,7 +22,7 @@
 
   <script src="{{ asset("/plugins/tree-view/tree.js") }}"></script>
 
-  <script src="{{ asset("/js/custom/tasks/all-data.js") }}"></script>
+  <script src="{{ asset("/js/custom/tasks/all-data.js")  }}" agent="{{auth()->user()}}"></script>
   <script>
       $(function () {
         @if($errors->any())
