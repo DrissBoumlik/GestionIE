@@ -90,24 +90,28 @@ class ReportingRepository
             ->select('zone_region')
             ->distinct()
             ->whereNull('isNotReady')
+            ->whereNotNull('zone_region')
             ->pluck('zone_region');
 
         $cdp = \DB::table('instance')
             ->select('code_postal')
             ->distinct()
             ->whereNull('isNotReady')
+            ->whereNotNull('code_postal')
             ->pluck('code_postal');
 
         $ville = \DB::table('instance')
             ->select('station_de_modulation_Ville')
             ->distinct()
             ->whereNull('isNotReady')
+            ->whereNotNull('station_de_modulation_Ville')
             ->pluck('station_de_modulation_Ville');
 
         $type = \DB::table('instance')
             ->select('libcap_typologie_inter')
             ->distinct()
             ->whereNull('isNotReady')
+            ->whereNotNull('libcap_typologie_inter')
             ->pluck('libcap_typologie_inter');
 
         $instance = $instance->orderBy('agent_traitant');
@@ -191,24 +195,28 @@ class ReportingRepository
             ->select('region')
             ->distinct()
             ->whereNull('isNotReady')
+            ->whereNotNull('region')
             ->pluck('region');
 
         $cdp = \DB::table('en_cours')
             ->select('code_postal')
             ->distinct()
             ->whereNull('isNotReady')
+            ->whereNotNull('code_postal')
             ->pluck('code_postal');
 
         $ville = \DB::table('en_cours')
             ->select('ville')
             ->distinct()
             ->whereNull('isNotReady')
+            ->whereNotNull('ville')
             ->pluck('ville');
 
         $type = \DB::table('en_cours')
             ->select('type')
             ->distinct()
             ->whereNull('isNotReady')
+            ->whereNotNull('type')
             ->pluck('type');
 
         $en_cours = $en_cours->orderBy('agent_traitant');
@@ -307,48 +315,56 @@ class ReportingRepository
         $zoneEn_cours = \DB::table('en_cours')
             ->select('region')
             ->distinct()
-            ->whereNull('isNotReady');
+            ->whereNull('isNotReady')
+            ->whereNotNull('region');
 
         $zone = \DB::table('instance')
             ->select(DB::raw('zone_region as region'))
             ->distinct()
             ->whereNull('isNotReady')
+            ->whereNotNull('zone_region')
             ->union($zoneEn_cours)
             ->pluck('region');
 
         $cdpInstance = \DB::table('instance')
             ->select('code_postal')
             ->distinct()
-            ->whereNull('isNotReady');
+            ->whereNull('isNotReady')
+            ->whereNotNull('code_postal');
 
         $cdp = \DB::table('en_cours')
             ->select('code_postal')
             ->distinct()
             ->whereNull('isNotReady')
+            ->whereNotNull('code_postal')
             ->union($cdpInstance)
             ->pluck('code_postal');
 
         $villeInstance = \DB::table('instance')
             ->select(DB::raw('station_de_modulation_Ville as ville'))
             ->distinct()
-            ->whereNull('isNotReady');
+            ->whereNull('isNotReady')
+            ->whereNotNull('station_de_modulation_Ville');
 
         $ville = \DB::table('en_cours')
             ->select('ville')
             ->distinct()
             ->whereNull('isNotReady')
+            ->whereNotNull('ville')
             ->union($villeInstance)
             ->pluck('ville');
 
         $typeInstance = \DB::table('instance')
             ->select(DB::raw('libcap_typologie_inter as type'))
             ->distinct()
-            ->whereNull('isNotReady');
+            ->whereNull('isNotReady')
+            ->whereNotNull('libcap_typologie_inter');
 
         $type = \DB::table('en_cours')
             ->select('type')
             ->distinct()
             ->whereNull('isNotReady')
+            ->whereNotNull('type')
             ->union($typeInstance)
             ->pluck('type');
 
