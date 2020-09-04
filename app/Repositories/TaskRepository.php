@@ -30,7 +30,11 @@ class TaskRepository
             $colDate = 'date_de_rendez_vous';
         }
 
-        $data = $class::where($colDate, '>=',  Carbon::now()->subDays(2)->toDateTimeString())->get();
+        $data = $class::where(function ($query) use($colDate){
+            $query->where($colDate, '>=',  Carbon::now()->subDays(2)->toDateTimeString())->orWhere($colDate, '<=',Carbon::now());
+        })->where(function ($query){
+            $query->whereNull('statut_final')->orWhere('statut_final','!=','TRAITE');
+        })->get();
         $data = $collectionHelper($data);
         return $data;
     }

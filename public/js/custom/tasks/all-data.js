@@ -326,11 +326,12 @@
                     //     return '-----';
                     // }
                     let checked = row.statut_final.text != "A effectuer" ? 'checked' : '';
+                    let disabled = row.statut_final.text != "A effectuer" && ((row.user) && row.user.id != agent.id) ? 'disabled' : '';
                     let taskLogId = row.taskLog_id ? "data-taskLog_id='" + row.taskLog_id + "'" : '';
                     let userId = row.user ? "data-user_id='" + row.user.id + "'" : '';
                     return "<div class='custom-control custom-switch text-center'>" +
                         "<input data-type='encours' " + taskLogId + " " + userId + " data-row='" + JSON.stringify(row) + "' type='checkbox' class='custom-control-input' " +
-                        "value='" + data.id + "' id='input-choose-" + data.id + "' name='input-choose' " + checked + ">" +
+                        "value='" + data.id + "' id='input-choose-" + data.id + "' name='input-choose' " + checked +" "+disabled+ ">" +
                         "<label class='custom-control-label' for='input-choose-" + data.id + "'></label>" +
                         "</div>";
                 }
@@ -419,12 +420,14 @@
                     // if (!meta.settings.json.admin && data.acteur && meta.settings.json.acteur !== data.acteur) {
                     //     return '-----';
                     // }
+
                     let checked = row.statut_final.text != "A effectuer" ? 'checked' : '';
+                    let disabled = row.statut_final.text != "A effectuer" && ((row.user) && row.user.id != agent.id && agent.role_id === 3) ? 'disabled' : '';
                     let taskLogId = row.taskLog_id ? "data-taskLog_id='" + row.taskLog_id + "'" : '';
                     let userId = row.user ? "data-user_id='" + row.user.id + "'" : '';
                     return "<div class='custom-control custom-switch text-center'>" +
                         "<input data-type='instance' " + taskLogId + " " + userId + " data-row='" + JSON.stringify(row) + "' type='checkbox' class='custom-control-input' " +
-                        "value='" + data.id + "' id='input-choose-" + data.id + "' name='input-choose' " + checked + ">" +
+                        "value='" + data.id + "' id='input-choose-" + data.id + "' name='input-choose' " + checked +" "+disabled+ ">" +
                         "<label class='custom-control-label' for='input-choose-" + data.id + "'></label>" +
                         "</div>";
                 }
