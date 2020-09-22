@@ -75,7 +75,9 @@ class tasksExport implements FromCollection,WithHeadings,ShouldAutoSize,WithMapp
             'Cause du report',
             'Statut du report',
             'Accord région',
-            'Type'
+            'Type',
+            'date  et heure de reception',
+            'techno'
         ];
     }
 
@@ -123,6 +125,8 @@ class tasksExport implements FromCollection,WithHeadings,ShouldAutoSize,WithMapp
                 $row->statut_du_report,
                 $row->accord_region,
                 $row->task_type,
+                $row->date_heure_reception,
+                $row->techno
             ];
          return $row;
     }

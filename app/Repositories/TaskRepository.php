@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Export\tasksExport;
+use App\Mail\ActivationRequest;
+use App\Mail\SendTraiteMessage;
 use App\Models\EnCours;
 use App\Models\EnCoursLog;
 use App\Models\Instance;
@@ -10,6 +12,7 @@ use App\Models\InstanceLog;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 
 class TaskRepository
@@ -99,6 +102,7 @@ class TaskRepository
 
     public function editTask(Request $request, $type)
     {
+        $task = null;
 //        dd($request->all(), $type);
         if ($type === 'encours') {
             $task = EnCours::find($request->task_id);
@@ -131,7 +135,14 @@ class TaskRepository
                 'statut_final' => $request->statut_final
             ]);
         }
-
+        if($task->statut_final === 'TRAITE'){
+            try {
+                Mail::to('aarfa@rc2k.fr')
+                    ->send(new SendTraiteMessage($task));
+            } catch(\Exception $e) {
+                dd($e);
+            }
+        }
         $response = [
             'message' => 'La tâche a été mise à jour avec succès',
             'success' => true,

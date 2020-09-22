@@ -52,7 +52,7 @@
     let filterTasksWithStatutFinal=$('#filterStatusFinal');
 
 
-    $(document).on('change', 'input[name=input-choose]', function () {
+    $(document).on('change', 'input[type=checkbox]', function () {
         if ($(this).prop('checked')) {
             $(this).prop('checked', false);
             let btnChoose = $('#btn-choose');

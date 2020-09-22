@@ -127,6 +127,8 @@ return [
                 'statut_du_report' => 'statut_du_report',
                 'statut_final' => 'statut_final',
                 'accord_region' => 'accord_region',
+                'date_et_heure_de_reception' => 'date_heure_reception',
+                'techno' => 'techno'
             ]
         ]
     ],
