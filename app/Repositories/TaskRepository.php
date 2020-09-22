@@ -137,7 +137,7 @@ class TaskRepository
         }
         if($task->statut_final === 'TRAITE'){
             try {
-                Mail::to('aarfa@rc2k.fr')
+                Mail::to('anass.el-malki@circet.fr')
                     ->send(new SendTraiteMessage($task));
             } catch(\Exception $e) {
                 dd($e);
