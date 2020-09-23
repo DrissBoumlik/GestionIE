@@ -52,7 +52,7 @@ class TaskRepository
         } else {
             $colDate = 'date_de_rendez_vous';
         }
-        $data = $class::where($colDate, '<=',  Carbon::now()->subDays(2)->toDateTimeString())->get();
+        $data = $class::whereNull('statut_final')->orWhere('statut_final','!=','TRAITE')->get();
         $data = $collectionHelper($data);
 //        dd(collect($data)[0]);
         return $data;
