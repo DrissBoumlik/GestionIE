@@ -2,6 +2,7 @@
 
     $('#page-container').addClass('sidebar-mini');
     let agent = JSON.parse(document.currentScript.getAttribute('agent'));
+    let choosentasks = [];
     let dates = undefined;
     /*
     $.ajax({
@@ -52,7 +53,7 @@
     let filterTasksWithStatutFinal=$('#filterStatusFinal');
 
 
-    $(document).on('change', 'input[type=checkbox]', function () {
+    $(document).on('change', 'input[name=input-choose]', function () {
         if ($(this).prop('checked')) {
             $(this).prop('checked', false);
             let btnChoose = $('#btn-choose');
@@ -76,6 +77,48 @@
             btnUnaffect.attr('data-type', data_type);
             btnUnaffect.attr('data-user_id', user_id);
             $('#modal-unaffect').modal('show');
+        }
+    });
+
+    $(document).on('change', 'input[name=input-verified]', function () {
+        let id = $(this).val();
+        let arrPos = choosentasks.indexOf(id);
+        //If it exists and we unchecked it, remove it
+        if(arrPos > -1){
+            choosentasks.splice(arrPos,1);
+        }
+        else
+        {
+            choosentasks.push(id);
+        }
+        console.log(choosentasks);
+    });
+
+    $(document).on('click', '#asVerified', function () {
+        let verifiedTickets = [];
+        let table = $('.reload-table');
+        let object_type = $('#object_type').data('object_type');
+        if(choosentasks.length > 0){
+            $.ajax({
+                method: 'POST',
+                url: APP_URL + '/api/tasks/setVerified/' + object_type,
+                data: {'verifiedTickets' : choosentasks},
+                dateType: 'json',
+                success: function (data) {
+                    Swal.fire({
+                        icon: 'success',
+                        text: 'les tâches sélectionnés ont été modifiés avec succès',
+                    });
+                    table.DataTable().ajax.reload(null, false);
+                }
+            })
+        }else {
+            Swal.fire({
+                // position: 'top-end',
+                type: 'warning',
+                title: 'alert',
+                text: "Veuillez sélectionner des tickets",
+            });
         }
     });
 
@@ -317,7 +360,7 @@
             }},
             {data: 'task_type', title: 'Type'},
         ]}
-    if (filterTasks.length) {
+    if (filterTasks.length && filterTasks.data('filter') !=='verified') {
         TasksEncoursColumns = [
             {
                 data: null, className: 'align-middle text-center', orderable: false, searchable: false,
@@ -337,12 +380,26 @@
                 }
             },
             {
+                data: null, className: 'align-middle text-center', orderable: false, searchable: false,title: 'Marque comme vérifié',
+                render: function (data, type, row, meta) {
+                    let checked = choosentasks.indexOf(data.id) > -1 ? 'checked' : '';
+                    if(row.statut_final.text == "TRAITE" &&  agent.role_id === 6 ){
+                        return "<div class='custom-control custom-switch text-center'>" +
+                            "<input  type='checkbox' class='custom-control-input' " +
+                            "value='" + data.id + "' id='input-verified-" + data.id + "' name='input-verified'" + checked +" >" +
+                            "<label class='custom-control-label' for='input-verified-" + data.id + "'></label>" +
+                            "</div>";
+                    }
+                    return null;
+
+                }
+            },
+            {
                 data: 'user', name: 'user', title: 'Utilisateur',
                 render: function (data, type, row, meta) {
                     return data && row.statut_final.text != "A effectuer" ? data.firstname : '';
                 }
             },
-            {data: 'agent_traitant', title: 'Agent traitant'},
             {data: 'region', title: 'Région'},
             {data: 'prestataire', title: 'Prestataire'},
             {data: 'nom_tech', title: 'Nom Tech'},
@@ -430,6 +487,21 @@
                         "value='" + data.id + "' id='input-choose-" + data.id + "' name='input-choose' " + checked +" "+disabled+ ">" +
                         "<label class='custom-control-label' for='input-choose-" + data.id + "'></label>" +
                         "</div>";
+                }
+            },
+            {
+                data: null, className: 'align-middle text-center', orderable: false, searchable: false,title: 'Marque comme vérifié',
+                render: function (data, type, row, meta) {
+                    if(row.statut_final.text == "TRAITE" &&  agent.role_id === 6 ){
+                        let checked = choosentasks.indexOf(data.id) > -1 ? 'checked' : '';
+                        return "<div class='custom-control custom-switch text-center'>" +
+                            "<input  type='checkbox' class='custom-control-input' " +
+                            "value='" + data.id + "' id='input-verified-" + data.id + "' name='input-verified'" + checked +" >" +
+                            "<label class='custom-control-label' for='input-verified-" + data.id + "'></label>" +
+                            "</div>";
+                    }
+                    return null;
+
                 }
             },
             {

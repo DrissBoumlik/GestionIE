@@ -57,6 +57,7 @@ Route::group([
 
     Route::get('/tasks/filter/{status}/{type}', 'TaskController@viewTasksByStatus')->name('tasks.dataView.filter');
     Route::post('/api/tasks/filter/{status}/{type}', 'TaskController@getTasksbyStatus')->name('tasks.data.filter');
+    Route::post('/api/tasks/setVerified/{type}','TaskController@updateSetOfTasks');
 
     Route::get('/tasks/traite/{type}', 'TaskController@viewTasksByStatusFinal')->name('tasks.dataView.statutF');
     Route::post('/api/tasks/traite/{type}', 'TaskController@getTasksbyStatusFinal')->name('tasks.data.statutF');

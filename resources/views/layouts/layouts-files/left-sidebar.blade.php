@@ -133,6 +133,32 @@
               </li>
             </ul>
           </li>
+            @if(isTask_validator())
+              <li
+                  class="nav-main-item{{ (request()->is('tasks/filter/verified') || request()->is('tasks/filter/verified/*')) ? ' open' : '' }}">
+                  <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true"
+                     href="#">
+                      <i class="nav-main-link-icon far fa-chart-bar"></i>
+                      <span class="nav-main-link-name">Tâches vérifiées</span>
+                  </a>
+                  <ul class="nav-main-submenu">
+                      <li class="nav-main-item">
+                          <a
+                              class="nav-main-link {{ (request()->is('tasks/filter/verified/encours') || request()->is('tasks/filter/verified/encours/*')) ? ' active' : '' }}"
+                              href="{{ route('tasks.dataView.filter', ['status'=>'verified', 'type'=> 'encours']) }}">
+                              <span class="nav-main-link-name">En Cours</span>
+                          </a>
+                      </li>
+                      <li class="nav-main-item">
+                          <a
+                              class="nav-main-link {{ (request()->is('tasks/filter/verified/instance') || request()->is('tasks/filter/verified/instance/*')) ? ' active' : '' }}"
+                              href="{{ route('tasks.dataView.filter', ['status'=>'verified', 'type'=> 'instance']) }}">
+                              <span class="nav-main-link-name">Instance</span>
+                          </a>
+                      </li>
+                  </ul>
+              </li>
+            @endif
           @endif
        @if(isInAdminGroup())
         <li class="nav-main-item">

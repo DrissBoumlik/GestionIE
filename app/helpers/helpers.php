@@ -596,7 +596,7 @@ if (!function_exists('isStandarGroup')) {
     function isStandarGroup($user = null)
     {
         $roleName = ($user ?? auth()->user())->role->name;
-        return $roleName == 'superAdmin' || $roleName == 'admin' || $roleName == 'agent';
+        return $roleName == 'superAdmin' || $roleName == 'admin' || $roleName == 'agent' || $roleName == 'task_validator';
     }
 }
 
@@ -610,5 +610,12 @@ if (!function_exists('isB2bSfr')) {
     function isB2bSfrAdmin($user = null)
     {
         return ($user ?? auth()->user())->role->name == 'B2bSfrAdmin';
+    }
+}
+
+if (!function_exists('isTask_validator')) {
+    function isTask_validator($user = null)
+    {
+        return ($user ?? auth()->user())->role->name == 'task_validator';
     }
 }

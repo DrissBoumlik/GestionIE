@@ -62,6 +62,8 @@ class TaskController extends Controller
             $tasks = $this->taskRepository->getPriorityTasks($request, $type);
         } elseif ($status == 'a_traiter') {
             $tasks = $this->taskRepository->getTasksToHandle($request, $type);
+        } elseif ($status == 'verified'){
+            $tasks = $this->taskRepository->getVerifiedTasks($request, $type);
         }
 
         return DataTables::of($tasks)->toJson();
@@ -101,6 +103,10 @@ class TaskController extends Controller
     {
         $response = $this->taskRepository->assignTask($request, $type);
         return response()->json($response);
+    }
+
+    public function updateSetOfTasks(Request $request, $type){
+        return $this->taskRepository->updateSetOfTasks($request, $type);
     }
 
     public function exportData(Request $request, $type)

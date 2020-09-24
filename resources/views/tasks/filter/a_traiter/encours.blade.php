@@ -84,6 +84,7 @@
     <div class="container-fluid">
       <div id="data-request" data-request="{{ json_encode($data) }}" class="d-none"></div>
       <div id="filter" class="filter d-none" data-filter="a_traiter"></div>
+        <div id="object_type" class="d-none" data-object_type="encours"></div>
       {{--            <a href="{{ URL::route('ExportXls', array('row' => request('row'), 'rowValue' => request('rowValue'),'col' => request('col') , 'colValue' => request('colValue'),'agent' => request('agent') ,--}}
       {{--                                    'agence' => request('agence') , 'dates' => request('dates'), 'Resultat_Appel' => request('Resultat_Appel') , 'queryJoin' => request('queryJoin'),--}}
       {{--                                    'subGroupBy'=> request('subGroupBy') , 'queryGroupBy' => request('queryGroupBy'),'appCltquery' => request('appCltquery')  )) }}"--}}
@@ -108,8 +109,12 @@
             <!-- /.card-header -->
             <div class="card-body table-responsive">
               <table id="tasksEncours"
-                     class="not-stats-table table table-bordered table-striped table-valign-middle capitalize">
+                     class="not-stats-table table reload-table table-bordered table-striped table-valign-middle capitalize">
               </table>
+                @if(isTask_validator())
+                <a href="javascript:void(0)" id ="asVerified" class="btn btn-primary" style="color: #F7F7F7;">
+                    Marquer les tâches sélectionnées comme vérifié</a>
+                @endif
             </div>
             <!-- /.card-body -->
           </div>

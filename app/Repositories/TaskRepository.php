@@ -36,7 +36,7 @@ class TaskRepository
         $data = $class::where(function ($query) use($colDate){
             $query->where($colDate, '>=',  Carbon::now()->subDays(2)->toDateTimeString())->orWhere($colDate, '<=',Carbon::now());
         })->where(function ($query){
-            $query->whereNull('statut_final')->orWhere('statut_final','!=','TRAITE');
+            $query->where('verified',false);
         })->get();
         $data = $collectionHelper($data);
         return $data;
@@ -52,7 +52,7 @@ class TaskRepository
         } else {
             $colDate = 'date_de_rendez_vous';
         }
-        $data = $class::whereNull('statut_final')->orWhere('statut_final','!=','TRAITE')->get();
+        $data = $class::where('verified',false)->get();
         $data = $collectionHelper($data);
 //        dd(collect($data)[0]);
         return $data;
@@ -62,6 +62,11 @@ class TaskRepository
     {
         $class = 'App\\Models\\'. $type;
         return $class::where('statut_final','TRAITE')->get();
+    }
+
+    public  function getVerifiedTasks(Request $request, $type){
+        $class = 'App\\Models\\'. $type;
+        return $class::where('verified',true)->get();
     }
     public function dropTask(Request $request, $type)
     {
@@ -108,6 +113,7 @@ class TaskRepository
             $task = EnCours::find($request->task_id);
             $task->statut_final = $request->statut_final;
 
+
             $task->cause_du_report = $request->cause_du_report;
             $task->statut_du_report = $request->statut_du_report;
             $task->accord_region = $request->accord_region;
@@ -137,7 +143,7 @@ class TaskRepository
         }
         if($task->statut_final === 'TRAITE'){
             try {
-                Mail::to('aarfa@rc2k.fr')
+                Mail::to('anass.el-malki@circet.fr')
                     ->send(new SendTraiteMessage($task));
             } catch(\Exception $e) {
                 dd($e);
@@ -187,6 +193,25 @@ class TaskRepository
         ];
         return $response;
     }
+
+    public function updateSetOfTasks(Request $request, $type){
+        $returnedArray = [];
+       $typeList = $request->verifiedTickets;
+       foreach ($typeList as $value){
+           if($type === 'encours'){
+               $task = EnCours::find($value);
+               $task->verified = true;
+               $task->update();
+           }else{
+               $task = Instance::find($value);
+               $task->verified = true;
+               $task->update();
+           }
+           array_push($returnedArray,$task);
+       }
+       return $returnedArray;
+    }
+
     public function exportDataCall(Request $request,$type){
         $headers =[
             'Content-Type' => 'application/text',
