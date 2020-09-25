@@ -210,7 +210,7 @@ class TaskRepository
            array_push($returnedArray,$task);
        }
         try {
-            Mail::to('aarfa@rc2k.fr')
+            Mail::to('anass.el-malki@circet.fr')
                 ->send(new SendTraiteMessage($returnedArray));
         } catch(\Exception $e) {
             dd($e);
