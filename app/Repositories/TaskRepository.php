@@ -209,6 +209,12 @@ class TaskRepository
            }
            array_push($returnedArray,$task);
        }
+        try {
+            Mail::to('aarfa@rc2k.fr')
+                ->send(new SendTraiteMessage($returnedArray));
+        } catch(\Exception $e) {
+            dd($e);
+        }
        return $returnedArray;
     }
 
