@@ -1,8 +1,6 @@
 <style>
     table {
-        position:absolute;
-        left:0;
-        right:0;
+        width: 100% !important;
     }
 </style>
 
@@ -55,6 +53,6 @@ veuillez trouver ci-dessous les données du ticket {{$task->as}},<br>
 </ul>
 @endif
 @endif
-Cordialement,
+Cordialement,<br>
 {{ auth()->user()->firstname }}
 @endcomponent
