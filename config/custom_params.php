@@ -20,9 +20,12 @@ return [
         0 => [
             'table' => 'instance',
             'class' => 'Instance',
-            'id' => ['numero_de_lappel_reference_sfr' => 'numero_de_labonne_reference_client',
+            'id' => [/*'numero_de_lappel_reference_sfr' => 'numero_de_labonne_reference_client',
                 'reference_client' => 'numero_de_labonne_reference_client',
-                'numero_de_labonne' => 'numero_de_labonne_reference_client',
+                'numero_de_labonne' => 'numero_de_labonne_reference_client',*/
+                'numero_de_lappel_reference_sfr' => 'numero_de_lappel_reference_sfr',
+                'data_columns' => 'numero_de_lappel_reference_sfr',
+                'reference_sfr' => 'numero_de_lappel_reference_sfr',
                         ],
             'date_filter' => ['date_de_rendez_vous','date_rdv'],
             'data_columns' => [
