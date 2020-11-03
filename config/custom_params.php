@@ -26,6 +26,7 @@ return [
                 'numero_de_lappel_reference_sfr' => 'numero_de_lappel_reference_sfr',
                 'data_columns' => 'numero_de_lappel_reference_sfr',
                 'reference_sfr' => 'numero_de_lappel_reference_sfr',
+                'reference_inter' => 'numero_de_lappel_reference_sfr'
                         ],
             'date_filter' => ['date_de_rendez_vous','date_rdv'],
             'data_columns' => [
