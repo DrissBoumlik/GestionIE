@@ -1,5 +1,6 @@
 <?php
 
+namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -21,7 +22,7 @@ class UsersTableSeeder extends Seeder
             'gender' => 'male',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-            'remember_token' => Str::random(10),
+            'remember_token' => \Str::random(10),
             'role_id' => 1
         ]);
         User::create([
@@ -33,7 +34,7 @@ class UsersTableSeeder extends Seeder
             'gender' => 'male',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-            'remember_token' => Str::random(10),
+            'remember_token' => \Str::random(10),
             'role_id' => 2
         ]);
         User::create([
@@ -45,7 +46,7 @@ class UsersTableSeeder extends Seeder
             'gender' => 'male',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-            'remember_token' => Str::random(10),
+            'remember_token' => \Str::random(10),
             'role_id' => 3
         ]);
         User::create([
@@ -57,7 +58,7 @@ class UsersTableSeeder extends Seeder
             'gender' => 'male',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-            'remember_token' => Str::random(10),
+            'remember_token' => \Str::random(10),
             'role_id' => 4
         ]);
 
@@ -72,7 +73,7 @@ class UsersTableSeeder extends Seeder
             'gender' => 'female',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-            'remember_token' => Str::random(10),
+            'remember_token' => \Str::random(10),
             'role_id' => 3
         ]);
         User::create([
@@ -84,7 +85,7 @@ class UsersTableSeeder extends Seeder
             'gender' => 'female',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-            'remember_token' => Str::random(10),
+            'remember_token' => \Str::random(10),
             'role_id' => 3
         ]);
         User::create([
@@ -96,7 +97,7 @@ class UsersTableSeeder extends Seeder
             'gender' => 'female',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-            'remember_token' => Str::random(10),
+            'remember_token' => \Str::random(10),
             'role_id' => 3
         ]);
             User::create([
@@ -108,7 +109,7 @@ class UsersTableSeeder extends Seeder
             'gender' => 'female',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-            'remember_token' => Str::random(10),
+            'remember_token' => \Str::random(10),
             'role_id' => 3
         ]);
             User::create([
@@ -120,7 +121,7 @@ class UsersTableSeeder extends Seeder
             'gender' => 'female',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-            'remember_token' => Str::random(10),
+            'remember_token' => \Str::random(10),
             'role_id' => 3
         ]);
             User::create([
@@ -132,7 +133,7 @@ class UsersTableSeeder extends Seeder
             'gender' => 'female',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-            'remember_token' => Str::random(10),
+            'remember_token' => \Str::random(10),
             'role_id' => 3
         ]);
     }
